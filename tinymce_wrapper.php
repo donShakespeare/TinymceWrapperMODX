@@ -1,4 +1,8 @@
 <?php
+/**plugin fires at
+OnRichTextEditorRegister - 0
+OnDocFormPrerender - 1
+**/
 $modxEventName = $modx->event->name;
 //let us tell System Settings that we have a new RTEditor
 if ($modxEventName == 'OnRichTextEditorRegister') {
