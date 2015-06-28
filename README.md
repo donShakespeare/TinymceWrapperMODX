@@ -1,5 +1,5 @@
 # TinyMCE_Wrapper
-A TinyMCE Wrapper for MODx Revolution 2.4
+A TinyMCE Wrapper for MODx Revolution 2.3.5
 
 ________________________________________________________
 Use freely, recode freely, criticize freely, enjoy freely
