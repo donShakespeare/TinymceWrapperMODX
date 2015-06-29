@@ -3,10 +3,11 @@ A TinyMCE Wrapper for MODx Revolution 2.3.5
 
 ________________________________________________________
 Use freely, recode freely, criticize freely, enjoy freely
-http://www.leofec.com/modx-revolution/
+http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
 (donshakespeare in the MODx forum)
 ________________________________________________________
 **HOW TO USE**
+See http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
 
 1. Install (it will automatically set itself as default RTEditor for resources)
 2. Start using it immediately
