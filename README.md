@@ -14,7 +14,7 @@ TinyMCE_Wrappper enables you to always use the latest TinyMCE (CDN or local) in 
 The textareas: content, introtext, description, Rich Text TVs (not image) will transformed.
 Any one of these can be turned off permanently or temporarily.
 
-It has four TinyMCE_Wrappper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
+It has four TinyMCE_Wrapper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
 
 It comes with the full Responsive File Manager, which it uses as its primary file browser. With a few lines of code, you can use MODx Media Source urls.
 This Responsive File Manager is also standalone, you can use it without TinyMCE or MODx, that is, you can directly link to it.
