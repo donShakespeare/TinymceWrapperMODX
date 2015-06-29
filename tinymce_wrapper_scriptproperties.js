@@ -1,4 +1,4 @@
-//tinymce_wrapper plugin scriptproperties... just "Import Properties"
+//tinymce_wrapper plugin scriptproperties... just "Import Properties" if you ever need this
 [
   {
     "name": "activateTinyMCE",
@@ -15,13 +15,13 @@
   },
   {
     "name": "chunk_Suffix",
-    "desc": "This plugin will create three chunks for you, it will not override them once created, but you were better off duplicating them.\nPLEASE simply add a suffix (_test or -su) to your new name.\nTinyMCE_Wrapper_Introtext becomes TinyMCE_Wrapper_Introtext_test or TinyMCE_Wrapper_Introtext-su",
+    "desc": "This plugin will create four chunks for you; it will not override them once created, but you were better off duplicating them.\nPLEASE simply add a suffix (_test or -su) to your new name.\nTinyMCE_Wrapper_Introtext becomes TinyMCE_Wrapper_Introtext_test or TinyMCE_Wrapper_Introtext-su",
     "xtype": "textfield",
     "options": [],
     "value": "",
     "lexicon": "",
     "overridden": false,
-    "desc_trans": "This plugin will create three chunks for you, it will not override them once created, but you were better off duplicating them.\nPLEASE simply add a suffix (_test or -su) to your new name.\nTinyMCE_Wrapper_Introtext becomes TinyMCE_Wrapper_Introtext_test or TinyMCE_Wrapper_Introtext-su",
+    "desc_trans": "This plugin will create four chunks for you; it will not override them once created, but you were better off duplicating them.\nPLEASE simply add a suffix (_test or -su) to your new name.\nTinyMCE_Wrapper_Introtext becomes TinyMCE_Wrapper_Introtext_test or TinyMCE_Wrapper_Introtext-su",
     "area": "Editor Settings",
     "area_trans": "Editor Settings",
     "menu": null
@@ -54,13 +54,13 @@
   },
   {
     "name": "tinySrc",
-    "desc": "You may use either TinyMCE\"s CDN or TinyMCE located in your assets folder\n//tinymce.cachefly.net/4.2/tinymce.min.js\nhttp://leofec.com/assets/tinymce_wrapper/tinymce/js/tinymce/tinymce.min.js",
+    "desc": "You may use either TinyMCE's CDN or TinyMCE located on your own folder\n//tinymce.cachefly.net/4.2/tinymce.min.js\n(other CDN versions 4, 4.0, 4.1, 4.2)\n                      OR\n[[++assets_url]]yourTinymce/js/tinymce/tinymce.min.js",
     "xtype": "textfield",
     "options": [],
     "value": "//tinymce.cachefly.net/4.2/tinymce.min.js",
     "lexicon": "",
     "overridden": false,
-    "desc_trans": "You may use either TinyMCE\"s CDN or TinyMCE located in your assets folder\n//tinymce.cachefly.net/4.2/tinymce.min.js\nhttp://leofec.com/assets/tinymce_wrapper/tinymce/js/tinymce/tinymce.min.js",
+    "desc_trans": "You may use either TinyMCE's CDN or TinyMCE located on your own folder\n//tinymce.cachefly.net/4.2/tinymce.min.js\n(other CDN versions 4, 4.0, 4.1, 4.2)\n                      OR\n[[++assets_url]]yourTinymce/js/tinymce/tinymce.min.js",
     "area": "Editor Settings",
     "area_trans": "Editor Settings",
     "menu": null
