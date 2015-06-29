@@ -3,7 +3,7 @@
 Before you use, go to
 - /assets/tinymce_wrapper/responsivefilemanager/filemanager/config/config.php
 - delete line 2 --- session_start();
-- find and insert before --- return array_merge(); this --- include '../../responsiveConfig.php';
+- find and insert before --- return array_merge(); this --- include '../../responsiveMODxcConfig.php';
 */
 //initialize MODx stuff here
 if (!defined('MODX_CORE_PATH')) {
@@ -39,7 +39,7 @@ $xters = array(" ", "_");
 $personalFolder = str_replace($xters, "-", $personalFolder); //clean up the name
 //setup MODx folder variables
 //make sure your upload media folder exists
-$userSpecificConfigTemplate = '../../personalConfig.txt';
+$userSpecificConfigTemplate = '../../responsivePersonalConfig.tpl';
 $userSpecificConfig = '../../uploadMedia/' . $personalFolder . '/config.php';
 if (!file_exists('../../uploadMedia/' . $personalFolder)) {
   mkdir('../../uploadMedia/' . $personalFolder, 0755, true);
