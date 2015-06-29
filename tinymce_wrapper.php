@@ -1,8 +1,17 @@
 <?php
-/**plugin fires at
+/*TinyMCE_Wrapper
+plugin fires at
 OnRichTextEditorRegister - 0
 OnDocFormPrerender - 1
-**/
+
+****************Roadmap:
+Remove jQuery dependency, create more awesome themes, move wrapper plugin properties to System Settings or CMP or MIGX, to avoid senseless cache-clearing by the plugin
+
+use freely, recode freely, report freely, enjoy freely
+http://www.leofec.com/modx-revolution/
+-donshakespeare in the MODx forum
+*/
+
 $modxEventName = $modx->event->name;
 //let us tell System Settings that we have a new RTEditor
 if ($modxEventName == 'OnRichTextEditorRegister') {
