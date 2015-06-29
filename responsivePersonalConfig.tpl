@@ -1,5 +1,5 @@
 <?php
-// $folder_message= "Hello " . $myUsername . ", this is your folder (/uploadMedia/" . $personalFolder . "). You may upload images. Right-click items for more info...";
+// $folder_message= "Hello " . $myUsername;
 $MaxSizeUpload = 100;
 $default_language = "en_EN";
 $icon_theme = "ico";
