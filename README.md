@@ -3,7 +3,9 @@ A TinyMCE Wrapper for MODx Revolution 2.3.5
 
 ________________________________________________________
 Use freely, recode freely, criticize freely, enjoy freely
+
 http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
+
 (donshakespeare in the MODx forum)
 ________________________________________________________
 **HOW TO USE**
