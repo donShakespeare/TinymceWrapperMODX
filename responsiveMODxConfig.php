@@ -1,15 +1,17 @@
 <?php
-// /assets/tinymce_wrapper/responsiveMODxConfig.php
+// /assets/components/tinymce_wrapper/responsiveMODxConfig.php
 
 /*
 Before you use, go to
-- /assets/tinymce_wrapper/responsivefilemanager/filemanager/config/config.php
+- /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/config/config.php
 - DELETE session_start(); (line 2)
 - INSERT include '../../responsiveMODxConfig.php' BEFORE return array_merge() (line338);
+- OR just rename config.php-modxReady to config.php
+-in this file, define('MODX_CORE_PATH', '/path/to/your/site/core/');
 */
 //initialize MODx stuff here
 if (!defined('MODX_CORE_PATH')) {
-  define('MODX_CORE_PATH', '/path/to/site/core/'); //path to your core folder
+  define('MODX_CORE_PATH', '/path/to/your/site/core/'); //path to your core folder
 }
 if (!defined('MODX_CONFIG_KEY')) {
   define('MODX_CONFIG_KEY', 'config');
@@ -31,7 +33,7 @@ if ($autoCreateUserFolders == 1) {
   $modxId = $modx->user->get('id'); //you can use usergroup instead of userid
   $myUsername = $modx->user->get('username');
   //create special folder for certain admins
-  if ($modxId == 1 || $modxId == 36) {
+  if ($modxId == 1 || $modxId == 6) {
     $personalFolder = "admin";
   } 
   else {
@@ -69,9 +71,9 @@ if ($autoCreateUserFolders == 1) {
     $personalFolder = '/';
   }
 }
-$config['upload_dir'] = MODX_ASSETS_URL . 'tinymce_wrapper/uploadMedia/' . $personalFolder;
+$config['upload_dir'] = MODX_ASSETS_URL . 'components/tinymce_wrapper/uploadMedia/' . $personalFolder;
 //how do I get to tinymce_wrapper/uploadMedia/ from tinymce_wrapper/responsivefilemanager/filemanager/  you may use PHP realpath to auto calculate this relationship
 $config['current_path'] = '../../uploadMedia/' . $personalFolder;
 $config['thumbs_base_path'] = '../../uploadMediaThumbs/'; //must be outside uploadMedia folder
-$folder_message = "Hello " . $myUsername . ", this is your folder (/uploadMedia/" . $personalFolder . "). You may upload images. Right-click items for more info...";
+$folder_message = "Hello " . $myUsername . ", this is your folder (".MODX_ASSETS_URL."components/tinymce_wrapper/uploadMedia/" . $personalFolder . "). You may upload images. Right-click items for more info...";
 ?>
