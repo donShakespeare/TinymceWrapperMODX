@@ -1,4 +1,5 @@
-[[pdoMenu?
+[[-remove the pdoMenu prefix dash if you have pdoMenu installed]]
+[[-pdoMenu?
     &parents=`0`
     &level=`100`
     &limit=`0`
