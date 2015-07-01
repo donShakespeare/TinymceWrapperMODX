@@ -5,6 +5,8 @@ ________________________________________________________
 ________________________________________________________
 **HOW TO USE**
 
+Download http://www.leofec.com/assets/tinymcewrapper-1.0.0-beta1.transport.zip
+
 See for documentation and comments
 
 http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
