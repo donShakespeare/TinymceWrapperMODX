@@ -34,20 +34,32 @@ else {
 -Make sure your upload media folder already exists; for this sample we will use one already in this plugin's folder (assets/components/tinymce_wrapper/uploadMedia/)
 -Now calculate how to get to your folder from tinymce_wrapper/responsivefilemanager/filemanager/
 -When using MODxs Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
-
--To create a new location, follow the strict example below that is commented out
 */
 
-$absolutePathtoUploadFolder = MODX_ASSETS_URL . 'components/tinymce_wrapper/uploadMedia/' . $personalFolder;
+
+/*****HOW TO CHANGE LOCATION to anywhichplace of your desire
+At this time I am not certain RFM wll work outside public_html.
+-------------------------------------------
+$absolutePathtoUploadFolder = '/members/my_media_folder/'; //can also use MODX_BASE_URL . 'members/my_media_folder/';
+$relativePathToUploadFolder = '../../../../../members/my_media_folder/'; 
+$relativePathToUploadFolderThumbs = '../../../../../members/my_media_folderThumbs/';
+$folderMessUrl =  MODX_BASE_URL."members/my_media_folder/"; //or /members/my_media_folder/
+-------------------------------------------
+DON'T GET LOST, It's like taking a walk
+**OUT OF:
+root: /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/IamHere.php
+**TO:
+root: /members/my_media_folder/
+**RESULT
+I need to get out of 5 folders to hit the root (which is the only common denominator between TO and FROM)
+So I need 5 ../ , and also need to enter two new folders
+../../../../../members/my_media_folder/IamNowHereHurray.php
+*/
+
+$absolutePathtoUploadFolder = MODX_ASSETS_URL . 'components/tinymce_wrapper/uploadMedia/';
 $relativePathToUploadFolder = '../../uploadMedia/';
 $relativePathToUploadFolderThumbs = '../../uploadMediaThumbs/'; //must be outside uploadMedia folder
 $folderMessUrl =  MODX_ASSETS_URL."components/tinymce_wrapper/uploadMedia/"; //appears in the dialogue box
-
-//*****HOW TO CHANGE LOCATION
-/*$absolutePathtoUploadFolder = MODX_ASSETS_URL . 'uploadNew/'; //to access /assets/uploadNew/
-$relativePathToUploadFolder = '../../../../uploadNew/'; //to access /assets/uploadNew/
-$relativePathToUploadFolderThumbs = '../../../../newThumbs/'; //to access /assets/newThumbs/
-$folderMessUrl =  MODX_ASSETS_URL."uploadNew/";*/
 
 // auto create custom folders for each user; Example of sweet stuff you can do
 $autoCreateUserFolders = false;
