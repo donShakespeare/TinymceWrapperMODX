@@ -34,18 +34,15 @@ else {
 -Make sure your upload media folder already exists; for this sample we will use one already in this plugin's folder (assets/components/tinymce_wrapper/uploadMedia/)
 -Now calculate how to get to your folder from tinymce_wrapper/responsivefilemanager/filemanager/
 -When using MODxs Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
-*/
-
-
-/*****HOW TO CHANGE LOCATION to anywhichplace of your desire
-At this time I am not certain RFM wll work outside public_html.
+-At this time I am not certain RFM wll work outside public_html.
+------TO USE OUTSIDE ASSETS FOLDER
 -------------------------------------------
 $absolutePathtoUploadFolder = '/members/my_media_folder/'; //can also use MODX_BASE_URL . 'members/my_media_folder/';
 $relativePathToUploadFolder = '../../../../../members/my_media_folder/'; 
 $relativePathToUploadFolderThumbs = '../../../../../members/my_media_folderThumbs/';
 $folderMessUrl =  MODX_BASE_URL."members/my_media_folder/"; //or /members/my_media_folder/
 -------------------------------------------
-DON'T GET LOST, It's like taking a walk
+------DON'T GET LOST, It's like taking a walk
 **OUT OF:
 root: /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/IamHere.php
 **TO:
