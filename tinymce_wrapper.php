@@ -155,13 +155,13 @@ if ($activateTinyMCE) {
                $("input[id^=tvbrowser]").each(function(){
                 fileOrImage = $(this).parents(".modx-tv").find(".x-form-file-trigger").attr("id");
               if($("#"+fileOrImage).length){
-              rfmUrl = "open_popup(\'/demo/assets/components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmUrl = "open_popup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
               rfmBtn = \'&nbsp;RFM&nbsp;File&nbsp;Browser&nbsp;\';
               rfmPrev = "";
                 }
                 else{
               rfmBtn = \'&nbsp;RFM&nbsp;Image&nbsp;Browser&nbsp;\';
-              rfmUrl = "open_popup(\'/demo/assets/components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmUrl = "open_popup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
               rfmPrev = "<img class=\'rfmPrev\' title=\'preview by RFM Image Browser\' src=\'\' style=\'width:100px;display:none;\' />";
                 }
                 $(this).parents(".x-form-item")
