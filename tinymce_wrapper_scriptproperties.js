@@ -149,5 +149,18 @@
     "area": "Textareas to transform",
     "area_trans": "Textareas to transform",
     "menu": null
+  },
+  {
+    "name": "fileImageTVs",
+    "desc": "You will be able to use Responsive Filemanager to input data in your Fie and Image TVs, hurray! The native method will still be there; at least now you have awesome choices",
+    "xtype": "combo-boolean",
+    "options": [],
+    "value": true,
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "You will be able to use Responsive Filemanager to input data in your Fie and Image TVs, hurray! The native method will still be there; at least now you have awesome choices",
+    "area": "Textareas to transform",
+    "area_trans": "Textareas to transform",
+    "menu": null
   }
 ]
