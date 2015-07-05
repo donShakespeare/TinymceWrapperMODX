@@ -4,10 +4,15 @@ plugin fires at
 OnRichTextEditorRegister - 0
 OnDocFormPrerender - 1
 
-****************Roadmap:
-Remove jQuery dependency, create more awesome themes, move wrapper plugin properties to System Settings or CMP or MIGX, to avoid senseless cache-clearing by the plugin
+-------------------Roadmap:
+-Create more awesome themes; find a better home for tis plugins properties (mayhaps MIGx, System Settings, bare CMP...
+-Now that all the MODx native textareas, Rich, File and Image TVs are supported, move to MIGX, textreas created on the fly with "Quick Update"
+---------------------------
 
-use freely, recode freely, report freely, enjoy freely
+Use freely, recode freely, report freely, enjoy freely
+Dedicated to those who have cried
+---------------------------
+
 http://www.leofec.com/modx-revolution/
 -donshakespeare in the MODx forum
 */
@@ -34,28 +39,33 @@ $desc = '';
 $content = $modx->getOption('Content', $sp);
 $con = '';
 $tvs = $modx->getOption('TVs', $sp);
+$fileImageTVs = $modx->getOption('fileImageTVs', $sp);
+$browserTVs = '';
 $disable = $modx->getOption('disableEnable', $sp);
 //if a suffix is entered, all the chunks in use must have the same suffix. (e.g. TinyMCE_Wrapper_Introtext-suff, TinyMCE_Wrapper_Description-suff,TinyMCE_Wrapper_Content-suff,TinyMCE_Wrapper_Tvs-suff)
 $suffix = $modx->getOption('chunk_Suffix', $sp);
 $enableDisableTiny = '';
 //is the enable/disable TinyMCE option selected? If so, let's create all the buttons at once; this will be split later on. This is good for TVs that have default content, and user wishes to revert. Disable TinyMCE, then revert.
 if ($disable == 1) {
-  $enableDisableTiny = '$("#modx-resource-introtext").parent().parent().prepend("<input data-tiny=\'modx-resource-introtext\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");@
-$("#modx-resource-description").parent().parent().prepend("<input data-tiny=\'modx-resource-description\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");@
-$("#ta").parent().parent().prepend("<input data-tiny=\'ta\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");';
+  $enableDisableTiny = '
+  $("#modx-resource-introtext").parent().parent().prepend("<input data-tiny=\'modx-resource-introtext\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");@
+  $("#modx-resource-description").parent().parent().prepend("<input data-tiny=\'modx-resource-description\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");@
+  $("#ta").parents("#modx-resource-content").find(".x-panel-header-text").prepend("<input data-tiny=\'ta\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");
+';
 }
 //let's split the enable/disable checkboxes so that they don't appear randomly or unexpectedly
 $enableDisableTiny = explode("@", $enableDisableTiny);
 //what happens when you click the enable/disable checkbox
-$enableDisableTinyClick = '$(".tinyTVcheck").mousedown(function() {
-        if (this.checked) {
-            tinymce.get($(this).attr("data-tiny")).hide();
-            $(this).trigger("change").attr("title","Enable TinyMCE");
-        }
-else{
- tinymce.get($(this).attr("data-tiny")).show();
-            $(this).trigger("change").attr("title","Disable TinyMCE");
-}
+$enableDisableTinyClick = '
+  $(".tinyTVcheck").mousedown(function() {
+    if (this.checked) {
+      tinymce.get($(this).attr("data-tiny")).hide();
+      $(this).trigger("change").attr("title","Enable TinyMCE");
+    }
+    else{
+      tinymce.get($(this).attr("data-tiny")).show();
+      $(this).trigger("change").attr("title","Disable TinyMCE");
+    }
     });';
 //if user selects the option to activate this wrapper, we save him/her the trip of heading to System Settings - is this being too officious or intrusive?
 if ($activateTinyMCE) {
@@ -100,26 +110,72 @@ if ($activateTinyMCE) {
         }
       }
       //all textareas depend on whether the Resource is Rich Text-enabled. We use so many IFs to protect against error
-      //any and all Rich TVs will now be initiated
+      //any and all Rich TVs + File and Image TVs will now be initiated
       if ($tvs == 1) {
         $tvsChunk = $modx->getChunk('TinyMCE_Wrapper_TVs' . $suffix);
         if ($tvsChunk) {
           //let's remove the checkboxes that enables/disables TinyMCE for the TVs
-          //change this IF/ELSE to keep the checkboxes always present for rich TVs
           if ($disable == 1) {
-            $richTv = 'if($(".modx-richtext").length){
-$.each($(".modx-richtext"), function() {
-$(this).parent().parent().prepend("<input data-tiny=\'"+this.id+"\' checked=\'checked\' title=\'Disable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");' . $tvsChunk . '});}';
+            $richTv = '
+            if($(".modx-richtext").length){
+              $.each($(".modx-richtext"), function() {
+              $(this).parent().parent().prepend("<input data-tiny=\'"+this.id+"\' checked=\'checked\' title=\'Disable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");' . $tvsChunk . '}
+              );
+            }';
           } 
           else {
-            $richTv = 'if($(".modx-richtext").length){
-$.each($(".modx-richtext"), function() {' . $tvsChunk . '});}';
+            $richTv = '
+            if($(".modx-richtext").length){
+              $.each($(".modx-richtext"), function() {
+                ' . $tvsChunk . '}
+                );
+            }';
           }
         }
       }
+      if ($fileImageTVs == 1) {
+        $browserTVs = '
+          function responsive_filemanager_callback(field_id){
+            thisFieldVal = $("#"+field_id).val();
+            thisFieldNum = field_id.split("er");
+            $("input#tv"+thisFieldNum[1]).val(thisFieldVal);
+            $("#tv-image-preview-"+thisFieldNum[1]+" img").attr("title","preview by native MODx Image Browser");
+            $("#"+field_id).parents(".modx-tv").find(".rfmPrev").hide().attr("src",thisFieldVal).insertBefore("#tv-image-preview-"+thisFieldNum[1]).fadeIn("slow");
+          }
+           function open_popup(url, idMe)
+            {
+              var w = 880;
+              var h = 570;
+              var l = Math.floor((screen.width-w)/2);
+              var t = Math.floor((screen.height-h)/2);
+              var win = window.open(url, "Responsive&nbsp&nbspFilemanager&nbsp;&nbsp;For&nbsp;&nbsp;MODx", "scrollbars=1,width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+            }
+            Ext.onReady(function(){
+             setTimeout(function(){
+               $("input[id^=tvbrowser]").each(function(){
+                fileOrImage = $(this).parents(".modx-tv").find(".x-form-file-trigger").attr("id");
+              if($("#"+fileOrImage).length){
+              rfmUrl = "open_popup(\'/demo/assets/components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmBtn = \'&nbsp;RFM&nbsp;File&nbsp;Browser&nbsp;\';
+              rfmPrev = "";
+                }
+                else{
+              rfmBtn = \'&nbsp;RFM&nbsp;Image&nbsp;Browser&nbsp;\';
+              rfmUrl = "open_popup(\'/demo/assets/components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmPrev = "<img class=\'rfmPrev\' title=\'preview by RFM Image Browser\' src=\'\' style=\'width:100px;display:none;\' />";
+                }
+                $(this).parents(".x-form-item")
+                .find(".modx-tv-caption")
+                .parent()
+                .prepend("<input class=\'rfmBtn\' type=\'button\' value="+rfmBtn+" onclick="+rfmUrl+">"+rfmPrev);
+              })
+              },1000)
+            })
+            ';
+      }
       //Now let's do the real init of all textareas
       //seems Ext.onReady is better than setTimeout, delay of 400
-      $modx->regClientStartupHTMLBlock("<script>Ext.onReady(function () {" . $intro . $desc . $con . $richTv . $enableDisableTinyClick . "});</script>");
+      $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $intro . $desc . $con . $richTv . $enableDisableTinyClick . "});</script>");
     }
   }
 }
