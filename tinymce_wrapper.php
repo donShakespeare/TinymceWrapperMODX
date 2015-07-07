@@ -5,8 +5,8 @@ OnRichTextEditorRegister - 0
 OnDocFormPrerender - 1
 
 -------------------Roadmap:
--Create more awesome themes; find a better home for tis plugins properties (mayhaps MIGx, System Settings, bare CMP...
--Now that all the MODx native textareas, Rich, File and Image TVs are supported, move to MIGX, textreas created on the fly with "Quick Update"
+-Create more awesome themes; find a better home for this plugin's properties (mayhaps MIGx, System Settings, bare CMP...)
+-Now that all the MODx native textareas, RichText, File and Image TVs are supported, move to MIGX, textreas created on the fly / "Quick Update"
 ---------------------------
 
 Use freely, recode freely, report freely, enjoy freely
@@ -52,7 +52,6 @@ if ($disable == 1) {
   $("#modx-resource-description").parent().parent().prepend("<input data-tiny=\'modx-resource-description\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");@
   $("#ta").parents("#modx-resource-content").find(".x-panel-header-text").prepend("<input data-tiny=\'ta\' checked=\'checked\' title=\'Enable TinyMCE\' type=\'checkbox\' class=\'tinyTVcheck\' />");
 ';
-}
 //let's split the enable/disable checkboxes so that they don't appear randomly or unexpectedly
 $enableDisableTiny = explode("@", $enableDisableTiny);
 //what happens when you click the enable/disable checkbox
@@ -67,6 +66,7 @@ $enableDisableTinyClick = '
       $(this).trigger("change").attr("title","Disable TinyMCE");
     }
     });';
+}
 //if user selects the option to activate this wrapper, we save him/her the trip of heading to System Settings - is this being too officious or intrusive?
 if ($activateTinyMCE) {
   if ($useEditor !== 1 || $whichEditor !== 'TinyMCE_Wrapper') {
@@ -134,6 +134,15 @@ if ($activateTinyMCE) {
         }
       }
       if ($fileImageTVs == 1) {
+        /*
+        - RFM callback when an item is clicked
+        - provide two ways to pop up RFM; the TInyMCE way is neater and more uniform
+        - append hidden input#tinyFileImageBrowser to the body so that we have at least one active editor, in case the user has disabled TinyMCE for all other textareas and TVs
+        - do some magic: create the respective image and file RFM buttons with appropriate properties when the page is really ready
+        - create rudimentary image prev something similar to the native MODx' file browser
+        - init blank and hidden #tinyFileImageBrowser
+        - give #tinyFileImageBrowser a definite but blank CSS theme to avoid overriding issues
+        */
         $browserTVs = '
           function responsive_filemanager_callback(field_id){
             thisFieldVal = $("#"+field_id).val();
@@ -141,33 +150,63 @@ if ($activateTinyMCE) {
             $("input#tv"+thisFieldNum[1]).val(thisFieldVal);
             $("#tv-image-preview-"+thisFieldNum[1]+" img").attr("title","preview by native MODx Image Browser");
             $("#"+field_id).parents(".modx-tv").find(".rfmPrev").hide().attr("src",thisFieldVal).insertBefore("#tv-image-preview-"+thisFieldNum[1]).fadeIn("slow");
+            tinyMCE.activeEditor.windowManager.close();
           }
-           function open_popup(url, idMe)
+           function rfmPopup(url, title)
             {
               var w = 880;
               var h = 570;
               var l = Math.floor((screen.width-w)/2);
               var t = Math.floor((screen.height-h)/2);
-              var win = window.open(url, "Responsive&nbsp&nbspFilemanager&nbsp;&nbsp;For&nbsp;&nbsp;MODx", "scrollbars=1,width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+              var win = window.open(url, title, "scrollbars=1,width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+            }
+           function rfmTinyPopup(url, title)
+            {
+              tinyMCE.activeEditor.windowManager.open({
+             url : url,
+             title: title,
+             width : 880,
+             height : 570
+            });
             }
             Ext.onReady(function(){
              setTimeout(function(){
+               $("body").append("<input id=\'tinyFileImageBrowser\' type=\'hidden\' value=\'\' />");
                $("input[id^=tvbrowser]").each(function(){
                 fileOrImage = $(this).parents(".modx-tv").find(".x-form-file-trigger").attr("id");
               if($("#"+fileOrImage).length){
-              rfmUrl = "open_popup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
-              rfmBtn = \'&nbsp;RFM&nbsp;File&nbsp;Browser&nbsp;\';
+              rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;field_id="+this.id+"\',\'File&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
+              rfmBtn = \'&nbsp;RFM&nbsp;\';
+              rfmBtnTitle = \'&nbsp;RFM&nbsp;File&nbsp;Browser&nbsp;\';
               rfmPrev = "";
                 }
                 else{
-              rfmBtn = \'&nbsp;RFM&nbsp;Image&nbsp;Browser&nbsp;\';
-              rfmUrl = "open_popup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
+              rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;field_id="+this.id+"\',\'Image-Only&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
+              rfmBtn = \'&nbsp;RFM&nbsp;\';
+              rfmBtnTitle = \'&nbsp;RFM&nbsp;Image-Only&nbsp;Browser&nbsp;\';
               rfmPrev = "<img class=\'rfmPrev\' title=\'preview by RFM Image Browser\' src=\'\' style=\'width:100px;display:none;\' />";
                 }
                 $(this).parents(".x-form-item")
                 .find(".modx-tv-caption")
                 .parent()
-                .prepend("<input class=\'rfmBtn\' type=\'button\' value="+rfmBtn+" onclick="+rfmUrl+">"+rfmPrev);
+                .prepend("<input class=\'rfmBtnClass x-form-field-wrap x-form-trigger\' type=\'button\' value="+rfmBtn+" title="+rfmBtnTitle+" onclick="+rfmTinyUrl+">"+rfmPrev);
+                tinymce.init({
+                selector: "#tinyFileImageBrowser",
+                inline:true,
+                menubar:false,
+                toolbar:false,
+                statusbar:false, 
+                relative_urls:false,
+                skin: "blank",
+                skin_url:"'.MODX_ASSETS_URL.'components/tinymce_wrapper/modxSkins/blank",
+                plugins:"",
+                height: 0,
+                width: 0,
+                valid_elements:"",
+                forced_root_block:false,
+                 })
               })
               },1000)
             })
