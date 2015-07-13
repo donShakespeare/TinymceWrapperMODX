@@ -1,27 +1,27 @@
-# TinyMCE_Wrapper
-A TinyMCE Wrapper for MODx Revolution 2.3.5
+# TinymceWrapper
+A TinyMCE Wrapper for MODx Revolution
 Use freely, recode freely, criticize freely, enjoy freely
 ________________________________________________________
 ________________________________________________________
 **HOW TO USE**
 
-Download http://www.leofec.com/assets/tinymcewrapper-1.0.0-beta1.transport.zip
+Download from MODx Extra / Install from Package Manager
+Activate the plugin before use.
+Deactivate to shut down this RTE.
 
 See for documentation and comments
 
 http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
 
-TinyMCE_Wrappper enables you to always use the latest TinyMCE (CDN or local) in your MODx Manager only.
+TinymceWrappper enables you to always use the latest TinyMCE (CDN or local) in your MODx Manager only.
 
-The textareas: content, introtext, description, Rich Text TVs (not image) will transformed.
+The textareas: content, introtext, description, Rich Text / Image / File TVs will transformed.
 Any one of these can be turned off permanently or temporarily.
 
-It has four TinyMCE_Wrapper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
+It has TinymceWrapper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
 
 It comes with the full Responsive File Manager, which it uses as its primary file browser. With a few lines of code, you can use MODx Media Source urls.
 This Responsive File Manager is also standalone, you can use it without TinyMCE or MODx, that is, you can directly link to it.
 
-Because we are using TinyMCE CDN and Responsive FIleManager, Newspublisher can use it too.
-Just look at one of the TinyMCE_Wrapper chunks for sample init code.
-
-At this time, the native MODx File browser is not supported. If you know how to use its API, please help out.
+Because we are using TinyMCE CDN and Responsive FileManager, NewsPublisher can use it too.
+Just look at one of the TinymceWrapper chunks for sample init code.
