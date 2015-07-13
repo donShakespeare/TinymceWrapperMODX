@@ -1,10 +1,10 @@
 tinymce.init({
 selector : "#ta",
-skin_url:"[[++assets_url]]components/tinymce_wrapper/modxSkins/fairOphelia",
+skin_url:"[[++assets_url]]components/tinymcewrapper/modxSkins/fairOphelia",
 //statusbar : false,
 plugins:"autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,link,charmap,searchreplace,textpattern,emoticons,insertdatetime",
 link_list:[
-[[$TinyMCE_Wrapper_Link_List]]
+[[$TinymceWrapperLinkList]]
 ],
 textpattern_patterns: [
          {start: '*', end: '*', format: 'italic'},
@@ -31,11 +31,11 @@ resize:true,
 autoresize_min_height:100,
 toolbar: "undo redo | newdocument | fullscreen preview | undo redo | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image responsivefilemanager | styleselect | charmap emoticons insertdatetime | searchreplace",
 image_advtab: true,
-external_filemanager_path: "[[++assets_url]]components/tinymce_wrapper/responsivefilemanager/filemanager/",
+external_filemanager_path: "[[++assets_url]]components/tinymcewrapper/responsivefilemanager/filemanager/",
 filemanager_title: "Responsive Filemanager 9.9.3 For MODx Revo 2.3+",
 external_plugins: {
-      filemanager: "[[++assets_url]]components/tinymce_wrapper/responsivefilemanager/filemanager/plugin.min.js",
-      responsivefilemanager: "[[++assets_url]]components/tinymce_wrapper/responsivefilemanager/tinymce/plugins/responsivefilemanager/plugin.min.js"
+      filemanager: "[[++assets_url]]components/tinymcewrapper/responsivefilemanager/filemanager/plugin.min.js",
+      responsivefilemanager: "[[++assets_url]]components/tinymcewrapper/responsivefilemanager/tinymce/plugins/responsivefilemanager/plugin.min.js"
     },
 contextmenu: "removeformat | link | image responsivefilemanager | code",
 
