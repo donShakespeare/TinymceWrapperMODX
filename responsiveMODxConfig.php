@@ -1,5 +1,5 @@
 <?php
-/*File location: assets/components/tinymce_wrapper/responsiveMODxConfig.php
+/*File location: assets/components/tinymcewrapper/responsiveMODxConfig.php
 use freely, recode freely, report freely, enjoy freely
 
 http://www.leofec.com/modx-revolution/
@@ -7,7 +7,7 @@ http://www.leofec.com/modx-revolution/
 
 /*
 Before you use, go to
-- /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/config/config.php
+- /assets/components/tinymcewrapper/responsivefilemanager/filemanager/config/config.php
 - DELETE session_start(); (line 2)
 - INSERT include '../../responsiveMODxConfig.php' BEFORE return array_merge() (line338);
 - OR just rename config.php.modxReady to config.php
@@ -33,8 +33,8 @@ else {
 }
 
 /*  
--Make sure your upload media folder already exists; for this sample we will use one already in this plugin's folder (assets/components/tinymce_wrapper/uploadMedia/)
--Now calculate how to get to your folder from tinymce_wrapper/responsivefilemanager/filemanager/
+-Make sure your upload media folder already exists; for this sample we will use one already in this plugin's folder (assets/components/tinymcewrapper/uploadMedia/)
+-Now calculate how to get to your folder from tinymcewrapper/responsivefilemanager/filemanager/
 -When using MODxs Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
 -At this time I am not certain RFM wll work outside public_html.
 ------TO USE OUTSIDE ASSETS FOLDER, CHANGE ACCORDINGLY
@@ -45,7 +45,7 @@ $relativePathToUploadFolderThumbs = '../../../../my_media_folderThumbs/'; //must
 -------------------------------------------
 ------DON'T GET LOST, It's like taking a walk
 **FROM:
-root: /assets/(4<--)components/(3<--)tinymce_wrapper/(2<--)responsivefilemanager/(1<--)filemanager/ <--IamInHere.php
+root: /assets/(4<--)components/(3<--)tinymcewrapper/(2<--)responsivefilemanager/(1<--)filemanager/ <--IamInHere.php
 **TO:
 root: /assets(-->1)/my_media_folder/ <--IwantToComeHere.php
 **RESULT
