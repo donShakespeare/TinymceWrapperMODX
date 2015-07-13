@@ -1,5 +1,4 @@
 <?php
-// $folder_message= "Hello " . $myUsername;
 $MaxSizeUpload = 100;
 $default_language = "en_EN";
 $icon_theme = "ico";
