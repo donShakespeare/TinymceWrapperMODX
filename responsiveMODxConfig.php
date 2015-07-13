@@ -6,12 +6,14 @@ http://www.leofec.com/modx-revolution/
 -donshakespeare in the MODx forum*/
 
 /*
-Before you use, go to this include file
+Before you use, go to
 - /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/config/config.php
 - DELETE session_start(); (line 2)
 - INSERT include '../../responsiveMODxConfig.php' BEFORE return array_merge() (line338);
-- OR just rename config.php-modxReady to config.php
+- OR just rename config.php.modxReady to config.php
 -in this file, define('MODX_CORE_PATH', '/path/to/your/site/core/');
+
+-Extensive configurations can be done in the original config.php, which you should back up before upgrading.
 */
 //initialize MODx stuff here
 if (!defined('MODX_CORE_PATH')) {
@@ -35,31 +37,32 @@ else {
 -Now calculate how to get to your folder from tinymce_wrapper/responsivefilemanager/filemanager/
 -When using MODxs Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
 -At this time I am not certain RFM wll work outside public_html.
-------TO USE OUTSIDE ASSETS FOLDER
+------TO USE OUTSIDE ASSETS FOLDER, CHANGE ACCORDINGLY
 -------------------------------------------
-$absolutePathtoUploadFolder = '/members/my_media_folder/'; //can also use MODX_BASE_URL . 'members/my_media_folder/';
-$relativePathToUploadFolder = '../../../../../members/my_media_folder/'; 
-$relativePathToUploadFolderThumbs = '../../../../../members/my_media_folderThumbs/';
-$folderMessUrl =  MODX_BASE_URL."members/my_media_folder/"; //or /members/my_media_folder/
+$absolutePathtoUploadFolder = '/assets/my_media_folder/'; //can also use MODX_BASE_URL . 'my_media_folder/';
+$relativePathToUploadFolder = '../../../../my_media_folder/'; 
+$relativePathToUploadFolderThumbs = '../../../../my_media_folderThumbs/'; //must be outside UploadFolder
 -------------------------------------------
 ------DON'T GET LOST, It's like taking a walk
-**OUT OF:
-root: /assets/components/tinymce_wrapper/responsivefilemanager/filemanager/IamHere.php
+**FROM:
+root: /assets/(4<--)components/(3<--)tinymce_wrapper/(2<--)responsivefilemanager/(1<--)filemanager/ <--IamInHere.php
 **TO:
-root: /members/my_media_folder/
+root: /assets(-->1)/my_media_folder/ <--IwantToComeHere.php
 **RESULT
-I need to get out of 5 folders to hit the root (which is the only common denominator between TO and FROM)
-So I need 5 ../ , and also need to enter two new folders
-../../../../../members/my_media_folder/IamNowHereHurray.php
+I need to get out of 4 folders to hit the assets (which is the only common denominator between TO and FROM)
+So I need 4 ../ , and also need to enter ONE new folder
+../../../../my_media_folder/IamNowHereHurray.php
 */
 
-$absolutePathtoUploadFolder = MODX_ASSETS_URL . 'components/tinymce_wrapper/uploadMedia/';
-$relativePathToUploadFolder = '../../uploadMedia/';
-$relativePathToUploadFolderThumbs = '../../uploadMediaThumbs/'; //must be outside uploadMedia folder
-$folderMessUrl =  MODX_ASSETS_URL."components/tinymce_wrapper/uploadMedia/"; //appears in the dialogue box
+$absolutePathtoUploadFolder = MODX_ASSETS_URL.'rfmUploadDir/';
+$relativePathToUploadFolder = '../../../../rfmUploadDir/';
+$relativePathToUploadFolderThumbs = '../../../../rfmThumbsDir/'; //must be outside UploadFoldes
+//appears in the RFM popup window
+function dialogueBoxMessage($thisUserName, $uploadDir){$messageDialog = "Hello <strong>" . $thisUserName . "</strong>, this is your permanent folder <strong>(" . $uploadDir . ")</strong>. You may upload images and other files. Right-click items for more info..."; return $messageDialog;}
 
-// auto create custom folders for each user; Example of sweet stuff you can do
-$autoCreateUserFolders = false;
+//Example of sweet stuff you can do
+//auto create custom folders for each user; 
+$autoCreateUserFolders = false; //switched off by default
 if ($autoCreateUserFolders == 1) {
   //if you ever find the MODx Media Source api, check permissions of each user/usergroup, then display Media Source path accordingly
   //grab id and username
@@ -74,9 +77,10 @@ if ($autoCreateUserFolders == 1) {
   //everyone else gets a unique folder; you can use a safer criterion other than username if you like; encode, shorten, anything you can think of
     $personalFolder = $modx->user->get('username');
   }
-  $personalFolder = strtolower($personalFolder);
-  $xters = array(" ", "_");
-  $personalFolder = str_replace($xters, "-", $personalFolder); //clean up the name
+  //$personalFolder = strtolower($personalFolder); //OPTIONAL CLEANEUP
+  //$xters = array(" ", "_"); //OPTIONAL CLEANEUP
+  //$personalFolder = str_replace($xters, "-", $personalFolder); //OPTIONAL CLEANEUP
+  //$personalFolder = substr(md5($personalFolder), 0, 8); //OPTIONAL HASHING to hide/convert username to numbers - CHANGE 24 to 8 to make shorter (beware of collision though)
 
   /*
   -Each user/usergroup can have a config.php copied to their folder for further fine tuning of security
@@ -110,8 +114,9 @@ if ($autoCreateUserFolders == 1) {
   }
 }
 
+//you'd better left this alone
 $config['upload_dir'] = $absolutePathtoUploadFolder . $personalFolder;
 $config['current_path'] = $relativePathToUploadFolder . $personalFolder;
 $config['thumbs_base_path'] = $relativePathToUploadFolderThumbs;
-$folder_message = "Hello " . $myUsername . ", this is your folder (" . $folderMessUrl . $personalFolder . "). You may upload images. Right-click items for more info...";
+$folder_message = dialogueBoxMessage($modx->user->get('username'), $config['upload_dir']);
 ?>
