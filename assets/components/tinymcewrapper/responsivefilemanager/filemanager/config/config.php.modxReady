@@ -1,5 +1,5 @@
 <?php
-// session_start();  //MODx already has session started //line 338 also altered
+// session_start();  //MODx already has session started //line 338 also altered //please remove filename suffix of this file to use
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Rome');
 
