@@ -1,5 +1,5 @@
 <?php
-/*TinyMCE_Wrapper
+/*TinymceWrapper
 plugin fires at
 OnRichTextEditorRegister - 0
 OnDocFormPrerender - 1
@@ -20,7 +20,7 @@ http://www.leofec.com/modx-revolution/
 $modxEventName = $modx->event->name;
 //let us tell System Settings that we have a new RTEditor
 if ($modxEventName == 'OnRichTextEditorRegister') {
-  $modx->event->output('TinyMCE_Wrapper');
+  $modx->event->output('TinymceWrapper');
   return;
 }
 //whether the user has RTE enabled in System Settings
@@ -40,11 +40,12 @@ $content = $modx->getOption('Content', $sp);
 $con = '';
 $tvs = $modx->getOption('TVs', $sp);
 $tvAddict = $modx->getOption('tvAddict', $sp);
+$tvSuperAddict = $modx->getOption('tvSuperAddict', $sp);
 $fileImageTVs = $modx->getOption('fileImageTVs', $sp);
 $browserTVs = '';
 $disable = $modx->getOption('disableEnableCheckbox', $sp);
-//if a suffix is entered, all the chunks in use must have the same suffix. (e.g. TinyMCE_Wrapper_Introtext-suff, TinyMCE_Wrapper_Description-suff,TinyMCE_Wrapper_Content-suff,TinyMCE_Wrapper_Tvs-suff)
-$suffix = $modx->getOption('chunk_Suffix', $sp);
+//if a suffix is entered, all the chunks in use must have the same suffix. (e.g. TinymceWrapperIntrotext-suff, TinymceWrapperDescription-suff,TinymceWrapperContent-suff,TinymceWrapperTvs-suff)
+$suffix = $modx->getOption('chunkSuffix', $sp);
 $enableDisableTiny = '';
 //is the enable/disable TinyMCE option selected? If so, let's create all the buttons at once; this will be split later on. This is good for TVs that have default content, and user wishes to revert. Disable TinyMCE, then revert.
 //there are two $("#ta") below; don't ask me why the Article's Extra has its own thing going own here
@@ -75,7 +76,7 @@ $enableDisableTinyClick = '
 
 //All TVs are here nicely placed independent of strict conditions, just in case we want to activate TVS even RTE is diabled for a particular reource
 if ($tvs == 1) {
-  $tvsChunk = $modx->getChunk('TinyMCE_Wrapper_TVs' . $suffix);
+  $tvsChunk = $modx->getChunk('TinymceWrapperTVs' . $suffix);
   if ($tvsChunk) {
     //let's remove the checkboxes that enables/disables TinyMCE for the TVs
     if ($disable == 1) {
@@ -143,15 +144,15 @@ if ($fileImageTVs == 1) {
          $("input[id^=tvbrowser]").each(function(){
           fileOrImage = $(this).parents(".modx-tv").find(".x-form-file-trigger").attr("id");
         if($("#"+fileOrImage).length){
-        rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
-        rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;field_id="+this.id+"\',\'File&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
+        rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;popup=1&amp;field_id="+this.id+"\')";
+        rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=2&amp;field_id="+this.id+"\',\'File&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
         rfmBtn = \'&nbsp;RFM&nbsp;(all&nbsp;files)&nbsp;\';
         rfmBtnTitle = \'&nbsp;RFM&nbsp;All-File&nbsp;Browser&nbsp;\';
         rfmPrev = "";
           }
           else{
-        rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
-        rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymce_wrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;field_id="+this.id+"\',\'Image-Only&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
+        rfmUrl = "rfmPopup(\''.MODX_ASSETS_URL.'components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;popup=1&amp;field_id="+this.id+"\')";
+        rfmTinyUrl = "rfmTinyPopup(\''.MODX_ASSETS_URL.'components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=1&amp;field_id="+this.id+"\',\'Image-Only&nbsp;Browser&nbsp;&nbsp;&nbsp;-&nbsp;Responsive&nbsp;FileManager\')";
         rfmBtn = \'&nbsp;RFM&nbsp;(images)&nbsp;\';
         rfmBtnTitle = \'&nbsp;RFM&nbsp;Image-Only&nbsp;Browser&nbsp;\';
         rfmPrev = "<img class=\'rfmPrev\' title=\'preview by RFM Image Browser\' src=\'\' style=\'width:100px;display:none;\' />";
@@ -168,7 +169,7 @@ if ($fileImageTVs == 1) {
           statusbar:false, 
           relative_urls:false,
           skin: "blank",
-          skin_url:"'.MODX_ASSETS_URL.'components/tinymce_wrapper/modxSkins/blank",
+          skin_url:"'.MODX_ASSETS_URL.'components/tinymcewrapper/modxSkins/blank",
           plugins:"",
           height: 0,
           width: 0,
@@ -180,23 +181,17 @@ if ($fileImageTVs == 1) {
       })
       ';
 }
-      
-
-
 
 
 //if user selects the option to activate this wrapper, we save him/her the trip of heading to System Settings - is this being too officious or intrusive?
-if ($activateTinyMCE) {
-  if ($useEditor !== 1 || $whichEditor !== 'TinyMCE_Wrapper') {
+if ($activateTinyMCE == 1) {
+  if ($useEditor !== 1 || $whichEditor !== 'TinymceWrapper') {
     $use = $modx->getObject('modSystemSetting', 'use_editor');
     $use->set('value', 1);
     $use->save();
     $which = $modx->getObject('modSystemSetting', 'which_editor');
-    $which->set('value', 'TinyMCE_Wrapper');
+    $which->set('value', 'TinymceWrapper');
     $which->save();
-    // $forceActivate = $modx->getOption('activateTinyMCE', $sp);
-    // $forceActivate->set('value', 0);
-    // $forceActivate->save();
   }
   //leave all elements alone - attack only resources
   if ($modxEventName == 'OnDocFormPrerender') {
@@ -213,19 +208,19 @@ if ($activateTinyMCE) {
       }
       //let's init introtext, description and content textareas only if user has specified so in this plugin's properties
       if ($introtext == 1) {
-        $introChunk = $modx->getChunk('TinyMCE_Wrapper_Introtext' . $suffix);
+        $introChunk = $modx->getChunk('TinymceWrapperIntrotext' . $suffix);
         if ($introChunk) {
           $intro = $enableDisableTiny[0] . $introChunk;
         }
       }
       if ($description == 1) {
-        $descChunk = $modx->getChunk('TinyMCE_Wrapper_Description' . $suffix);
+        $descChunk = $modx->getChunk('TinymceWrapperDescription' . $suffix);
         if ($descChunk) {
           $desc = $enableDisableTiny[1] . $descChunk;
         }
       }
       if ($content == 1) {
-        $conChunk = $modx->getChunk('TinyMCE_Wrapper_Content' . $suffix);
+        $conChunk = $modx->getChunk('TinymceWrapperContent' . $suffix);
         if ($conChunk) {
           $con = $enableDisableTiny[2] . $conChunk;
         }
@@ -248,5 +243,18 @@ if ($activateTinyMCE) {
           $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
         }
     }
+  }
+}
+else{
+  if ($modxEventName == 'OnDocFormPrerender') {
+        if ($tvSuperAddict == 1) {
+          if ($jQuerySrc) {
+            $modx->regClientStartupHTMLBlock("<script src='" . $jQuerySrc . "'></script>");
+          }
+          if ($tinySrc) {
+            $modx->regClientStartupHTMLBlock("<script src='" . $tinySrc . "'></script>");
+          }
+          $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
+        }
   }
 }
