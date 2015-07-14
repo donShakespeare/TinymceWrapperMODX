@@ -52,6 +52,19 @@
     "menu": null
   },
   {
+    "name": "responsiveFileManagerPath",
+    "desc": "This allows you to use your very own installation of RFM. Just enter the correct absolute path up to RFM's root folder; the 1st folder that is unzipped\n/assets/responsivefilemanager/\n   OR  \n\"+MODx.config.assets_url+\"responsivefilemanager/\n\n+trailing dash",
+    "xtype": "textfield",
+    "options": [],
+    "value": "\"+MODx.config.assets_url+\"components/tinymcewrapper/responsivefilemanager/",
+    "lexicon": "",
+    "overridden": false,
+    "desc_trans": "This allows you to use your very own installation of RFM. Just enter the correct absolute path up to RFM's root folder; the 1st folder that is unzipped\n/assets/responsivefilemanager/\n   OR  \n\"+MODx.config.assets_url+\"responsivefilemanager/\n\n+trailing dash",
+    "area": "Editor Settings",
+    "area_trans": "Editor Settings",
+    "menu": null
+  },
+  {
     "name": "tinySrc",
     "desc": "You may use either TinyMCE\"s CDN or TinyMCE located on your own folder\n//tinymce.cachefly.net/4.2/tinymce.min.js\n(other CDN versions 4, 4.0, 4.1, 4.2)\n                      OR\n[[++assets_url]]yourTinymce/js/tinymce/tinymce.min.js",
     "xtype": "textfield",

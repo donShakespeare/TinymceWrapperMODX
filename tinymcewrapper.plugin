@@ -32,6 +32,8 @@ $sp = $scriptProperties;
 //is it better to store these settings in the System Settings, seeing that this blasted plugin refreshes the whole site cache?
 $activate = $modx->getOption('activateTinyMCE', $sp);
 $jQuerySrc = $modx->getOption('jQuery', $sp);
+$tinySrc = $modx->getOption('tinySrc', $sp);
+$responsiveFileManagerPath = $modx->getOption('responsiveFileManagerPath', $sp);
 $introtext = $modx->getOption('Introtext', $sp);
 $intro = '';
 $description = $modx->getOption('Description', $sp);
@@ -46,6 +48,16 @@ $browserTVs = '';
 $disable = $modx->getOption('disableEnableCheckbox', $sp);
 //if a suffix is entered, all the chunks in use must have the same suffix. (e.g. TinymceWrapperIntrotext-suff, TinymceWrapperDescription-suff,TinymceWrapperContent-suff,TinymceWrapperTvs-suff)
 $suffix = $modx->getOption('chunkSuffix', $sp);
+
+//let's expose the RFM rootfolder url for TinyMCE's external filemanager plugins for the chunks to access
+if ($responsiveFileManagerPath) {
+  $assetsRfmUrl ='
+  extFilemanagerPath = "'.$responsiveFileManagerPath.'filemanager/";
+  extPluginsFilemanager = "'.$responsiveFileManagerPath.'filemanager/plugin.min.js";
+  extPluginsResponsivefilemanager = "'.$responsiveFileManagerPath.'tinymce/plugins/responsivefilemanager/plugin.min.js";
+  ';
+}
+
 $enableDisableTiny = '';
 //is the enable/disable TinyMCE option selected? If so, let's create all the buttons at once; this will be split later on. This is good for TVs that have default content, and user wishes to revert. Disable TinyMCE, then revert.
 //there are two $("#ta") below; don't ask me why the Article's Extra has its own thing going own here
@@ -229,7 +241,7 @@ if ($activateTinyMCE == 1) {
       //any and all Rich TVs + File and Image TVs will now be initiated
       //Now let's do the real init of all textareas
       //seems Ext.onReady is better than setTimeout, delay of 400
-      $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $intro . $desc . $con . $richTv . $enableDisableTinyClick . "});</script>");
+      $modx->regClientStartupHTMLBlock("<script>" . $assetsRfmUrl . $browserTVs . "Ext.onReady(function () {" . $intro . $desc . $con . $richTv . $enableDisableTinyClick . "});</script>");
     }
     //let's see if the person wants TVs activated even when RTE is disabled for the Resource.
     elseif (isset($scriptProperties['resource']) && !$resource->get('richtext')) {
@@ -240,7 +252,7 @@ if ($activateTinyMCE == 1) {
           if ($tinySrc) {
             $modx->regClientStartupHTMLBlock("<script src='" . $tinySrc . "'></script>");
           }
-          $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
+          $modx->regClientStartupHTMLBlock("<script>" . $assetsRfmUrl . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
         }
     }
   }
@@ -254,7 +266,7 @@ else{
           if ($tinySrc) {
             $modx->regClientStartupHTMLBlock("<script src='" . $tinySrc . "'></script>");
           }
-          $modx->regClientStartupHTMLBlock("<script>" . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
+          $modx->regClientStartupHTMLBlock("<script>" . $assetsRfmUrl . $browserTVs . "Ext.onReady(function () {" . $richTv . $enableDisableTinyClick . "});</script>");
         }
   }
 }
