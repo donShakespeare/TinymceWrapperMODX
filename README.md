@@ -20,7 +20,8 @@ Any one of these can be turned off permanently or temporarily.
 
 It has TinymceWrapper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
 
-It comes with neither TinyMCE nor with Responsive FileManager to show you how easy these plug right into MODx
+It comes with neither TinyMCE nor with Responsive FileManager to show you how easy these plug right into MODx.
+
 With a few lines of code, you can use MODx Media Source urls.
 This Responsive FileManager is also standalone, you can use it without TinyMCE or MODx, that is, you can directly link to it.
 
