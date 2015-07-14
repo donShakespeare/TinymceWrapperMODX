@@ -4,16 +4,11 @@ https://github.com/trippo/ResponsiveFilemanager/releases/download/v9.9.3/respons
 TO: 
 anywhere, e.g /assets/responsivefilemanager
 
-COPY THESE:
-config.php.modxReady //replace config.php
-responsiveMODxConfig.php
-responsivePersonalConfig.html
-
-TO:
+COPY EVERYTHING IN THIS RFM FOLDER TO:
 /assets/responsivefilemanager/filemanager/config/
 
 OPEN:
-responsiveMODxConfig.php
+config/rfmanagermodx.php
 
 ENTER:
 The path/to/your/modx/core/

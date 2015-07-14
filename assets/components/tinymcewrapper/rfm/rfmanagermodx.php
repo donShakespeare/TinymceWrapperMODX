@@ -5,12 +5,14 @@ http://www.leofec.com/modx-revolution/
 */
 
 /*
-Before you use, go to
+Before you use,
+- copy components/tinymcewrapper/rfm/allfiles  TO your responsivefilemanager/filemanager/config/ folder
+- go to
 - /responsivefilemanager/filemanager/config/config.php
 - DELETE session_start(); (line 2)
 - INSERT include 'config/rfmanagermodx.php' BEFORE return array_merge() (line338);
 - OR just rename config.php.modx to config.php
--in this file, define('MODX_CORE_PATH', '/path/to/your/site/core/');
+- in this file, define('MODX_CORE_PATH', '/path/to/your/site/core/');
 
 -Extensive configurations can be done in the config.php, which you should back up whenever you do an upgrade.
 */
@@ -53,9 +55,9 @@ So I need 2 ../ , and also need to enter ONE new folder
 ../../my_media_folder/IamNowHereHurray.php
 */
 
-$absolutePathtoUploadFolder = MODX_ASSETS_URL.'rfmupload/';
-$relativePathToUploadFolder = '../../rfmupload/';
-$relativePathToUploadFolderThumbs = '../../rfmthumb/'; //must be outside UploadFoldes
+$absolutePathtoUploadFolder = MODX_ASSETS_URL.'components/tinymcewrapper/rfmupload/';
+$relativePathToUploadFolder = '../../components/tinymcewrapper/rfmupload/';
+$relativePathToUploadFolderThumbs = '../../components/tinymcewrapper/rfmthumb/'; //must be outside UploadFoldes
 //appears in the RFM popup window
 function dialogueBoxMessage($thisUserName, $uploadDir){$messageDialog = "Hello <strong>" . $thisUserName . "</strong>, this is your permanent folder <strong>(" . $uploadDir . ")</strong>. You may upload images and other files. Right-click items for more info..."; return $messageDialog;}
 
