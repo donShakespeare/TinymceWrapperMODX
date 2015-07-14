@@ -15,7 +15,7 @@ http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html
 
 TinymceWrappper enables you to always use the latest TinyMCE (CDN or local) in your MODx Manager only.
 
-The textareas: content, introtext, description, Rich Text / Image / File TVs will transformed.
+The textareas: content, introtext, description, Rich Text / Image / File TVs will be transformed.
 Any one of these can be turned off permanently or temporarily.
 
 It has TinymceWrapper chunks which you can start using...you can use any TinyMCE configuration you like, NOTHING is hidden!
