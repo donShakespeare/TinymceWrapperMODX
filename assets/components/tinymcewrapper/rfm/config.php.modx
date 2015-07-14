@@ -335,7 +335,7 @@ $config = array(
 	'remember_text_filter'                    => false,
 
 );
-include 'config/responsiveMODxConfig.php'; //let's inject some MODx, upload and thumbs directory
+include 'config/rfmanagermodx.php'; //let's inject some MODx, upload and thumbs directory
 return array_merge(
 	$config,
 	array(

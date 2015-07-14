@@ -1,16 +1,15 @@
 <?php
-/*File location: assets/components/tinymcewrapper/responsiveMODxConfig.php
+/*
 use freely, recode freely, report freely, enjoy freely
-
 http://www.leofec.com/modx-revolution/
--donshakespeare in the MODx forum*/
+*/
 
 /*
 Before you use, go to
-- /assets/components/tinymcewrapper/responsivefilemanager/filemanager/config/config.php
+- /responsivefilemanager/filemanager/config/config.php
 - DELETE session_start(); (line 2)
-- INSERT include '../../responsiveMODxConfig.php' BEFORE return array_merge() (line338);
-- OR just rename config.php.modxReady to config.php
+- INSERT include 'config/rfmanagermodx.php' BEFORE return array_merge() (line338);
+- OR just rename config.php.modx to config.php
 -in this file, define('MODX_CORE_PATH', '/path/to/your/site/core/');
 
 -Extensive configurations can be done in the config.php, which you should back up whenever you do an upgrade.
@@ -34,29 +33,29 @@ else {
 
 /*  
 -Make sure your upload media folder already exists
--Now calculate how to get to your folder from tinymcewrapper/responsivefilemanager/filemanager/
--When using MODxs Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
+-Now calculate how to get to your folder from /assets/responsivefilemanager/filemanager/
+-When using MODx' Media Sources and all, and not sure how your client does stuff, use PHP's realpath to auto calculate this relationship 
 -At this time I am not certain RFM wll work outside public_html.
 ------TO USE OUTSIDE ASSETS FOLDER, CHANGE ACCORDINGLY
 -------------------------------------------
 $absolutePathtoUploadFolder = '/assets/my_media_folder/'; //can also use MODX_BASE_URL . 'my_media_folder/';
-$relativePathToUploadFolder = '../../../../my_media_folder/'; 
-$relativePathToUploadFolderThumbs = '../../../../my_media_folderThumbs/'; //must be outside UploadFolder
+$relativePathToUploadFolder = '../../my_media_folder/'; 
+$relativePathToUploadFolderThumbs = '../../my_media_folderThumbs/'; //must be outside UploadFolder
 -------------------------------------------
 ------DON'T GET LOST, It's like taking a walk
 **FROM:
-root: /assets/(4<--)components/(3<--)tinymcewrapper/(2<--)responsivefilemanager/(1<--)filemanager/ <--IamInHere.php
+root: /assets/(2<--)responsivefilemanager/(1<--)filemanager/ <--IamInHere.php
 **TO:
 root: /assets(-->1)/my_media_folder/ <--IwantToComeHere.php
 **RESULT
-I need to get out of 4 folders to hit the assets (which is the only common denominator between TO and FROM)
-So I need 4 ../ , and also need to enter ONE new folder
-../../../../my_media_folder/IamNowHereHurray.php
+I need to get out of 2 folders to hit the assets (which is the only common denominator between TO and FROM)
+So I need 2 ../ , and also need to enter ONE new folder
+../../my_media_folder/IamNowHereHurray.php
 */
 
-$absolutePathtoUploadFolder = MODX_ASSETS_URL.'rfmUploadDir/';
-$relativePathToUploadFolder = '../../../../rfmUploadDir/';
-$relativePathToUploadFolderThumbs = '../../../../rfmThumbsDir/'; //must be outside UploadFoldes
+$absolutePathtoUploadFolder = MODX_ASSETS_URL.'rfmupload/';
+$relativePathToUploadFolder = '../../rfmupload/';
+$relativePathToUploadFolderThumbs = '../../rfmthumb/'; //must be outside UploadFoldes
 //appears in the RFM popup window
 function dialogueBoxMessage($thisUserName, $uploadDir){$messageDialog = "Hello <strong>" . $thisUserName . "</strong>, this is your permanent folder <strong>(" . $uploadDir . ")</strong>. You may upload images and other files. Right-click items for more info..."; return $messageDialog;}
 
@@ -86,7 +85,7 @@ if ($autoCreateUserFolders == 1) {
   -Each user/usergroup can have a config.php copied to their folder for further fine tuning of security
   -Here, we will copy a template .html over each time we find one lacking .php
   */
-  $userSpecificConfigTemplate = 'config/responsivePersonalConfig.html';
+  $userSpecificConfigTemplate = 'config/rfpersonalconfig.html';
   $userSpecificConfig = $relativePathToUploadFolder . $personalFolder . '/config.php';
   if (!file_exists($relativePathToUploadFolder . $personalFolder)) {
     mkdir($relativePathToUploadFolder . $personalFolder, 0755, true);
