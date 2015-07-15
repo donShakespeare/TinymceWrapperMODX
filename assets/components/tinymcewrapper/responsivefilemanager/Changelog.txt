@@ -1,6 +1,98 @@
 Responsive Filemanager Changelog 
 
 *********************************************************
+*  RFM 9.9.3
+*********************************************************
+- Fixed the problem with undefined windowParent
+- Fixed a problem with selection on CKeditor
+- Added bootstrap modal default support
+
+*********************************************************
+*  RFM 9.9.2
+*********************************************************
+- added file selection directly from dropzone upload area (you can now select file directly after upload)
+- folder selection in context menu (you can now select also a folder)
+- responsive filemanager modal open on tinyMCE (the dimension of modal depend on window dimension)
+- utf8 translitteration fix
+
+*********************************************************
+*  RFM 9.9.1
+*********************************************************
+- bugfix
+
+*********************************************************
+*  RFM 9.9.0
+*********************************************************
+- add compatibility with CKEditor (thanks to dennis.buijs)
+- fix ordering and filtering bugs (in js and php)
+- Refactoring of configuration and language files (thanks to rkgrep)
+- updated libraries via bower dependency management (thanks to rkgrep)
+- added Assets compilation via gulp for developing (thanks to rkgrep)
+- added Hebrew lang (sagie212)
+
+
+*********************************************************
+*  RFM 9.8.1
+*********************************************************
+- add compatibility with free full resolution with aviary image editor
+- convert all include(); with include ‘’;
+- fix a problem with lowercase automatically change 
+
+*********************************************************
+*  RFM 9.8
+*********************************************************
+- added pdf, openoffice files preview with customized viewer.js
+- added other office file preview with google preview
+- fixed ordering bug
+- improved layout style
+- added copy to clipboard button on show url dialog
+- fixed a bug when download a file
+- fixed a bug in relative path images creation
+- adding custom convert_spaces [by fungio]
+
+*********************************************************
+*  RFM 9.7.3
+*********************************************************
+- Fix a problem with lazy load and filters
+- add option to remember text filter in session
+
+*********************************************************
+*  RFM 9.7.2
+*********************************************************
+
+***** Major *****
+- Added mime type lib for downloads
+- Added lazy loading feature
+- Added options for auto and max image resizing
+- Lang. updates
+- Added touch devices support for drag&drop
+- Added support for returning relative URL-s
+- Bugfixes
+
+
+***** Detailed *****
+- Added mime type lib for downloads
+	All downloads no should load successfuly
+
+- Added lazy loading feature
+	Images will only load when in the viewport so when you are in a crowded folder it will load faster
+
+- Added options for auto and max image resizing
+	In the past all images that was resized either with max_image or auto resize was cropped.
+	Now the user can specify to crop,exact,landscape or portrait options.
+	The max image size can be overridden by auto resize option
+
+- Added support for returning relative URL-s
+	Relative URL-s can be returned when selecting files from the filemanager: a 'relative_url' GET parameter should be
+	added to the request with a value of "1" when opening RFM. Otherwise returned URL-s will be absolute.
+
+- Bugfixes
+	Fixed css bugs
+	Fixed drag&drop bugs
+	Removed 'default' access keys for security
+
+
+*********************************************************
 *  RFM 9.6.0
 *********************************************************
 

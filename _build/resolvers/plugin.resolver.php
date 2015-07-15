@@ -3,7 +3,7 @@
 * Resolver to connect plugins to system events for TinymceWrapper extra
 *
 * Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-14-2015
+* Created on 07-15-2015
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software

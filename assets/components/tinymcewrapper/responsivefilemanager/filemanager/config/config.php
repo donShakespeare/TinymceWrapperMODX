@@ -335,7 +335,7 @@ $config = array(
 	'remember_text_filter'                    => false,
 
 );
-include 'config/config.inc.php'; //let's inject some MODx, and override upload and thumbs directory
+include 'config.modx.php'; //let's inject some MODx, and override upload and thumbs directory
 return array_merge(
 	$config,
 	array(

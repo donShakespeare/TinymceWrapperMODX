@@ -181,7 +181,7 @@ if ($fileImageTVs == 1) {
           statusbar:false, 
           relative_urls:false,
           skin: "blank",
-          skin_url:"'.MODX_ASSETS_URL.'components/tinymcewrapper/modxSkins/blank",
+          skin_url:"'.MODX_ASSETS_URL.'components/tinymcewrapper/tinymceskins/blank",
           plugins:"",
           height: 0,
           width: 0,
