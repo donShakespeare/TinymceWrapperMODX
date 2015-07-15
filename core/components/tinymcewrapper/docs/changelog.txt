@@ -1,3 +1,15 @@
-Changelog for TinymceWrapper
+Changelog for TinymceWrapper BETA
 
-Initial realease
+TinymceWrapper 2.0.1
+---------------------------------
+Moving to MyComponents
+Clean ups
+
+TinymceWrapper 2.0.0
+---------------------------------
+Added File/Image TVs
+Clean ups
+
+TinymceWrapper 1.0.0
+---------------------------------
+Initial Version
