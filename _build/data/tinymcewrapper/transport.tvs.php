@@ -3,7 +3,7 @@
  * templateVars transport file for TinymceWrapper extra
  *
  * Copyright 2015 by donShakespeare donShakespeare@gmail.com
- * Created on 07-15-2015
+ * Created on 07-24-2015
  *
  * @package tinymcewrapper
  * @subpackage build
@@ -36,9 +36,7 @@ $templateVars[1]->fromArray(array (
   'elements' => '',
   'rank' => 0,
   'display' => 'default',
-  'default_text' => 'Collaboratively syndicate optimal materials before best-of-breed e-tailers. Synergistically foster out-of-the-box web services without accurate communities. Collaboratively extend principle-centered niche markets for vertical niches. Quickly recaptiualize holistic e-services without leading-edge action items. Appropriately procrastinate worldwide niche markets through mission-critical scenarios.
-
-Collaboratively extend functional total linkage through orthogonal opportunities. Competently supply equity invested processes before clicks-and-mortar results. Continually generate strategic synergy after dynamic leadership skills. Authoritatively.',
+  'default_text' => '<p>I am a wealthy textarea: You can reset me to default with TinyMCE on or off</p>',
   'properties' => 
   array (
   ),
@@ -61,7 +59,7 @@ $templateVars[2]->fromArray(array (
   'caption' => 'fileRichTv',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 1,
   'display' => 'default',
   'default_text' => '',
   'properties' => 
@@ -83,7 +81,7 @@ $templateVars[3]->fromArray(array (
   'caption' => 'imageRichTv',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 3,
   'display' => 'default',
   'default_text' => '',
   'properties' => 
@@ -105,7 +103,7 @@ $templateVars[4]->fromArray(array (
   'caption' => 'imageRichTv2',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 4,
   'display' => 'default',
   'default_text' => '',
   'properties' => 
@@ -127,7 +125,7 @@ $templateVars[5]->fromArray(array (
   'caption' => 'fileRichTv2',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 2,
   'display' => 'default',
   'default_text' => '',
   'properties' => 
@@ -149,9 +147,9 @@ $templateVars[6]->fromArray(array (
   'caption' => 'TinymceWrapper non-Rich Tv #3',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 6,
   'display' => 'default',
-  'default_text' => 'Enthusiastically plagiarize premier web-readiness vis-a-vis an expanded array of quality vectors.',
+  'default_text' => '<p>I am a poor textarea</p>',
   'properties' => 
   array (
   ),
@@ -172,9 +170,9 @@ $templateVars[7]->fromArray(array (
   'caption' => 'TinymceWrapper Rich Tv #2',
   'description' => '',
   'elements' => '',
-  'rank' => 0,
+  'rank' => 5,
   'display' => 'default',
-  'default_text' => 'Assertively repurpose exceptional quality vectors via 24/7 ideas. Proactively actualize fully tested models',
+  'default_text' => '<p>I am a wealthy textarea</p>',
   'properties' => 
   array (
   ),

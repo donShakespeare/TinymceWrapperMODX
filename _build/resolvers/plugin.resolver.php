@@ -3,7 +3,7 @@
 * Resolver to connect plugins to system events for TinymceWrapper extra
 *
 * Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-15-2015
+* Created on 07-24-2015
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -72,10 +72,16 @@ if ($object->xpdo) {
                 0 =>  array (
                   'pluginid' => 'TinymceWrapper',
                   'event' => 'OnDocFormPrerender',
-                  'priority' => 1,
+                  'priority' => '0',
                   'propertyset' => '0',
                 ),
                 1 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnManagerPageInit',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                2 =>  array (
                   'pluginid' => 'TinymceWrapper',
                   'event' => 'OnRichTextEditorRegister',
                   'priority' => '0',

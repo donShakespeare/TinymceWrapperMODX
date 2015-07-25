@@ -1,5 +1,1 @@
-*.zip
-_build/
-_packages/
-assets/components/tinymcewrapper/
-!assets/components/tinymcewrapper/responsivefilemanager/rfmConfigForModx-backup/
+*

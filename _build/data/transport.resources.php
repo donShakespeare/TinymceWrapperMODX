@@ -3,7 +3,7 @@
  * resources transport file for TinymceWrapper extra
  *
  * Copyright 2015 by donShakespeare donShakespeare@gmail.com
- * Created on 07-15-2015
+ * Created on 07-24-2015
  *
  * @package tinymcewrapper
  * @subpackage build
@@ -33,18 +33,18 @@ $resources[1]->fromArray(array (
   'pagetitle' => 'TinymceWrapper',
   'longtitle' => '',
   'description' => '<ol>
-<li><strong>Esse <em>jowl veniam<br /></em></strong></li>
-<li><strong>Short ribs deserunt</strong></li>
-<li><strong>Velit bal</strong></li>
+<li><em>Supports</em><strong><em> MIGX</em></strong></li>
+<li><em>Supports</em><strong><em> Quick Create/Update </em></strong><em>Resources</em></li>
+<li>Automatic install and init of <strong>Responsive FileManager</strong></li>
 </ol>',
   'alias' => 'tinymcewrapper',
   'link_attributes' => '',
   'published' => false,
   'isfolder' => false,
-  'introtext' => '<strong>Ut chicken ribeye</strong> do duis corned beef proident. Pariatur meatball brisket reprehenderit andouille beef. Do dolore ut brisket aute nulla voluptate exercitation et ullamco.',
+  'introtext' => 'Added Responsive FileManager<strong> link</strong> to Manager topnav<strong>&gt;</strong>Media',
   'richtext' => true,
   'template' => 'TinymceWrapper',
-  'menuindex' => 20,
+  'menuindex' => 0,
   'searchable' => true,
   'cacheable' => true,
   'createdby' => 1,

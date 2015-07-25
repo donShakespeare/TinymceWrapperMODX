@@ -7,7 +7,6 @@ plugins:"autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,li
 link_list:[
 [[-$TinymceWrapperLinkList]]
 ],
-paste_data_images: true,
 textpattern_patterns: [
          {start: '*', end: '*', format: 'italic'},
          {start: '**', end: '**', format: 'bold'},
@@ -35,18 +34,18 @@ autoresize_max_height:400,
 toolbar: "newdocument | fullscreen preview | undo redo | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image responsivefilemanager | styleselect | charmap emoticons insertdatetime | searchreplace",
 image_advtab: true,
 external_filemanager_path: extFilemanagerPath,
-filemanager_title: "Responsive Filemanager 9.9.3 For MODx Revo 2.3+",
+filemanager_title: "Responsive FileManager 9.9.4 For MODx Revo",
 external_plugins: {
       filemanager: extPluginsFilemanager,
       responsivefilemanager: extPluginsResponsivefilemanager
     },
 contextmenu: "removeformat | link | image responsivefilemanager | code",
 setup: function(editor) {
-        editor.on('keydown', function(evt) {
-            if (evt.keyCode == 83 && evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
-           evt.preventDefault();
-           $('#modx-abtn-save button').trigger("click");
-       }
-        });
+  editor.on('keydown', function(evt) {
+    if (evt.keyCode == 83 && evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
+     evt.preventDefault();
+     $('#modx-abtn-save button').trigger("click");
+    }
+  });
     }
 });

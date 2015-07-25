@@ -3,7 +3,7 @@
  * plugins transport file for TinymceWrapper extra
  *
  * Copyright 2015 by donShakespeare donShakespeare@gmail.com
- * Created on 07-15-2015
+ * Created on 07-24-2015
  *
  * @package tinymcewrapper
  * @subpackage build
@@ -30,9 +30,9 @@ $plugins[1]->fromArray(array (
   'id' => 1,
   'property_preprocess' => false,
   'name' => 'TinymceWrapper',
-  'description' => 'All textareas are covered except MIGXs (for now).
-Please make sure you duplicate the Chunks, retain their original names with an added SUFFIX.
-Please do not include script tags in any of the chunks.',
+  'description' => 'Survive upgrades! Duplicate the Chunks, retain their original names with an added SUFFIX. Create dedicated PropertySet properties. Default properties will be overridden.
+Include no script tags in any of the chunks.
+Please be awesome!',
   'disabled' => false,
 ), '', true, true);
 $plugins[1]->setContent(file_get_contents($sources['source_core'] . '/elements/plugins/tinymcewrapper.plugin.php'));

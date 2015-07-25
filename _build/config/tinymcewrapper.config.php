@@ -16,7 +16,7 @@ $components = array(
     'packageName' => 'TinymceWrapper',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
     'packageDescription' => 'Wrapper for latest awesome TinyMCE CDN + Responsive FileManager',
-    'version' => '2.0.1',
+    'version' => '2.1.0',
     'release' => 'beta1',
     'author' => 'donShakespeare',
     'email' => 'donShakespeare@gmail.com',
@@ -357,7 +357,7 @@ $components = array(
         'templates',
         'chunks',
         'resources',
-        'propertySets',
+        'propertySets'
         // 'systemSettings',
         // 'contextSettings',
         // 'systemEvents',

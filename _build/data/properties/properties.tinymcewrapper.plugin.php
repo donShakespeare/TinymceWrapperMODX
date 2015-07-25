@@ -3,7 +3,7 @@
  * Properties file for TinymceWrapper plugin
  *
  * Copyright 2015 by donShakespeare donShakespeare@gmail.com
- * Created on 07-15-2015
+ * Created on 07-24-2015
  *
  * @package tinymcewrapper
  * @subpackage build
@@ -28,7 +28,7 @@ $properties = array (
   'chunkSuffix' => 
   array (
     'name' => 'chunkSuffix',
-    'desc' => 'This plugin will create four chunks for you; it will not override them once created, but you were better off duplicating them.
+    'desc' => 'This plugin will create six chunks for you; it will not override them once created, but you were better off duplicating them.
 PLEASE simply add a suffix (_test or -su) to your new name.
 TinymceWrapperIntrotext becomes TinymceWrapperIntrotext-test or TinymceWrapperIntrotext-suffix',
     'type' => 'textfield',
@@ -55,12 +55,37 @@ NOTE: Any changes you make while TinyMCE is disabled will not be saved, UNLESS y
   'jQuery' => 
   array (
     'name' => 'jQuery',
-    'desc' => 'This plugin requires jQuery in the order that it is loaded',
+    'desc' => 'This plugin requires jQuery in the order that it is loaded. Leave blank if you already have it running in the Manager.',
     'type' => 'textfield',
     'options' => 
     array (
     ),
     'value' => 'https://code.jquery.com/jquery-2.1.3.min.js',
+    'lexicon' => NULL,
+    'area' => 'Editor Settings',
+  ),
+  'managerTopNavRFMLink' => 
+  array (
+    'name' => 'managerTopNavRFMLink',
+    'desc' => 'Add Responsive FileManager link to Manager Top Nav > Media drop-down menu (Vanilla JS, no jQuery or TinyMCE loaded).
+This will work whether you are using RTE or not, that is, even if activateTinyMCE is set to false; wherever you are in the Manager. This is the standalone nature of RFM. If you want a modal window, uncomment the feature in the plugin.',
+    'type' => 'combo-boolean',
+    'options' => 
+    array (
+    ),
+    'value' => true,
+    'lexicon' => NULL,
+    'area' => 'Editor Settings',
+  ),
+  'quickUpdateCreate' => 
+  array (
+    'name' => 'quickUpdateCreate',
+    'desc' => 'Tested only in Revo 2.3.5. Now you can use TinyMCE to edit/create as many resources as you want at the same time, in the same browser window, thanks to MODx\' Quick Update/Create and TinyMCE\'s flexibility.',
+    'type' => 'combo-boolean',
+    'options' => 
+    array (
+    ),
+    'value' => true,
     'lexicon' => NULL,
     'area' => 'Editor Settings',
   ),
@@ -100,7 +125,7 @@ NOTE: Any changes you make while TinyMCE is disabled will not be saved, UNLESS y
   'tvAddict' => 
   array (
     'name' => 'tvAddict',
-    'desc' => 'Do you want your TVs (Rich/File/Image) to be modjacked by this plugin even if you have RTE disabled for the particular resource? This will work even in the Articles Extra (hopefully!)',
+    'desc' => 'Do you want your TVs (Rich/File/Image) to be wrapperjacked by this plugin even if you have RTE disabled for the particular resource? This will work even in the Articles Extra (hopefully!)',
     'type' => 'combo-boolean',
     'options' => 
     array (
@@ -124,7 +149,7 @@ NOTE: Any changes you make while TinyMCE is disabled will not be saved, UNLESS y
   'Content' => 
   array (
     'name' => 'Content',
-    'desc' => 'Transform Reource Content textarea?',
+    'desc' => 'Transform Resource Content textarea?',
     'type' => 'combo-boolean',
     'options' => 
     array (
@@ -208,7 +233,7 @@ NOTE: Any changes you make while TinyMCE is disabled will not be saved, UNLESS y
   'fileImageTVs' => 
   array (
     'name' => 'fileImageTVs',
-    'desc' => 'You will be able to use Responsive Filemanager to input data in your Fie and Image TVs, hurray! The native method will still be there; at least now you have awesome choices',
+    'desc' => 'You will be able to use Responsive FileManager to input data in your File and Image TVs, hurray! The native method will still be there; at least now you have awesome choices.',
     'type' => 'combo-boolean',
     'options' => 
     array (

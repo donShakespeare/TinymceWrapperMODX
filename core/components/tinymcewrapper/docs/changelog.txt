@@ -1,14 +1,45 @@
 Changelog for TinymceWrapper BETA
 
+
+TinymceWrapper 2.1.0
+---------------------------------
+0. Updated TinymceWrapper Sample Resource
+1. Added MIGX TinyMCE sample chunk - Thanks to *Bruno17 for connecting it with MIGX (see his post in the support thread)
+2. Added support for Quick Create/Update Resources from Resource Tree
+3. Added Responsive FileManager switchoffable link to Manager Top Nav > Media drop-down
+4. Automatic detection of your MODx CORE PATH - Thanks to BobRay
+5. Added caution check for Articles Container
+6. Added new System Events for Manager-wide enjoyment of these new features
+7. Fixed bug that prevented textareas(being temporarily disabled) to update content on save (no need to re-enable before saving)
+8. Fixed bug that locked out TV textareas when enableDisable button is disabled by the plugin
+9. Fixed bug where File & Image TV RFM popup do not work if RichTV is disabled
+10. Fixed issue with TV reset: now works to revert textarea content to TV default even if TinyMCE is presently enabled
+11. Fixed issue with RFM(images) & RFM(all files) modal - eliminated need for & deleted tinymceskins/blank folder
+____________________________________
+
+-------Responsive FileManager-------
+____________________________________
+1. Updated Responsive FileManager to 9.9.4 (http://www.responsivefilemanager.com/)
+    -Changes in Version 9.9.4 (2015/07/18)
+    -Upgrade Aviary Image Editor with new Adobe Creative SDK without size limitation
+    -Add files and folders counter on each folder
+    -Fixed a problem with folder selection on relative url
+2. Eliminated need to manually enter path of core folder or Index.php file. RFM works instantly, being auto connected to MODx. Thanks to *BobRay for the long-sort implementation/idea.
+3. Filenames clean up
+
 TinymceWrapper 2.0.1
 ---------------------------------
-Moving to MyComponents
-Clean ups
+1. Packed with the excellent MyComponents to eliminate all install/uninstall issues
+2. Clean ups
 
 TinymceWrapper 2.0.0
 ---------------------------------
-Added File/Image TVs
-Clean ups
+1. Added File/Image TVs
+2. Added tvAddict and tvSuperAddict options
+3. Fixed enableDisable buttons
+4. Fixed delay in TVs in Chrome
+5. Removed underscore from name structure
+6. RFM has better structure; no error message on first use
 
 TinymceWrapper 1.0.0
 ---------------------------------

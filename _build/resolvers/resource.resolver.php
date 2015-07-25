@@ -4,7 +4,7 @@
 * Sets template, parent, and (optionally) TV values
 *
 * Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-15-2015
+* Created on 07-24-2015
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -53,10 +53,6 @@ if($object->xpdo) {
                   'pagetitle' => 'TinymceWrapper',
                   'parent' => '0',
                   'template' => 'TinymceWrapper',
-                  'tvValues' =>  array (
-                    'TinymceWrapperTV1' => '<p>Collaboratively syndicate optimal materials before best-of-breed e-tailers. Synergistically foster out-of-the-box web services without accurate communities. Collaboratively extend principle-centered niche markets for vertical niches. Quickly recaptiualize holistic e-services without leading-edge action items. Appropriately procrastinate worldwide niche markets through mission-critical scenarios. Collaboratively extend functional total linkage through orthogonal opportunities. Competently supply equity invested processes before clicks-and-mortar results. Continually generate strategic synergy after dynamic leadership skills. Authoritatively.</p>',
-                    'TinymceWrapperTV2' => '<p>Assertively repurpose exceptional quality vectors via 24/7 ideas. Proactively actualize fully tested models</p>',
-                  ),
                 ),
             );
 

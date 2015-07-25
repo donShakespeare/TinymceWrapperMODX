@@ -1,6 +1,7 @@
 <?php
+//this is the template that you can copy and rename to config.php to be placed in each personal upload folder of your users
 //explanations for each item here can be found in the config.php of this folder
-//please see the readme.md
+//please see the readme.txt or the official rfm website http://www.responsivefilemanager.com/
 $MaxSizeUpload = 100;
 $default_language = "en_EN";
 $icon_theme = "ico";
@@ -56,7 +57,8 @@ $hidden_folders = array();
 $hidden_files = array('config.php');
 $java_upload = true;
 $JAVAMaxSizeUpload = 200;
-$fixed_image_creation = false;
+//if you want RFM to create thumbs for you, for each image...
+// $fixed_image_creation = false;
 // $fixed_path_from_filemanager = array('../test/', '../test1/');
 // $fixed_image_creation_name_to_prepend = array('', 'test_');
 // $fixed_image_creation_to_append = array('_test', '');
