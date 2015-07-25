@@ -1,3 +1,4 @@
+*.zip
 _build/
 _packages/
 assets/components/tinymcewrapper/
