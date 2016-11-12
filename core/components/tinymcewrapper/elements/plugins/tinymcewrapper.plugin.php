@@ -57,6 +57,7 @@ $activateAceOrCodeMirror = $modx->getOption('activateAceOrCodeMirror', $sp);
 $useAceOrCodeMirrorEveryWhere = $modx->getOption('useAceOrCodeMirrorEveryWhere', $sp);
 $useAceOrCodeMirrorOnElementsFiles = $modx->getOption('useAceOrCodeMirrorOnElementsFiles', $sp);
 $useAceOrCodeMirrorOnResources = $modx->getOption('useAceOrCodeMirrorOnResources', $sp);
+$RTEualizeAceOrCodeMirror = $modx->getOption('RTEualizeAceOrCodeMirror', $sp);
 $activateAceOrCodeMirrorOnNewResource = $modx->getOption('activateAceOrCodeMirrorOnNewResource', $sp);
 $activateAceOrCodeMirrorOnRichText = $modx->getOption('activateAceOrCodeMirrorOnRichText', $sp);
 $AceTHEME = $modx->getOption('AceTHEME', $sp);
@@ -702,6 +703,10 @@ if ($activateAceOrCodeMirror) {
     // new resource with no RT value but System settings default RT value
     if ($activateAceOrCodeMirrorOnNewResource && !$id && $richtext_default == 1) {
       $fireEditor = 0;
+    }
+    // obey resource RTE checkbox thingy - RETualize typo
+    if ($RTEualizeAceOrCodeMirror && $id && $resource->get('richtext')) {
+      $fireEditor = 1;
     }
     if ($useAceOrCodeMirrorEveryWhere) {
       $fireEditor = 0;
