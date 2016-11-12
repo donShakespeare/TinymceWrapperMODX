@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TinymceWrapper
 A wrapper for the most powerful RTE, TinyMCE 4.3.2+ in MODx Revolution (backend/frontend)
 Use freely, enjoy freely!
@@ -6,7 +5,6 @@ Use freely, enjoy freely!
 # TinymceWrapper 2.3.2 (Miranda the Beautiful) - August 2016
 A TinyMCE Wrapper for MODx Revolution
 Use freely, recode freely, criticize freely, enjoy freely
->>>>>>> origin/master
 
 Author: donShakespeare 
 Copyright 2016
@@ -15,7 +13,6 @@ Questions and instant assistance
 MODX forum http://forums.modx.com/thread/97694/support-comments-for-tinymcewrapper
 modx.org slack https://modxcommunity.slack.com/messages/tinymcewrapper-suite/details/
 
-<<<<<<< HEAD
 See the sample TiymceWrapper Resource
 View it in the frontend to see powerful Imogen Theme and TinyMagicPublisher in action
 
