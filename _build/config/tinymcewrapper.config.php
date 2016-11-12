@@ -15,15 +15,15 @@ $components = array(
     /* These are used to define the package and set values for placeholders */
     'packageName' => 'TinymceWrapper',  /* No spaces, no dashes */
     'packageNameLower' => $packageNameLower,
-    'packageDescription' => 'Wrapper for latest awesome TinyMCE CDN + Responsive FileManager',
-    'version' => '2.1.0',
-    'release' => 'beta1',
+    'packageDescription' => 'Wrapper for ever latest awesome TinyMCE 4.3+ CDN. Suite of 3 custom file browsers, TinyJSONGallery and TinyMagicPublisher',
+    'version' => '2.3.2',
+    'release' => 'pl',
     'author' => 'donShakespeare',
     'email' => 'donShakespeare@gmail.com',
     'authorUrl' => 'http://www.leofec.com/modx-revolution/',
     'authorSiteName' => "My MODx Revolution",
     'packageDocumentationUrl' => 'http://www.leofec.com/modx-revolution/tinymce-wrapper-for-modx-manager.html',
-    'copyright' => '2015',
+    'copyright' => '2016',
 
     /* no need to edit this except to change format */
     'createdon' => strftime('%m-%d-%Y'),
@@ -104,7 +104,66 @@ $components = array(
      * or want to nest categories.
     */
 
-    'categories' => array(),
+        'categories' => array(
+        'TinymceWrapper' => array(
+            'category' => 'TinymceWrapper',
+            'parent' => ''  /* top level category */
+        ),
+
+
+        'TinyCustomBrowsers' => array(
+            'category' => 'TinyCustomBrowsers',
+            'parent' => 'TinymceWrapper'
+        ),
+                'elFinderVolumes' => array(
+                    'category' => 'elFinderVolumes',
+                    'parent' => 'TinyCustomBrowsers'
+                ),
+                'ResponsiveFileManager' => array(
+                    'category' => 'ResponsiveFileManager',
+                    'parent' => 'TinyCustomBrowsers'
+                ),
+                'RoxyFileman' => array(
+                    'category' => 'RoxyFileman',
+                    'parent' => 'TinyCustomBrowsers'
+                ),
+
+
+        'TinyJSONGallery' => array(
+            'category' => 'TinyJSONGallery',
+            'parent' => 'TinymceWrapper'
+        ),
+
+        'TinyMagicPublisher' => array(
+            'category' => 'TinyMagicPublisher',
+            'parent' => 'TinymceWrapper'
+        ),
+
+        'TinyMCE' => array(
+            'category' => 'TinyMCE',
+            'parent' => 'TinymceWrapper'
+        ),
+                'Backend' => array(
+                    'category' => 'Backend',
+                    'parent' => 'TinyMCE'
+                ),
+                        '3rdPartyChunks' => array(
+                            'category' => '3rdPartyChunks',
+                            'parent' => 'Backend'
+                        ),
+                'Frontend' => array(
+                    'category' => 'Frontend',
+                    'parent' => 'TinyMCE'
+                ),
+                        'npCustomFormTpl' => array(
+                            'category' => 'npCustomFormTpl',
+                            'parent' => 'Frontend'
+                        ),
+        'TinyUtilities' => array(
+            'category' => 'TinyUtilities',
+            'parent' => 'TinymceWrapper'
+        )
+    ) ,
 
     /* *************************** MENUS ****************************** */
 
@@ -164,8 +223,16 @@ $components = array(
 
     'assetsDirs' => array(
         /* If true, a default (empty) CSS file will be created */
+        'browserConnectors' => true,
+        'elfinder' => true,
+        'elfinderthemes' => true,
+        'roxy' => true,
+        'frontend' => true,
+        'gallery' => true,
+        'responsivefilemanager' => true,
+        'tinymceplugins' => true,
         'tinymceskins' => true,
-        'responsivefilemanager' => true
+        'markdown' => true
     ),
     /* minify any JS files */
     'minifyJS' => false,
@@ -209,7 +276,9 @@ $components = array(
      * 'default' creates a default resolver named after the package.
      * (other resolvers may be created above for TVs and plugins).
      * Suffix 'resolver.php' will be added automatically */
-    'resolvers' => array(),
+    'resolvers' => array(
+        'default'
+    ),
 
     /* (optional) Validators can abort the install after checking
      * conditions. Array of validator names (no
@@ -224,7 +293,7 @@ $components = array(
      * Set this to 'install.options' or ''
      * The file will be created as _build/install.options/user.input.php
      * Don't change the filename or directory name. */
-    'install.options' => '',
+    'install.options' => 'install.options',
 
 
     /* Suffixes to use for resource and element code files (not implemented)  */
@@ -351,7 +420,7 @@ $components = array(
     */
     'process' => array(
         // 'contexts',
-        // 'snippets',
+        'snippets',
         'plugins',
         'templateVars',
         'templates',
@@ -369,10 +438,12 @@ $components = array(
         They can be specified by pagetitle or ID, but you must use the same method
         for all settings and specify it here. Important: use IDs if you have
         duplicate pagetitles */
-    'getResourcesById' => true,
+    'getResourcesById' => false,
+    // 'getResourcesById' => true,
 
-    'exportResources' => array(5),
+    // 'exportResources' => array(5),
     /* Array of resource parent IDs to get children of. */
+    // 'parents' => array(5),
     'parents' => array(),
     /* Also export the listed parent resources
       (set to false to include just the children) */

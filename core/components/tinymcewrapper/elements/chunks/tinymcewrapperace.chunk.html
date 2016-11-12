@@ -1,0 +1,774 @@
+/*
+#######################################################
+TinymceWrapperAce is a chunk to let any whoever dominate the initialization of the powerful Ace code editor.
+This tiny config can work any where and with anything in MODX.
+It will sync with TinyMCE if TinyMCE RTE is detected
+
+Yours truly, donshakespeare @ MODX forums
+#######################################################
+
+##Language / Mode / Syntax
+"mode": "html", -- always html 
+"mode": "auto/html",
+  -- (elements) static source extension dependent - fallback to html
+  -- (resources) content type (mimetype) dependent - fallsback to html
+
+##max-height of editor in lines
+"maxHeightLines": integer / "textarea" / "Infinity",
+  -- integer - e.g 10 means editor will be 10 lines in height
+  -- "textarea" - editor will borrow the fixed height of its original MODX textarea and will auto overflow
+  -- "Infiinity" - editor will keep growing according to the height of its content.
+*/
+
+
+aceTextareasIDorCLASS = [
+  {
+    "name": "introtext",
+    "selector": "#modx-resource-introtext",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeightLines": "textarea",
+  },
+  {
+    "name": "description",
+    "selector": "#modx-resource-description",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeightLines": "textarea"
+  },
+  {
+    "name": "richtext",
+    "selector": ".modx-richtext",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeightLines": 8,
+  },
+  {
+    "name": "resource_content",
+    "selector": "#ta",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  },
+  {
+    "name": "chunk",
+    "selector": "#modx-chunk-snippet",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  },
+  {
+    "name": "template",
+    "selector": "#modx-template-content",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  },
+  {
+    "name": "snippet",
+    "selector": "#modx-snippet-snippet",
+    "mode": "auto/php",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  },
+  {
+    "name": "plugin",
+    "selector": "#modx-plugin-plugincode",
+    "mode": "auto/php",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  },
+  {
+    "name": "file",
+    "selector": "#modx-file-content",
+    "mode": "auto/css",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  }
+];
+
+// all on-the-fly textareas attached to mouseenter event (e.g Quick update/create textareas)
+aceFlyTextareasIDorCLASS = [
+  {
+    "selector": "textarea[name=snippet]",
+    "mode": "php",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  }, {
+    "selector": "textarea[name=content]",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  }, {
+    "selector": "textarea[name=plugincode]",
+    "mode": "php",
+    "wrap": "free",
+    "maxHeightLines": "Infinity",
+  }
+];
+
+//extend if you like
+modxAceMimeTypes = {
+  'text/html': 'html',
+  'text/plain': 'text',
+  'text/css': 'css',
+  'text/javascript': 'javascript',
+  'application/javascript': 'javascript',
+  'text/x-less': 'less',
+  'application/xml': 'xml',
+  'text/xml': 'xml',
+  'application/json': 'json',
+  'text/x-markdown': 'markdown'
+};
+
+
+// actual Ace Init configuration (get all from official Ace site, oh yea - total freedom!!!)
+aceInnerInit = function(mode, theme, maxLines, wrap) {
+  var inner = {
+    maxLines: maxLines ? maxLines : "",
+    minLines: 3,
+    [[+AceTHEME:notempty=`theme: "ace/theme/[[+AceTHEME]]",`]]
+    mode: mode,
+    wrap: wrap,
+    showPrintMargin: false,
+    // showInvisibles :true,
+    // enableEmmet: false,
+    displayIndentGuides :true,
+    fontSize: 15,
+    tabSize: 2,
+    useWorker: false
+  }
+  return inner;
+};
+
+/*#######################################################################################
+************************** abandon all fear - all ye who enter **************************
+#######################################################################################*/
+
+modxAceInit = function (elem, mode, maxLines, wrap, realFly){
+  var originalTextarea = document.getElementById(elem);
+  var maxLinesAce = maxLines;
+  originalTextarea.style.display  = "none";
+  if(maxLinesAce == "textarea"){
+    var height = $(originalTextarea).height();
+    var maxLinesAce = "";
+  }
+  var aceTempDiv =
+    $('<div>', {
+      'id': 'ace_wrapper_'+originalTextarea.id,
+      'class': 'ace_wrapper_modx '+realFly,
+      'data-ace': 'ace_id_'+originalTextarea.id,
+      'data-origin': originalTextarea.id,
+      'data-mode': mode,
+      'data-maxL': maxLines,
+      'data-wrap': wrap
+    }).prepend(
+      $('<span>', {
+        'class': 'aceKitchenSink',
+        'text': mode,
+        'title': 'maxLine: '+maxLines+'... wrap: '+wrap
+      }),
+      $('<div>', {
+        'id': 'ace_id_'+originalTextarea.id,
+        // 'class': originalTextarea.className,
+        'width': "auto",
+        'height': height ? height : "",
+        'data-origin': originalTextarea.id
+      })
+    ).hide().insertBefore(originalTextarea);
+  // var aceTempDiv =
+  //     $('<div>', {
+  //       'id': 'ace_id_'+originalTextarea.id,
+  //       'class': originalTextarea.className,
+  //       'width': "auto",
+  //       'height': height ? height : "",
+  //       'data-origin': originalTextarea.id
+  //     }).insertBefore(originalTextarea);
+  // var aceEditor = ace.edit(aceTempDiv[0]);
+
+  var aceEditor = ace.edit('ace_id_'+originalTextarea.id);
+  aceEditor.$blockScrolling = Infinity;
+  aceEditor.setOptions(aceInnerInit("ace/mode/"+mode, "", maxLinesAce, wrap));
+  aceEditor.getSession().setValue(originalTextarea.value);
+  aceEditor.setAutoScrollEditorIntoView(true);
+  $('#ace_wrapper_'+originalTextarea.id).delay(100).fadeIn();
+  setTimeout(function(){
+    aceEditor.resize();
+  },200)
+  aceSetContentsilentMODX = false;
+  aceEditor.on("focus", function() {
+    if(typeof tinymce !== "undefined" && tinymce.get(elem)){
+      tinymce.get(elem).on("keyup change", function() {
+        if($("#ace_id_"+originalTextarea.id).length){
+          aceSetContentsilentMODX = true;
+          aceEditor.setValue(tinymce.get(elem).getContent());
+          aceSetContentsilentMODX = false;
+        }
+      })
+    }
+  })
+  aceEditor.on("change", function() {
+    if(!aceEditor.getOption("useWorker")){
+      aceEditor.getSession().setUseWorker(true);
+    }
+    if (aceSetContentsilentMODX){
+      return;
+    }
+    else{
+      originalTextarea.value = aceEditor.getValue();
+      if(typeof tinymce !== "undefined" && tinymce.get(elem)){
+        tinymce.get(elem).setContent(aceEditor.getValue());
+      }
+    }
+  })
+  $(originalTextarea).parents(".modx-tv").find(".modx-tv-reset").on("click", function(){
+    setTimeout(function(){
+      aceEditor.getSession().setValue(originalTextarea.value);
+      aceEditor.resize();
+    },200)
+  });
+  $(originalTextarea).on("keyup change", function() {
+    aceSetContentsilentMODX = true;
+    aceEditor.setValue($(this).val());
+    aceSetContentsilentMODX = false;
+   })
+
+  if($('#ace_wrapper_'+originalTextarea.id).hasClass("twAceQuickFly")){
+    aceEditor.commands.addCommand({
+      name: 'saveFile',
+      bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S',
+        sender: 'editor|cli'
+      },
+      exec: function(env, args, request) {
+        $('#ace_wrapper_'+originalTextarea.id).parents('.modx-window').find('button:contains("Save")').first().trigger("click");
+      }
+    });
+  }
+}
+function changeMyButton(thisButton,id,mode,maxLines,wrap,realFly){
+  if($(thisButton).hasClass("aceActive")){
+    if($("#"+id).is(':visible') ){
+      $(thisButton).find("button").text("Remove Ace");
+      $(thisButton).removeClass("aceActive");
+      modxAceInit(id,mode,maxLines,wrap,realFly)
+    }
+  }
+  else{
+    $(thisButton).addClass("aceActive");
+    $(thisButton).find("button").text("Edit With Ace");
+    ace.edit("ace_id_"+id).destroy()
+    $("#ace_wrapper_"+id).remove();
+    $("#"+id).fadeIn();
+  }
+}
+
+function splitMyJoint(val,joint,index) {
+  var item = val.split(joint);
+  return item[index];
+}
+
+function getAceCredential() {
+  var thisWrap = $("#aceMoreSuperOptions_wrapper").parent();
+  var thisSink = thisWrap.find(".aceKitchenSink");
+  var originalTextareaId = thisWrap.data("origin");
+  var thisAceId = thisWrap.data("ace");
+  return {
+      thisWrap: thisWrap,
+      thisSink: thisSink,
+      originalTextareaId: originalTextareaId,
+      thisAceId: thisAceId,
+    }
+}
+
+function autoDetectMode(filePath){
+  var modelist = ace.require("ace/ext/modelist");
+  var mode = modelist.getModeForPath(filePath).mode;
+  return splitMyJoint(mode,"/",2); //auto defaults to text mode
+}
+
+function grabMeAnExtension(val) {
+  if (modxAceMimeTypes.hasOwnProperty(val)) {
+    return(modxAceMimeTypes[val]);
+    return false;
+  }
+}
+
+function aceTextareas(){
+  var mainCSSace = '<style id=mainCSSace>.x-window-body,.x-tab-panel{overflow-x:hidden!important;}#aceMoreSuperOptions_wrapper{position:absolute!important;z-index:9!important;right:10px;top:-20px;}#aceMoreSuperOptions_wrapper .mce-listbox button{padding-right:10px!important;}#aceMoreSuperOptions_wrapper .mce-btn-has-text .mce-ico{padding-right:0!important;}#aceMoreSuperOptions_wrapper.ace_editor_fullScreen{position:fixed!important;right:23px;}#aceMoreSuperOptions_wrapper_boss{float:right;cursor:pointer;}#aceMoreSuperOptions_wrapper_boss button{padding:0;}#aceMoreSuperOptions_wrapper_sub {margin-top:24px;}.ace_wrapper_modx.ace_editor_fullScreen{position:fixed;top:0;width:100%;height:100%;left:0;right:0;bottom:0;z-index:26;background:#fff;overflow: auto;}.aceKitchenSink{position:absolute;background: #fff;color: #000;padding: 0px 6px;border-radius: 8px 0 8px 0;top: -20px;right:30px;z-index:9;font-size:12px;font-weight:bold;border:1px solid #808080;font-style:italic;}</style>';
+  if(!$("head #mainCSSace").length){
+    $('head').append(mainCSSace);
+  }
+  //all textareas ... that are present on page load
+  $.each(aceTextareasIDorCLASS, function() {
+    if($(this.selector).length){
+      $(this.selector).parent().addClass("twAceParent");
+      var twAceRealOrFly = "twAceReal";
+      var elemAce = $(this.selector);
+      var mode = this.mode;
+      var height = this.maxHeightLines;
+      var wrap = this.wrap;
+      if(this.name == "resource_content" && this.mode.indexOf("auto/") > -1){
+        var mode = splitMyJoint(this.mode,"/",1);
+        if(typeof twGetResourceContentType !== "undefined" && twGetResourceContentType !== ""){
+          var mode = grabMeAnExtension(twGetResourceContentType); //twGetResourceContentType value is supplied by serverside plugin
+        }
+      }
+      else if((this.name == "chunk" || this.name == "snippet" || this.name == "plugin" || this.name == "template") && this.mode.indexOf("auto/") > -1){
+        var mode = splitMyJoint(this.mode,"/",1);
+        if($("#modx-"+this.name+"-static-file").length && $("#modx-"+this.name+"-static-file").val() !== ""){
+          var filePath = $("#modx-"+this.name+"-static-file").val();
+          var mode = autoDetectMode(filePath);
+        }
+      }
+      else if(this.name == "file" && this.mode.indexOf("auto/") > -1){
+        var filePath = $("#modx-file-name").val();
+        var mode = autoDetectMode(filePath);
+      }
+      $(this.selector).each(function(){ // for the sake of .modx-richtext and other classnames provided
+        var elemAceId = $(this).attr("id");
+        modxAceInit(elemAceId,mode,height,wrap,twAceRealOrFly);
+      })
+    }
+  });
+
+  //all textareas added dynamically to the DOM ... quick create/update and anything else
+  $(document).on("mouseenter", ".modx-window", function () {
+    $this = $(this);
+    $.each(aceFlyTextareasIDorCLASS, function() {
+      if($this.find(this.selector).length){
+        var thisTextarea = $this.find(this.selector);
+        thisTextarea.parent().addClass("twAceParent");
+        twElemAceId = thisTextarea.attr("id");
+        twAceMode = this.mode;
+        twAceRealOrFly = "twAceQuickFly";
+        if($this.find("input[name=path]").length){ // for quick edit existing files
+          twAceMode = $this.find("input[name=path]").val()
+          twAceMode = autoDetectMode(twAceMode);
+        }
+        twAceHeight = this.maxHeightLines;
+        twAceWrap = this.wrap;
+        if(thisTextarea.is(':visible') && $this.find("#ace_wrapper_"+twElemAceId).length < 1 && !$this.find(".tinyACE").length){
+        // modxAceInit(twElemAceId,twAceMode,twAceHeight,twAceWrap,twAceRealOrFly) // to fire this automatically, comment the bellow
+          $this.find(".x-toolbar-left-row").append("<p onclick=changeMyButton(this,twElemAceId,twAceMode,twAceHeight,twAceWrap,twAceRealOrFly); class=\'tinyACE aceActive x-btn x-btn-small x-btn-icon-small-left x-btn-noicon\' unselectable=\'on\'><em><button class=\'x-btn-text\'>Edit with Ace</button></em></p>");
+        }
+      }
+    });
+  });
+  if (typeof aceMoreSuperOptions == 'function') { 
+    aceMoreSuperOptions();
+  }
+}
+
+/*#######################################################################################
+     *********** Begin Kitchen Sink  (place in chunk or external file ***********
+#######################################################################################*/
+// font size / themes / height etc
+function setAceSetTheme(){
+  var val = this.text().replace(/\s+/g, '_').toLowerCase();
+  ace.edit(getAceCredential().thisAceId).setTheme("ace/theme/"+val);
+}
+// kitchen sink
+function setAceSetFont(){
+  ace.edit(getAceCredential().thisAceId).setFontSize(this.text());
+  ace.edit(getAceCredential().thisAceId).resize();
+}
+// kitchen sink
+function setAceSetWrap(){
+  ace.edit(getAceCredential().thisAceId).setOption("wrap", this.text());
+  ace.edit(getAceCredential().thisAceId).resize();
+}
+// kitchen sink
+function setAceSetHeight(){
+  var thisTextarea = getAceCredential().originalTextareaId;
+  var option = this.text();
+  if(option == "Textarea"){
+    ace.edit(getAceCredential().thisAceId).setOption("maxLines", false);
+    $("#"+getAceCredential().thisAceId).height( $("#"+thisTextarea).height());
+    ace.edit(getAceCredential().thisAceId).resize();
+  }
+  else {
+    ace.edit(getAceCredential().thisAceId).setOption("maxLines", this.text());
+    ace.edit(getAceCredential().thisAceId).resize();
+  }
+}
+
+
+// kitchen sink
+// mode / syntax / language -- add as many as you like
+aceMoreSuperOptionsToolButtonMODE =[
+  {text: '--- MOST COMMON ---', value: '', disabled: true, selected: false, active: false},
+  {text: 'HTML', value: 'html'},
+  {text: 'Markdown', value: 'markdown'},
+  {text: 'CSS', value: 'css'},
+  {text: 'PHP', value: 'php'},
+  {text: 'JavaScript', value: 'javascript'},
+  {text: 'JSON', value: 'json'},
+  {text: 'Text', value: 'text'},
+  {text: 'LESS', value: 'less'},
+  {text: 'SASS', value: 'sass'},
+  {text: 'SCSS', value: 'scss'},
+  {text: 'Smarty', value: 'smarty'},
+  {text: 'SVG', value: 'svg'},
+  {text: 'Twig', value: 'twig'},
+  {text: 'XML', value: 'xml'},
+  {text: '--- ALL SYNTAX ---', value: '', disabled: true, selected: false, active: false},
+  {text: 'ABAP', value:'abap'},
+  {text: 'ABC', value:'abc'},
+  {text: 'ActionScript', value:'actionscript'},
+  {text: 'ADA', value:'ada'},
+  {text: 'Apache', value:'apache_conf'},
+  {text: 'AsciiDoc', value:'asciidoc'},
+  {text: 'Assembly', value:'assembly_x86'},
+  {text: 'AutoHotKey', value:'autohotkey'},
+  {text: 'BatchFile', value:'batchfile'},
+  {text: 'C', value:'c_cpp'},
+  {text: 'C9Search', value:'c9search'},
+  {text: 'Cirru', value:'cirru'},
+  {text: 'Clojure', value:'clojure'},
+  {text: 'Cobol', value:'cobol'},
+  {text: 'CoffeeScript', value:'coffee'},
+  {text: 'ColdFusion', value:'coldfusion'},
+  {text: 'C', value:'csharp'},
+  {text: 'CSS', value:'css'},
+  {text: 'Curly', value:'curly'},
+  {text: 'D', value:'d'},
+  {text: 'Dart', value:'dart'},
+  {text: 'Diff', value:'diff'},
+  {text: 'Dockerfile', value:'dockerfile'},
+  {text: 'Dot', value:'dot'},
+  {text: 'Eiffel', value:'eiffel'},
+  {text: 'EJS', value:'ejs'},
+  {text: 'Elixir', value:'elixir'},
+  {text: 'Elm', value:'elm'},
+  {text: 'Erlang', value:'erlang'},
+  {text: 'Forth', value:'forth'},
+  {text: 'FreeMarker', value:'ftl'},
+  {text: 'Gcode', value:'gcode'},
+  {text: 'Gherkin', value:'gherkin'},
+  {text: 'Gitignore', value:'gitignore'},
+  {text: 'Glsl', value:'glsl'},
+  {text: 'Gobstones', value:'gobstones'},
+  {text: 'Go', value:'golang'},
+  {text: 'Groovy', value:'groovy'},
+  {text: 'HAML', value:'haml'},
+  {text: 'Handlebars', value:'handlebars'},
+  {text: 'Haskell', value:'haskell'},
+  {text: 'haXe', value:'haxe'},
+  {text: 'HTML', value:'html'},
+  {text: 'HTML', value:'html_elixir'},
+  {text: 'HTML', value:'html_ruby'},
+  {text: 'INI', value:'ini'},
+  {text: 'Io', value:'io'},
+  {text: 'Jack', value:'jack'},
+  {text: 'Jade', value:'jade'},
+  {text: 'Java', value:'java'},
+  {text: 'JavaScript', value:'javascript'},
+  {text: 'JSON', value:'json'},
+  {text: 'JSONiq', value:'jsoniq'},
+  {text: 'JSP', value:'jsp'},
+  {text: 'JSX', value:'jsx'},
+  {text: 'Julia', value:'julia'},
+  {text: 'LaTeX', value:'latex'},
+  {text: 'Lean', value:'lean'},
+  {text: 'LESS', value:'less'},
+  {text: 'Liquid', value:'liquid'},
+  {text: 'Lisp', value:'lisp'},
+  {text: 'LiveScript', value:'livescript'},
+  {text: 'LogiQL', value:'logiql'},
+  {text: 'LSL', value:'lsl'},
+  {text: 'Lua', value:'lua'},
+  {text: 'LuaPage', value:'luapage'},
+  {text: 'Lucene', value:'lucene'},
+  {text: 'Makefile', value:'makefile'},
+  {text: 'Markdown', value:'markdown'},
+  {text: 'Mask', value:'mask'},
+  {text: 'MATLAB', value:'matlab'},
+  {text: 'Maze', value:'maze'},
+  {text: 'MEL', value:'mel'},
+  {text: 'MUSHCode', value:'mushcode'},
+  {text: 'MySQL', value:'mysql'},
+  {text: 'Nix', value:'nix'},
+  {text: 'NSIS', value:'nsis'},
+  {text: 'Objective', value:'objectivec'},
+  {text: 'OCaml', value:'ocaml'},
+  {text: 'Pascal', value:'pascal'},
+  {text: 'Perl', value:'perl'},
+  {text: 'pgSQL', value:'pgsql'},
+  {text: 'PHP', value:'php'},
+  {text: 'Powershell', value:'powershell'},
+  {text: 'Praat', value:'praat'},
+  {text: 'Prolog', value:'prolog'},
+  {text: 'Properties', value:'properties'},
+  {text: 'Protobuf', value:'protobuf'},
+  {text: 'Python', value:'python'},
+  {text: 'R', value:'r'},
+  {text: 'Razor', value:'razor'},
+  {text: 'RDoc', value:'rdoc'},
+  {text: 'RHTML', value:'rhtml'},
+  {text: 'RST', value:'rst'},
+  {text: 'Ruby', value:'ruby'},
+  {text: 'Rust', value:'rust'},
+  {text: 'SASS', value:'sass'},
+  {text: 'SCAD', value:'scad'},
+  {text: 'Scala', value:'scala'},
+  {text: 'Scheme', value:'scheme'},
+  {text: 'SCSS', value:'scss'},
+  {text: 'SH', value:'sh'},
+  {text: 'SJS', value:'sjs'},
+  {text: 'Smarty', value:'smarty'},
+  {text: 'snippets', value:'snippets'},
+  {text: 'Soy', value:'soy_template'},
+  {text: 'Space', value:'space'},
+  {text: 'SQL', value:'sql'},
+  {text: 'SQLServer', value:'sqlserver'},
+  {text: 'Stylus', value:'stylus'},
+  {text: 'SVG', value:'svg'},
+  {text: 'Swift', value:'swift'},
+  {text: 'Tcl', value:'tcl'},
+  {text: 'Tex', value:'tex'},
+  {text: 'Text', value:'text'},
+  {text: 'Textile', value:'textile'},
+  {text: 'Toml', value:'toml'},
+  {text: 'Twig', value:'twig'},
+  {text: 'Typescript', value:'typescript'},
+  {text: 'Vala', value:'vala'},
+  {text: 'VBScript', value:'vbscript'},
+  {text: 'Velocity', value:'velocity'},
+  {text: 'Verilog', value:'verilog'},
+  {text: 'VHDL', value:'vhdl'},
+  {text: 'Wollok', value:'wollok'},
+  {text: 'XML', value:'xml'},
+  {text: 'XQuery', value:'xquery'},
+  {text: 'YAML', value:'yaml'},
+  {text: 'Django', value:'django'}
+];
+
+// kitchen sink
+// change font size on the fly
+aceMoreSuperOptionsToolButtonFONT =[
+  {text: '10px', onclick: setAceSetFont},
+  {text: '11px', onclick: setAceSetFont},
+  {text: '12px', onclick: setAceSetFont},
+  {text: '13px', onclick: setAceSetFont},
+  {text: '14px', onclick: setAceSetFont},
+  {text: '15px', onclick: setAceSetFont},
+  {text: '16px', onclick: setAceSetFont},
+  {text: '18px', onclick: setAceSetFont},
+  {text: '20px', onclick: setAceSetFont},
+  {text: '24px', onclick: setAceSetFont}
+];
+
+// kitchen sink
+// change wrap style
+aceMoreSuperOptionsToolButtonWRAP =[
+  {text: 'free', onclick: setAceSetWrap},
+  {text: '40', onclick: setAceSetWrap},
+  {text: '80', onclick: setAceSetWrap},
+  {text: 'off', onclick: setAceSetWrap},
+];
+
+// kitchen sink
+// change height/max lines
+aceMoreSuperOptionsToolButtonHEIGHT =[
+  {text: '1', onclick: setAceSetHeight},
+  {text: '10', onclick: setAceSetHeight},
+  {text: 'Infinity', onclick: setAceSetHeight},
+  {text: 'Textarea', onclick: setAceSetHeight}
+];
+
+// kitchen sink
+// change theme on the fly
+aceMoreSuperOptionsToolButtonTHEME = [
+  {text: '---- Bright ----', disabled: true, selected: false},
+  {text: 'Chrome', onclick: setAceSetTheme},
+  {text: 'Clouds', onclick: setAceSetTheme},
+  {text: 'Crimson Editor', onclick: setAceSetTheme},
+  {text: 'Dawn', onclick: setAceSetTheme},
+  {text: 'Dreamweaver', onclick: setAceSetTheme},
+  {text: 'Eclipse', onclick: setAceSetTheme},
+  {text: 'GitHub', onclick: setAceSetTheme},
+  {text: 'IPlastic', onclick: setAceSetTheme},
+  {text: 'Solarized Light', onclick: setAceSetTheme},
+  {text: 'TextMate', onclick: setAceSetTheme},
+  {text: 'Tomorrow', onclick: setAceSetTheme},
+  {text: 'XCode', onclick: setAceSetTheme},
+  {text: 'Kuroir', onclick: setAceSetTheme},
+  {text: 'KatzenMilch', onclick: setAceSetTheme},
+  {text: 'SQL Server', onclick: setAceSetTheme},
+  {text: '---- Dark ----', disabled: true, selected: false},
+  {text: 'Ambiance', onclick: setAceSetTheme},
+  {text: 'Chaos', onclick: setAceSetTheme},
+  {text: 'Clouds Midnight', onclick: setAceSetTheme},
+  {text: 'Cobalt', onclick: setAceSetTheme},
+  {text: 'idle Fingers', onclick: setAceSetTheme},
+  {text: 'krTheme', onclick: setAceSetTheme},
+  {text: 'Merbivore', onclick: setAceSetTheme},
+  {text: 'Merbivore Soft', onclick: setAceSetTheme},
+  {text: 'Mono Industrial', onclick: setAceSetTheme},
+  {text: 'Monokai', onclick: setAceSetTheme},
+  {text: 'Pastel on dark', onclick: setAceSetTheme},
+  {text: 'Solarized Dark', onclick: setAceSetTheme},
+  {text: 'Terminal', onclick: setAceSetTheme},
+  {text: 'Tomorrow Night', onclick: setAceSetTheme},
+  {text: 'Tomorrow Night Blue', onclick: setAceSetTheme},
+  {text: 'Tomorrow Night Bright', onclick: setAceSetTheme},
+  {text: 'Tomorrow Night Eighties', onclick: setAceSetTheme},
+  {text: 'Twilight', onclick: setAceSetTheme},
+  {text: 'Vibrant Ink', onclick: setAceSetTheme}
+];
+
+// kitchen sink toolbar ini
+function aceMoreSuperOptions(){
+  if(typeof tinymce !== "undefined" && !$("#aceMoreSuperOptions_wrapper").length){
+    $("body").append("<div id=aceMoreSuperOptions_wrapper><div id=aceMoreSuperOptions_wrapper_boss></div><div style=display:none; id=aceMoreSuperOptions_wrapper_sub></div></div>");
+    tinymce.ui.Factory.create({
+      type: "button",
+      icon: "fullpage",
+      classes:"moreAceAttr",
+      tooltip: "Ace Settings...",
+      onPostRender:function(){
+        $(".mce-moreAceAttr").attr("class","mce-moreAceAttr");
+        $(".mce-moreAceAttr button").contents().unwrap();
+      },
+      onclick: function(){
+        if($('#aceMoreSuperOptions_wrapper_sub:hidden').length){
+          $('#aceMoreSuperOptions_wrapper_sub').show()
+          $('.mce-moreAceAttr').addClass('mce-active')
+        }
+        else{
+          $('#aceMoreSuperOptions_wrapper_sub').hide()
+          $('.mce-moreAceAttr').removeClass('mce-active')
+        }
+      }
+    }).renderTo(document.getElementById("aceMoreSuperOptions_wrapper_boss"));
+    tinymce.ui.Factory.create({
+      type: 'button',
+      icon: 'fullscreen',
+      classes: 'aceMoreSuperOptionsFS',
+      tooltip: 'Fullscreen',
+      onclick: function(){
+        if(getAceCredential().thisWrap.hasClass("ace_editor_fullScreen")){
+          getAceCredential().thisWrap.removeClass("ace_editor_fullScreen");
+          $("#aceMoreSuperOptions_wrapper").removeClass("ace_editor_fullScreen");
+          ace.edit(getAceCredential().thisAceId).resize();
+        }
+        else{
+          getAceCredential().thisWrap.addClass("ace_editor_fullScreen")
+          $("#aceMoreSuperOptions_wrapper").addClass("ace_editor_fullScreen");
+          ace.edit(getAceCredential().thisAceId).resize();
+        }
+      },
+      onPostRender:function(){
+        // $(".mce-aceMoreSuperOptions .mce-caret").remove();
+        $(document).on("mouseenter click", ".ace_wrapper_modx", function () {
+          if(!$(this).find("#aceMoreSuperOptions_wrapper").length){
+            $("#aceMoreSuperOptions_wrapper").prependTo($(this)).fadeIn();
+            aceMoreSuperOptions();
+          }
+        })
+      }
+    }).renderTo(document.getElementById("aceMoreSuperOptions_wrapper_sub"));
+    tinymce.ui.Factory.create({
+      type: 'listbox',
+      icon: 'code',
+      classes: 'aceMoreSuperOptionsMODE',
+      tooltip: 'Syntax / Mode',
+      menu: aceMoreSuperOptionsToolButtonMODE,
+      onPostRender: function(){
+        $(".mce-aceMoreSuperOptionsMODE .mce-caret").remove();
+        $(".mce-aceMoreSuperOptionsMODE .mce-txt").remove();
+      },
+      onselect: function(){
+        ace.edit(getAceCredential().thisAceId).getSession().setMode("ace/mode/"+this.value())
+        ace.edit(getAceCredential().thisAceId).resize();
+        getAceCredential().thisSink.text(this.value())
+        $(".mce-aceMoreSuperOptionsMODE .mce-txt").remove();
+      }
+    }).renderTo(document.getElementById("aceMoreSuperOptions_wrapper_sub"));
+
+    tinymce.ui.Factory.create({
+      // icon: "fullpage",
+      type: 'menubutton',
+      classes: 'aceMoreSuperOptionsMORE',
+      tooltip: 'Themes and more Options',
+      onPostRender:function(){
+        // $(".mce-aceMoreSuperOptionsMORE .mce-caret").remove();
+      },
+      menu: [
+      {
+        text: "Show Invisibles",
+        classes: "setShowInvisibles",
+        onclick: function(){
+          if(ace.edit(getAceCredential().thisAceId).getOption("showInvisibles")){
+            ace.edit(getAceCredential().thisAceId).setShowInvisibles(false);
+          }
+          else{
+            ace.edit(getAceCredential().thisAceId).setShowInvisibles(true);
+          }
+        }
+      },
+      {
+        text: "Scroll Past End",
+        classes: "setScroll",
+        onclick: function(){
+          if(ace.edit(getAceCredential().thisAceId).getOption("scrollPastEnd")){
+            ace.edit(getAceCredential().thisAceId).setOption("scrollPastEnd", false);
+            ace.edit(getAceCredential().thisAceId).resize();
+          }
+          else{
+            ace.edit(getAceCredential().thisAceId).setOption("scrollPastEnd", true);
+            ace.edit(getAceCredential().thisAceId).resize();
+          }
+        }
+      },
+      {
+        text: "Refresh Editor",
+        onclick: function(){
+          ace.edit(getAceCredential().thisAceId).resize();
+        }
+      },
+      {
+        text: "Soft Wrap",
+        menu: aceMoreSuperOptionsToolButtonWRAP
+      },
+      {
+        text: "Max Height",
+        menu: aceMoreSuperOptionsToolButtonHEIGHT
+      },
+      {
+        text: "Theme",
+        menu: aceMoreSuperOptionsToolButtonTHEME
+      },
+      {
+        text: "Font Size",
+        menu: aceMoreSuperOptionsToolButtonFONT,
+      },
+      ],
+    }).renderTo(document.getElementById("aceMoreSuperOptions_wrapper_sub"));
+    if(tinymce.editors.length < 1){
+      // fileManagerTopNavModalSkin = MODx.config.assets_url+"components/tinymcewrapper/tinymceskins/modxPericles/"+"skin.min.css";
+      tinymce.DOM.loadCSS(fileManagerTopNavModalSkin+"/skin.min.css");
+    }
+  }
+}
+// ************************** END Kitchen Sink **************************
+
+
+/*#######################################################################################
+   *************** MODX INIT : load applicable JS and CSS files ***************
+#######################################################################################*/
+Ext.Loader.load([
+  '[[++assets_url]]components/tinymcewrapper/tinymceplugins/ace/emmet.min.js',
+  '[[+AceSrc]]ext-emmet.js',
+  '[[+AceSrc]]ext-modelist.js',
+ ],
+  function() {
+    Ext.onReady(function () {
+      aceTextareas();
+    // }) // use this instead of delay
+    },this,{delay:50}) // delay 100 always works well
+  }
+)
+emmetForAceIsLoaded = true; // this helps other Ace implementations to piggy-back on this emmet

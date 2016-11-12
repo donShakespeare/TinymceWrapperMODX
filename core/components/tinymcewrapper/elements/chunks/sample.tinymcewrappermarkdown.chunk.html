@@ -1,0 +1,25 @@
+tinymce.init({
+  selector: "textarea",
+  //inline: true, //for contenteditable selector
+  forced_root_block : "", //!important
+  force_br_newlines : true, //!important
+  force_p_newlines : false, //!important
+  valid_elements: "br", //!important
+  paste_as_text: true, //!important
+  external_plugins: {
+    twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js", //!important
+    bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js", //!important
+    twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js",
+    modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+  },
+  twExoticMarkdownSettings: {
+    addClass: false, //default is true (add .twExoticMarkdownEditor class to editor body)
+    removeClasses: "a b c", // remove class(es) when editor loads - smoothly reveal editor only after text has been prepared
+    skipClass: "", // do not process this particular editor content, skip it!
+    addAttr: false, //default is true (add markdown="1" to editor body) good for parsing mixed content in mark/parsedownExtra
+  },
+  plugins: "paste contextmenu save searchreplace", //!important
+  toolbar: "modxMagicHoverLink twPreCodeManager boldMD italicMD linkMD imageMD blockquoteMD codeMD numlistMD bullistMD tableMD undo redo searchreplace bubbleBarOptionsButton", //!important
+  menubar: false,
+  contextmenu: "modxMagicHoverLink twPreCodeManager boldMD italicMD linkMD imageMD blockquoteMD codeMD numlistMD bullistMD tableMD undo redo searchreplace template" //!important
+})

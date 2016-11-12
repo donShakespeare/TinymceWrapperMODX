@@ -1,0 +1,14 @@
+tinymce.init({
+  name: "tw_magic_create_page",
+  selector: "[data-tiny=np-pagetitle]",
+  [[+commonTinyMCECode]]
+  plugins: "autosave save contextmenu",
+  paste_word_valid_elements: "h2",
+  menubar: false,
+  toolbar: false,
+  //toolbar:"undo redo | save | close bubbleBarOptionsButton",
+  //invalid_elements: "*",
+  //valid_elements: "",
+  //valid_children: "",
+  contextmenu: "reset undo redo"
+});

@@ -1,0 +1,889 @@
+/*
+#######################################################
+TinymceWrapperCodeMirror is a chunk to let any whoever dominate the initialization of the powerful CodeMirror code editor.
+This tiny config can work any where and with anything in MODX.
+It will sync with TinyMCE if TinyMCE RTE is detected
+
+Yours truly, donshakespeare @ MODX forums
+#######################################################
+
+##Language / Mode / Syntax
+"mode": "html",
+"mode": "auto/html",
+  -- (elements) static source extension dependent - fallback to html
+  -- (resources) content type (mimetype) dependent - fallsback to html
+
+##max-height of editor in pixels
+"maxHeight": pure integer / "textarea" / "Infinity",
+  -- integer - e.g 100 (will make height 100px)
+  -- "textarea" - editor will borrow the fixed height of its original MODX textarea and will auto overflow
+  -- "Infiinity" - editor will keep growing according to the height of its content.
+*/
+
+
+codeMirrorTextareasIDorCLASS = [
+  {
+    "name": "introtext",
+    "selector": "#modx-resource-introtext",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeight": "textarea",
+  },
+  {
+    "name": "description",
+    "selector": "#modx-resource-description",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeight": "textarea"
+  },
+  {
+    "name": "richtext",
+    "selector": ".modx-richtext",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeight": 200,
+  },
+  {
+    "name": "resource_content",
+    "selector": "#ta",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  },
+  {
+    "name": "chunk",
+    "selector": "#modx-chunk-snippet",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  },
+  {
+    "name": "template",
+    "selector": "#modx-template-content",
+    "mode": "auto/html",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  },
+  {
+    "name": "snippet",
+    "selector": "#modx-snippet-snippet",
+    "mode": "auto/php",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  },
+  {
+    "name": "plugin",
+    "selector": "#modx-plugin-plugincode",
+    "mode": "auto/php",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  },
+  {
+    "name": "file",
+    "selector": "#modx-file-content",
+    "mode": "auto/css",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  }
+];
+
+// all on-the-fly textareas attached to mouseenter event (e.g Quick update/create textareas)
+codeMirrorFlyTextareasIDorCLASS = [
+  {
+    "selector": "textarea[name=snippet]",
+    "mode": "php",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  }, {
+    "selector": "textarea[name=content]",
+    "mode": "html",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  }, {
+    "selector": "textarea[name=plugincode]",
+    "mode": "php",
+    "wrap": "free",
+    "maxHeight": "Infinity",
+  }
+];
+
+//extend if you like
+modxCodeMirrorMimeTypes = {
+  'text/html': 'html',
+  'text/plain': 'text',
+  'text/css': 'css',
+  'text/javascript': 'javascript',
+  'application/javascript': 'javascript',
+  'text/x-less': 'less',
+  'application/xml': 'xml',
+  'text/xml': 'xml',
+  'application/json': 'json',
+  'text/x-markdown': 'markdown'
+};
+
+
+// actual CodeMirror Init configuration (get all from official CodeMirror site, oh yea - total freedom!!!)
+codeMirrorInnerInit = function(mode, theme, maxLines, wrap) {
+  var viewportMargin = viewportMargin ? viewportMargin : Infinity;
+  var inner = {
+      mode: mode,
+      [[+CodeMirrorTHEME:notempty=`theme: "[[+CodeMirrorTHEME]]",`]]
+      indentOnInit: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      indentUnit: 1,
+      tabSize: 1,
+      matchBrackets: true,
+      styleActiveLine: true,
+      autoCloseTags: true,
+      showTrailingSpace: true,
+      viewportMargin: viewportMargin,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Alt-F": "findPersistent",
+        "F11": function(cm) {
+          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        },
+        "Esc": function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        },
+        "Ctrl-Q": function(cm){
+          cm.foldCode(cm.getCursor());
+         }
+      }
+    }
+  return inner;
+};
+
+/*#######################################################################################
+************************** abandon all fear - all ye who enter **************************
+#######################################################################################*/
+
+modxCodeMirrorInit = function (elem, mode, spec, maxLines, wrap, realFly){
+  var originalTextarea = document.getElementById(elem);
+  var maxHeightCodeMirror = maxLines;
+  originalTextarea.style.display  = "none";
+  if(isNaN(maxHeightCodeMirror)){
+    var height = $(originalTextarea).height();
+  }
+  else{
+    if(maxHeightCodeMirror == "Infinity"){
+      var height = "auto";
+    }
+    else{
+      var height = maxHeightCodeMirror;
+    }
+  }
+  var spanMode = mode;
+  if(mode == "null" || !mode){
+    var mode = "null";
+    var spanMode = "text/plain";
+  }
+  if(mode == "html" || mode == "htm"){
+    var mode = "htmlmixed";
+    var spec = "text/html";
+  }
+  var codeMirrorTempDiv =
+    $('<div>', {
+      'id': 'codeMirror_wrapper_'+originalTextarea.id,
+      'class': 'codeMirror_wrapper_modx '+realFly,
+      'data-codemirror': 'codeMirror_id_'+originalTextarea.id,
+      'data-origin': originalTextarea.id,
+      'data-mode': mode,
+      'data-maxL': maxLines,
+      'data-wrap': wrap
+    }).prepend(
+      $('<span>', {
+        'class': 'codeMirrorKitchenSink',
+        'text': spanMode,
+        'title': 'maxLine: '+maxLines+'... wrap: '+wrap
+      }),
+      $('<textarea>', {
+        'id': 'codeMirror_id_'+originalTextarea.id,
+        'width': "auto",
+        'height': height ? height : "",
+        'data-origin': originalTextarea.id
+      })
+    ).hide().insertBefore(originalTextarea);
+
+  window["codeMirror_id_" + originalTextarea.id] = CodeMirror.fromTextArea(document.getElementById('codeMirror_id_'+originalTextarea.id), codeMirrorInnerInit(spec));
+  // if(mode == "htmlmixed"){
+    // window["codeMirror_id_" + originalTextarea.id].setOption("profile","xhtml");
+    emmetCodeMirror(window["codeMirror_id_" + originalTextarea.id]);
+  // }
+  CodeMirror.autoLoadMode(window["codeMirror_id_" + originalTextarea.id], mode);
+  window["codeMirror_id_" + originalTextarea.id].setValue(originalTextarea.value);
+  $('#codeMirror_wrapper_'+originalTextarea.id).delay(100).fadeIn();
+  $('#codeMirror_wrapper_'+originalTextarea.id).find(".CodeMirror").css("height",height)
+  setTimeout(function(){
+    window["codeMirror_id_" + originalTextarea.id].refresh();
+  },250)
+  codeMirrorSetContentsilentMODX = false;
+  window["codeMirror_id_" + originalTextarea.id].on("focus", function() {
+    if(typeof tinymce !== "undefined" && tinymce.get(elem)){
+      tinymce.get(elem).on("keyup change", function() {
+        if($("#codeMirror_id_"+originalTextarea.id).length){
+          codeMirrorSetContentsilentMODX = true;
+          window["codeMirror_id_" + originalTextarea.id].setValue(tinymce.get(elem).getContent());
+          codeMirrorSetContentsilentMODX = false;
+        }
+      })
+    }
+  })
+  window["codeMirror_id_" + originalTextarea.id].on("change", function() {
+    if (codeMirrorSetContentsilentMODX){
+      return;
+    }
+    else{
+      originalTextarea.value = window["codeMirror_id_" + originalTextarea.id].getValue();
+      if(typeof tinymce !== "undefined" && tinymce.get(elem)){
+        tinymce.get(elem).setContent(window["codeMirror_id_" + originalTextarea.id].getValue());
+      }
+    }
+  })
+  $(originalTextarea).parents(".modx-tv").find(".modx-tv-reset").on("click", function(){
+    setTimeout(function(){
+      window["codeMirror_id_" + originalTextarea.id].setValue(originalTextarea.value);
+    },200)
+  });
+  $(originalTextarea).on("keyup change", function() {
+    codeMirrorSetContentsilentMODX = true;
+    window["codeMirror_id_" + originalTextarea.id].setValue($(this).val());
+    codeMirrorSetContentsilentMODX = false;
+   })
+}
+function changeMyButton(thisButton,id,mode,spec,maxLines,wrap,realFly){
+  if($(thisButton).hasClass("codeMirrorActive")){
+    if($("#"+id).is(':visible') ){
+      $(thisButton).find("button").text("Remove CodeMirror");
+      $(thisButton).removeClass("codeMirrorActive");
+      modxCodeMirrorInit(id,mode,spec,maxLines,wrap,realFly)
+    }
+  }
+  else{
+    $(thisButton).addClass("codeMirrorActive");
+    $(thisButton).find("button").text("Edit With CodeMirror");
+    var thisCodeMirrorId = $(thisButton).parents(".modx-window").find(".codeMirror_wrapper_modx").data("codemirror");
+    window[thisCodeMirrorId].toTextArea();
+    $("#codeMirror_wrapper_"+id).remove();
+    $("#"+id).fadeIn();
+  }
+}
+
+function splitMyJoint(val,joint,index) {
+  var item = val.split(joint);
+  return item[index];
+}
+
+function getCodeMirrorCredential() {
+  var thisWrap = $("#codeMirrorMoreSuperOptions_wrapper").parent();
+  var thisSink = thisWrap.find(".codeMirrorKitchenSink");
+  var thisActualCodeMirror = thisWrap.find(".CodeMirror");
+  var originalTextareaId = thisWrap.data("origin");
+  var thisCodeMirrorId = thisWrap.data("codemirror");
+  return {
+      thisWrap: thisWrap,
+      thisSink: thisSink,
+      originalTextareaId: originalTextareaId,
+      thisCodeMirrorId: thisCodeMirrorId,
+      thisActualCodeMirror: thisActualCodeMirror
+    }
+}
+
+function autoDetectMode(filePathOrModeOrMime) {
+  var val = filePathOrModeOrMime, m, mode, spec;
+  if (m = /.+\.([^.]+)$/.exec(val)) {
+    var info = CodeMirror.findModeByExtension(m[1]);
+    if (info) {
+      mode = info.mode;
+      spec = info.mime;
+    }
+  }
+  else if (/\//.test(val)) {
+    var info = CodeMirror.findModeByMIME(val);
+    if (info) {
+      mode = info.mode;
+      spec = val;
+    }
+  }
+  else {
+    mode = spec = val;
+  }
+  return {
+    mode: mode,
+    spec: spec
+  };
+}
+
+function codeMirrorTextareas(){
+  var mainCSScodeMirror = '<style id=mainCSScodeMirror>.x-tab-panel,.x-window-body{overflow-x:hidden!important}#codeMirrorMoreSuperOptions_wrapper{position:absolute!important;z-index:9!important;right:10px;top:-20px}#codeMirrorMoreSuperOptions_wrapper .mce-listbox button{padding-right:10px!important}#codeMirrorMoreSuperOptions_wrapper .mce-btn-has-text .mce-ico{padding-right:0!important}#codeMirrorMoreSuperOptions_wrapper.codeMirror_editor_fullScreen{position:fixed!important;right:23px}#codeMirrorMoreSuperOptions_wrapper_boss{float:right;cursor:pointer}#codeMirrorMoreSuperOptions_wrapper_boss button{padding:0}#codeMirrorMoreSuperOptions_wrapper_sub{margin-top:24px}.codeMirror_wrapper_modx.codeMirror_editor_fullScreen{position:fixed;top:0;width:100%;height:100%;left:0;right:0;bottom:0;z-index:26;background:#fff;overflow:auto}.codeMirrorKitchenSink{position:absolute;background: #fff;color: #000;padding: 0px 6px;border-radius: 8px 0 8px 0;top: -20px;right:30px;z-index:9;font-size:12px;font-weight:bold;border:1px solid #808080;font-style:italic;}.twCodeMirrorParent .CodeMirror{height:auto}</style>';
+  if(!$("head #mainCSScodeMirror").length){
+    $('head').append(mainCSScodeMirror);
+  }
+  //all textareas ... that are present on page load
+  $.each(codeMirrorTextareasIDorCLASS, function() {
+    if($(this.selector).length){
+      $(this.selector).parent().addClass("twCodeMirrorParent");
+      var twCodeMirrorRealOrFly = "twCodeMirrorReal";
+      var elemCodeMirror = $(this.selector);
+      var ext = "test."+this.mode;
+      var mode = autoDetectMode(ext).mode;
+      var spec = autoDetectMode(ext).spec;
+      var height = this.maxHeight;
+      var wrap = this.wrap;
+      if(this.name == "resource_content" && this.mode.indexOf("auto/") > -1){
+        var mode = autoDetectMode("test."+splitMyJoint(this.mode,"/",1)).mode;
+        var spec = autoDetectMode("test."+splitMyJoint(this.mode,"/",1)).spec;
+        if(typeof twGetResourceContentType !== "undefined" && twGetResourceContentType !== ""){
+          var mode = autoDetectMode(twGetResourceContentType).mode; //autoDetectMode value is supplied by serverside plugin
+          var spec = autoDetectMode(twGetResourceContentType).spec;
+        }
+      }
+      else if((this.name == "chunk" || this.name == "snippet" || this.name == "plugin" || this.name == "template") && this.mode.indexOf("auto/") > -1){
+        var mode = splitMyJoint(this.mode,"/",1);
+        if($("#modx-"+this.name+"-static-file").length && $("#modx-"+this.name+"-static-file").val() !== ""){
+          var filePath = $("#modx-"+this.name+"-static-file").val();
+          var mode = autoDetectMode(filePath).mode;
+          var spec = autoDetectMode(filePath).spec;
+        }
+      }
+      else if(this.name == "file" && this.mode.indexOf("auto/") > -1){
+        var filePath = $("#modx-file-name").val();
+        var mode = autoDetectMode(filePath).mode;
+        var spec = autoDetectMode(filePath).spec;
+      }
+      $(this.selector).each(function(){ // for the sake of .modx-richtext and other classnames provided
+        var elemCodeMirrorId = $(this).attr("id");
+        modxCodeMirrorInit(elemCodeMirrorId,mode,spec,height,wrap,twCodeMirrorRealOrFly);
+      })
+    }
+  });
+
+  //all textareas added dynamically to the DOM ... quick create/update and anything else
+  $(document).on("mouseenter", ".modx-window", function () {
+    $this = $(this);
+    $.each(codeMirrorFlyTextareasIDorCLASS, function() {
+      if($this.find(this.selector).length){
+        var thisTextarea = $this.find(this.selector);
+        thisTextarea.parent().addClass("twCodeMirrorParent");
+        twElemCodeMirrorId = thisTextarea.attr("id");
+        twCodeMirrorMode = autoDetectMode(this.mode).mode;
+        twCodeMirrorSpec = autoDetectMode(this.mode).spec;
+        twCodeMirrorRealOrFly = "twCodeMirrorQuickFly";
+        if($this.find("input[name=path]").length){ // for quick edit existing files
+          twCodeMirrorMode = $this.find("input[name=path]").val()
+          twCodeMirrorMode = autoDetectMode(twCodeMirrorMode).mode;
+          twCodeMirrorSpec = autoDetectMode(twCodeMirrorMode).spec;
+        }
+        twCodeMirrorHeight = this.maxHeight;
+        twCodeMirrorWrap = this.wrap;
+        if(thisTextarea.is(':visible') && $this.find("#codeMirror_wrapper_"+twElemCodeMirrorId).length < 1 && !$this.find(".tinyCM").length){
+        // modxCodeMirrorInit(twElemCodeMirrorId,twCodeMirrorMode,twCodeMirrorSpec,twCodeMirrorHeight,twCodeMirrorWrap,twCodeMirrorRealOrFly) // to fire this automatically, comment the bellow
+          $this.find(".x-toolbar-left-row").append("<p onclick=changeMyButton(this,twElemCodeMirrorId,twCodeMirrorMode,twCodeMirrorSpec,twCodeMirrorHeight,twCodeMirrorWrap,twCodeMirrorRealOrFly); class=\'tinyCM codeMirrorActive x-btn x-btn-small x-btn-icon-small-left x-btn-noicon\' unselectable=\'on\'><em><button class=\'x-btn-text\'>Edit with CodeMirror</button></em></p>");
+        }
+      }
+    });
+  });
+  if (typeof codeMirrorMoreSuperOptions == 'function') { 
+    codeMirrorMoreSuperOptions();
+  }
+}
+
+/*#######################################################################################
+     *********** Begin Kitchen Sink  (plcodeMirror in chunk or external file ***********
+#######################################################################################*/
+// font size / themes / height etc
+function setCodeMirrorTheme(){
+  var theme = this.text();
+  var link = document.createElement('link');
+  link.onload = function(){
+      window[getCodeMirrorCredential().thisCodeMirrorId].setOption("theme", theme);
+  };
+  link.rel = "stylesheet";
+  link.media = "all";
+  link.href = "[[+CodeMirrorSrc]]theme/"+theme+".css";
+  document.getElementsByTagName('head')[0].appendChild(link);
+}
+// kitchen sink
+function setCodeMirrorSetFont(){
+  getCodeMirrorCredential().thisActualCodeMirror.css("font-size",this.text());
+  window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+}
+// kitchen sink
+function setCodeMirrorSetWrap(){
+  if(this.text() == "free"){
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize("", "");
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+  else{
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize(+this.text()+290, "");
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+}
+// kitchen sink
+function setCodeMirrorSetHeight(){
+  var thisTextarea = getCodeMirrorCredential().originalTextareaId;
+  var option = this.text();
+  if(option == "Textarea"){
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize("", $("#"+thisTextarea).height());
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+  else if(option == "1"){
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize("", 40);
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+  else if(option == "10"){
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize("", 200);
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+  else {
+    window[getCodeMirrorCredential().thisCodeMirrorId].setSize("", "");
+    window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+  }
+}
+
+
+// kitchen sink
+// mode / syntax / language -- add as many as you like
+codeMirrorMoreSuperOptionsToolButtonMODE =[
+  {text: '--- MOST COMMON ---', value: '', disabled: true, selected: false, active: false},
+  {text: 'HTML', value: 'htmlmixed'},
+  {text: 'Markdown', value: 'markdown'},
+  {text: 'CSS', value: 'css'},
+  {text: 'PHP', value: 'php'},
+  {text: 'JavaScript', value: 'javascript'},
+  {text: 'JSON', value: 'javascript'},
+  {text: 'Text', value: 'null'},
+  {text: 'LESS', value: 'css'},
+  {text: 'SASS', value: 'sass'},
+  {text: 'SCSS', value: 'css'},
+  {text: '--- ALL SYNTAX ---', value: '', disabled: true, selected: false, active: false},
+  {text: 'APL', value: 'apl'},
+  {text: 'PGP', value: 'asciiarmor'},
+  {text: 'ASN.1', value: 'asn.1'},
+  {text: 'Asterisk', value: 'asterisk'},
+  {text: 'Brainfuck', value: 'brainfuck'},
+  {text: 'C', value: 'clike'},
+  {text: 'C++', value: 'clike'},
+  {text: 'Cobol', value: 'cobol'},
+  {text: 'C#', value: 'clike'},
+  {text: 'Clojure', value: 'clojure'},
+  {text: 'ClojureScript', value: 'clojure'},
+  {text: 'Closure Stylesheets (GSS)', value: 'css'},
+  {text: 'CMake', value: 'cmake'},
+  {text: 'CoffeeScript', value: 'coffeescript'},
+  {text: 'Common Lisp', value: 'commonlisp'},
+  {text: 'Cypher', value: 'cypher'},
+  {text: 'Cython', value: 'python'},
+  {text: 'Crystal', value: 'crystal'},
+  {text: 'CSS', value: 'css'},
+  {text: 'CQL', value: 'sql'},
+  {text: 'D', value: 'd'},
+  {text: 'Dart', value: 'dart'},
+  {text: 'diff', value: 'diff'},
+  {text: 'Django', value: 'django'},
+  {text: 'Dockerfile', value: 'dockerfile'},
+  {text: 'DTD', value: 'dtd'},
+  {text: 'Dylan', value: 'dylan'},
+  {text: 'EBNF', value: 'ebnf'},
+  {text: 'ECL', value: 'ecl'},
+  {text: 'edn', value: 'clojure'},
+  {text: 'Eiffel', value: 'eiffel'},
+  {text: 'Elm', value: 'elm'},
+  {text: 'Embedded Javascript', value: 'htmlembedded'},
+  {text: 'Embedded Ruby', value: 'htmlembedded'},
+  {text: 'Erlang', value: 'erlang'},
+  {text: 'Factor', value: 'factor'},
+  {text: 'FCL', value: 'fcl'},
+  {text: 'Forth', value: 'forth'},
+  {text: 'Fortran', value: 'fortran'},
+  {text: 'F#', value: 'mllike'},
+  {text: 'Gas', value: 'gas'},
+  {text: 'Gherkin', value: 'gherkin'},
+  {text: 'GitHub Flavored Markdown', value: 'gfm'},
+  {text: 'Go', value: 'go'},
+  {text: 'Groovy', value: 'groovy'},
+  {text: 'HAML', value: 'haml'},
+  {text: 'Haskell', value: 'haskell'},
+  {text: 'Haskell (Literate)', value: 'haskell-literate'},
+  {text: 'Haxe', value: 'haxe'},
+  {text: 'HXML', value: 'haxe'},
+  {text: 'ASP.NET', value: 'htmlembedded'},
+  {text: 'HTML', value: 'htmlmixed'},
+  {text: 'HTTP', value: 'http'},
+  {text: 'IDL', value: 'idl'},
+  {text: 'Jade', value: 'jade'},
+  {text: 'Java', value: 'clike'},
+  {text: 'Java Server Pages', value: 'htmlembedded'},
+  {name: 'JavaScript', value: 'javascript'},
+  {text: 'JSON', value: 'javascript'},
+  {text: 'JSON-LD', value: 'javascript'},
+  {text: 'JSX', value: 'jsx'},
+  {text: 'Jinja2', value: 'jinja2'},
+  {text: 'Julia', value: 'julia'},
+  {text: 'Kotlin', value: 'clike'},
+  {text: 'LESS', value: 'css'},
+  {text: 'LiveScript', value: 'livescript'},
+  {text: 'Lua', value: 'lua'},
+  {text: 'Markdown', value: 'markdown'},
+  {text: 'mIRC', value: 'mirc'},
+  {text: 'MariaDB SQL', value: 'sql'},
+  {text: 'Mathematica', value: 'mathematica'},
+  {text: 'Modelica', value: 'modelica'},
+  {text: 'MUMPS', value: 'mumps'},
+  {text: 'MS SQL', value: 'sql'},
+  {text: 'MySQL', value: 'sql'},
+  {text: 'Nginx', value: 'nginx'},
+  {text: 'NSIS', value: 'nsis'},
+  {text: 'NTriples', value: 'ntriples'},
+  {text: 'Objective C', value: 'clike'},
+  {text: 'OCaml', value: 'mllike'},
+  {text: 'Octave', value: 'octave'},
+  {text: 'Oz', value: 'oz'},
+  {text: 'Pascal', value: 'pascal'},
+  {text: 'PEG.js', value: 'pegjs'},
+  {text: 'Perl', value: 'perl'},
+  {text: 'PHP', value: 'php'},
+  {text: 'Pig', value: 'pig'},
+  {text: 'Plain Text', value: 'null'},
+  {text: 'PLSQL', value: 'sql'},
+  {text: 'PowerShell', value: 'powershell'},
+  {text: 'Properties files', value: 'properties'},
+  {text: 'ProtoBuf', value: 'protobuf'},
+  {text: 'Python', value: 'python'},
+  {text: 'Puppet', value: 'puppet'},
+  {text: 'Q', value: 'q'},
+  {text: 'R', value: 'r'},
+  {text: 'reStructuredText', value: 'rst'},
+  {text: 'RPM Changes', value: 'rpm'},
+  {text: 'RPM Spec', value: 'rpm'},
+  {text: 'Ruby', value: 'ruby'},
+  {text: 'Rust', value: 'rust'},
+  {text: 'SAS', value: 'sas'},
+  {text: 'Sass', value: 'sass'},
+  {text: 'Scala', value: 'clike'},
+  {text: 'Scheme', value: 'scheme'},
+  {text: 'SCSS', value: 'css'},
+  {text: 'Shell', value: 'shell'},
+  {text: 'Sieve', value: 'sieve'},
+  {text: 'Slim', value: 'slim'},
+  {text: 'Smalltalk', value: 'smalltalk'},
+  {text: 'Smarty', value: 'smarty'},
+  {text: 'Solr', value: 'solr'},
+  {text: 'Soy', value: 'soy'},
+  {text: 'SPARQL', value: 'sparql'},
+  {text: 'Spreadsheet', value: 'spreadsheet', alias: ['excel', 'formula']},
+  {text: 'SQL', value: 'sql'},
+  {text: 'Squirrel', value: 'clike'},
+  {text: 'Swift', value: 'swift'},
+  {text: 'sTeX', value: 'stex'},
+  {text: 'LaTeX', value: 'stex'},
+  {text: 'SystemVerilog', value: 'verilog'},
+  {text: 'Tcl', value: 'tcl'},
+  {text: 'Textile', value: 'textile'},
+  {text: 'TiddlyWiki ', value: 'tiddlywiki'},
+  {text: 'Tiki wiki', value: 'tiki'},
+  {text: 'TOML', value: 'toml'},
+  {text: 'Tornado', value: 'tornado'},
+  {text: 'troff', value: 'troff'},
+  {text: 'TTCN', value: 'ttcn'},
+  {text: 'TTCN_CFG', value: 'ttcn-cfg'},
+  {text: 'Turtle', value: 'turtle'},
+  {text: 'TypeScript', value: 'javascript'},
+  {text: 'Twig', value: 'twig'},
+  {text: 'Web IDL', value: 'webidl'},
+  {text: 'VB.NET', value: 'vb'},
+  {text: 'VBScript', value: 'vbscript'},
+  {text: 'Velocity', value: 'velocity'},
+  {text: 'Verilog', value: 'verilog'},
+  {text: 'VHDL', value: 'vhdl'},
+  {text: 'XML', value: 'xml'},
+  {text: 'XQuery', value: 'xquery'},
+  {text: 'Yacas', value: 'yacas'},
+  {text: 'YAML', value: 'yaml'},
+  {text: 'Z80', value: 'z80'},
+  {text: 'mscgen', value: 'mscgen'},
+  {text: 'xu', value: 'mscgen'},
+  {text: 'msgenny', value: 'mscgen'}
+];
+
+// kitchen sink
+// change font size on the fly
+codeMirrorMoreSuperOptionsToolButtonFONT =[
+  {text: '10px', onclick: setCodeMirrorSetFont},
+  {text: '11px', onclick: setCodeMirrorSetFont},
+  {text: '12px', onclick: setCodeMirrorSetFont},
+  {text: '13px', onclick: setCodeMirrorSetFont},
+  {text: '14px', onclick: setCodeMirrorSetFont},
+  {text: '15px', onclick: setCodeMirrorSetFont},
+  {text: '16px', onclick: setCodeMirrorSetFont},
+  {text: '18px', onclick: setCodeMirrorSetFont},
+  {text: '20px', onclick: setCodeMirrorSetFont},
+  {text: '24px', onclick: setCodeMirrorSetFont}
+];
+
+// kitchen sink
+// change wrap style
+codeMirrorMoreSuperOptionsToolButtonWRAP =[
+  {text: 'free', onclick: setCodeMirrorSetWrap},
+  {text: '40', onclick: setCodeMirrorSetWrap},
+  {text: '180', onclick: setCodeMirrorSetWrap}
+];
+
+// kitchen sink
+// change height/max lines
+codeMirrorMoreSuperOptionsToolButtonHEIGHT =[
+  {text: '1', onclick: setCodeMirrorSetHeight},
+  {text: '10', onclick: setCodeMirrorSetHeight},
+  {text: 'Infinity', onclick: setCodeMirrorSetHeight},
+  {text: 'Textarea', onclick: setCodeMirrorSetHeight}
+];
+
+// kitchen sink
+// change theme on the fly
+codeMirrorMoreSuperOptionsToolButtonTHEME = [
+  {text: '3024-day', onclick: setCodeMirrorTheme},
+  {text: '3024-night', onclick: setCodeMirrorTheme},
+  {text: 'abcdef', onclick: setCodeMirrorTheme},
+  {text: 'ambiance', onclick: setCodeMirrorTheme},
+  {text: 'base16-dark', onclick: setCodeMirrorTheme},
+  {text: 'base16-light', onclick: setCodeMirrorTheme},
+  {text: 'bespin', onclick: setCodeMirrorTheme},
+  {text: 'blackboard', onclick: setCodeMirrorTheme},
+  {text: 'cobalt', onclick: setCodeMirrorTheme},
+  {text: 'colorforth', onclick: setCodeMirrorTheme},
+  {text: 'dracula', onclick: setCodeMirrorTheme},
+  {text: 'eclipse', onclick: setCodeMirrorTheme},
+  {text: 'elegant', onclick: setCodeMirrorTheme},
+  {text: 'erlang-dark', onclick: setCodeMirrorTheme},
+  {text: 'hopscotch', onclick: setCodeMirrorTheme},
+  {text: 'icecoder', onclick: setCodeMirrorTheme},
+  {text: 'isotope', onclick: setCodeMirrorTheme},
+  {text: 'lesser-dark', onclick: setCodeMirrorTheme},
+  {text: 'liquibyte', onclick: setCodeMirrorTheme},
+  {text: 'material', onclick: setCodeMirrorTheme},
+  {text: 'mbo', onclick: setCodeMirrorTheme},
+  {text: 'mdn-like', onclick: setCodeMirrorTheme},
+  {text: 'midnight', onclick: setCodeMirrorTheme},
+  {text: 'monokai', onclick: setCodeMirrorTheme},
+  {text: 'neat', onclick: setCodeMirrorTheme},
+  {text: 'neo', onclick: setCodeMirrorTheme},
+  {text: 'night', onclick: setCodeMirrorTheme},
+  {text: 'paraiso-dark', onclick: setCodeMirrorTheme},
+  {text: 'paraiso-light', onclick: setCodeMirrorTheme},
+  {text: 'pastel-on-dark', onclick: setCodeMirrorTheme},
+  {text: 'railscasts', onclick: setCodeMirrorTheme},
+  {text: 'rubyblue', onclick: setCodeMirrorTheme},
+  {text: 'seti', onclick: setCodeMirrorTheme},
+  {text: 'solarized dark', onclick: setCodeMirrorTheme},
+  {text: 'solarized light', onclick: setCodeMirrorTheme},
+  {text: 'the-matrix', onclick: setCodeMirrorTheme},
+  {text: 'tomorrow-night-bright', onclick: setCodeMirrorTheme},
+  {text: 'tomorrow-night-eighties', onclick: setCodeMirrorTheme},
+  {text: 'ttcn', onclick: setCodeMirrorTheme},
+  {text: 'twilight', onclick: setCodeMirrorTheme},
+  {text: 'vibrant-ink', onclick: setCodeMirrorTheme},
+  {text: 'xq-dark', onclick: setCodeMirrorTheme},
+  {text: 'xq-light', onclick: setCodeMirrorTheme},
+  {text: 'yeti', onclick: setCodeMirrorTheme},
+  {text: 'zenburn', onclick: setCodeMirrorTheme}
+];
+
+// kitchen sink toolbar ini
+function codeMirrorMoreSuperOptions(){
+  if(typeof tinymce !== "undefined" && !$("#codeMirrorMoreSuperOptions_wrapper").length){
+    $("body").append("<div id=codeMirrorMoreSuperOptions_wrapper><div id=codeMirrorMoreSuperOptions_wrapper_boss></div><div style=display:none; id=codeMirrorMoreSuperOptions_wrapper_sub></div></div>");
+    tinymce.ui.Factory.create({
+      type: "button",
+      icon: "fullpage",
+      classes:"moreCodeMirrorAttr",
+      tooltip: "CodeMirror settings...",
+      onPostRender:function(){
+        $(".mce-moreCodeMirrorAttr").attr("class","mce-moreCodeMirrorAttr");
+        $(".mce-moreCodeMirrorAttr button").contents().unwrap();
+      },
+      onclick: function(){
+        if($('#codeMirrorMoreSuperOptions_wrapper_sub:hidden').length){
+          $('#codeMirrorMoreSuperOptions_wrapper_sub').show()
+          $('.mce-moreCodeMirrorAttr').addClass('mce-active')
+        }
+        else{
+          $('#codeMirrorMoreSuperOptions_wrapper_sub').hide()
+          $('.mce-moreCodeMirrorAttr').removeClass('mce-active')
+        }
+      }
+    }).renderTo(document.getElementById("codeMirrorMoreSuperOptions_wrapper_boss"));
+    tinymce.ui.Factory.create({
+      type: 'button',
+      icon: 'fullscreen',
+      classes: 'codeMirrorMoreSuperOptionsFS',
+      tooltip: 'Fullscreen',
+      onclick: function(){
+        if(getCodeMirrorCredential().thisWrap.hasClass("codeMirror_editor_fullScreen")){
+          getCodeMirrorCredential().thisWrap.removeClass("codeMirror_editor_fullScreen");
+          $("#codeMirrorMoreSuperOptions_wrapper").removeClass("codeMirror_editor_fullScreen");
+          window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+        }
+        else{
+          getCodeMirrorCredential().thisWrap.addClass("codeMirror_editor_fullScreen")
+          $("#codeMirrorMoreSuperOptions_wrapper").addClass("codeMirror_editor_fullScreen");
+          window[getCodeMirrorCredential().thisCodeMirrorId].refresh()
+        }
+      },
+      onPostRender:function(){
+        // $(".mce-codeMirrorMoreSuperOptions .mce-caret").remove();
+        $(document).on("mouseenter click", ".codeMirror_wrapper_modx", function () {
+          if(!$(this).find("#codeMirrorMoreSuperOptions_wrapper").length){
+            $("#codeMirrorMoreSuperOptions_wrapper").prependTo($(this)).fadeIn();
+            codeMirrorMoreSuperOptions();
+          }
+        })
+      }
+    }).renderTo(document.getElementById("codeMirrorMoreSuperOptions_wrapper_sub"));
+    tinymce.ui.Factory.create({
+      type: 'listbox',
+      icon: 'code',
+      classes: 'codeMirrorMoreSuperOptionsMODE',
+      tooltip: 'Syntax / Mode',
+      menu: codeMirrorMoreSuperOptionsToolButtonMODE,
+      onPostRender: function(){
+        $(".mce-codeMirrorMoreSuperOptionsMODE .mce-caret").remove();
+        $(".mce-codeMirrorMoreSuperOptionsMODE .mce-txt").remove();
+      },
+      onselect: function(){
+        window[getCodeMirrorCredential().thisCodeMirrorId].setOption("mode", this.value())
+        CodeMirror.autoLoadMode(window[getCodeMirrorCredential().thisCodeMirrorId], this.value());
+        window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+        getCodeMirrorCredential().thisSink.text(this.value())
+        $(".mce-codeMirrorMoreSuperOptionsMODE .mce-txt").remove();
+      }
+    }).renderTo(document.getElementById("codeMirrorMoreSuperOptions_wrapper_sub"));
+
+    tinymce.ui.Factory.create({
+      type: 'menubutton',
+      classes: 'codeMirrorMoreSuperOptionsMORE',
+      tooltip: 'Themes and more Options',
+      onPostRender:function(){
+        // $(".mce-codeMirrorMoreSuperOptionsMORE .mce-caret").remove();
+      },
+      menu: [
+      // {
+      //   text: "Show Invisibles",
+      //   classes: "setShowInvisibles",
+      //   onclick: function(){
+      //     if(window[getCodeMirrorCredential().thisCodeMirrorId].getOption("showInvisibles")){
+      //       window[getCodeMirrorCredential().thisCodeMirrorId].setShowInvisibles(false);
+      //     }
+      //     else{
+      //       window[getCodeMirrorCredential().thisCodeMirrorId].setShowInvisibles(true);
+      //     }
+      //   }
+      // },
+      {
+        text: "Refresh Editor",
+        onclick: function(){
+          window[getCodeMirrorCredential().thisCodeMirrorId].refresh();
+        }
+      },
+      {
+        text: "Soft Wrap",
+        menu: codeMirrorMoreSuperOptionsToolButtonWRAP
+      },
+      {
+        text: "Max Height",
+        menu: codeMirrorMoreSuperOptionsToolButtonHEIGHT
+      },
+      {
+        text: "Theme",
+        menu: codeMirrorMoreSuperOptionsToolButtonTHEME
+      },
+      {
+        text: "Font Size",
+        menu: codeMirrorMoreSuperOptionsToolButtonFONT,
+      },
+      ],
+    }).renderTo(document.getElementById("codeMirrorMoreSuperOptions_wrapper_sub"));
+    if(tinymce.editors.length < 1){
+      // fileManagerTopNavModalSkin = MODx.config.assets_url+"components/tinymcewrapper/tinymceskins/modxPericles/"+"skin.min.css";
+      tinymce.DOM.loadCSS(fileManagerTopNavModalSkin+"/skin.min.css");
+    }
+  }
+}
+// ************************** END Kitchen Sink **************************
+
+
+/*#######################################################################################
+   *************** MODX INIT : load applicable JS and CSS files ***************
+#######################################################################################*/
+/*-------------------
+more jargon underneath
+load or not load what files you want to use
+-----------------------------------------------------------*/
+
+
+//load applicable CSS files
+function loadcss(filename){
+  var fileref=document.createElement("link")
+  fileref.setAttribute("rel", "stylesheet")
+  fileref.setAttribute("type", "text/css")
+  fileref.setAttribute("href", filename)
+  if (typeof fileref!="undefined"){
+    document.getElementsByTagName("head")[0].appendChild(fileref);
+   }
+}
+
+function loadThemCSS(){
+  loadcss('[[+CodeMirrorSrc]]codemirror.min.css');
+  loadcss('[[+CodeMirrorSrc]]addon/dialog/dialog.css');
+  loadcss('[[+CodeMirrorSrc]]addon/search/matchesonscrollbar.css');
+  loadcss('[[+CodeMirrorSrc]]addon/display/fullscreen.css');
+  loadcss('[[+CodeMirrorSrc]]addon/fold/foldgutter.css');
+  [[+CodeMirrorTHEME:notempty=`loadcss('[[+CodeMirrorSrc]]theme/[[+CodeMirrorTHEME]].css');`]]
+}
+loadThemCSS();
+CodeMirror.modeURL = "[[+CodeMirrorSrc]]mode/%N/%N.js";
+
+//load applicable JS files
+Ext.Loader.load([
+  '[[++assets_url]]components/tinymcewrapper/tinymceplugins/codemirror/emmet.js',
+  '[[+CodeMirrorSrc]]addon/wrap/hardwrap.min.js',
+  '[[+CodeMirrorSrc]]addon/selection/active-line.min.js',
+  '[[+CodeMirrorSrc]]addon/search/searchcursor.min.js',
+  '[[+CodeMirrorSrc]]addon/scroll/annotatescrollbar.js',
+  '[[+CodeMirrorSrc]]addon/search/matchesonscrollbar.js',
+  '[[+CodeMirrorSrc]]addon/search/jump-to-line.min.js',
+  '[[+CodeMirrorSrc]]addon/search/search.min.js',
+  '[[+CodeMirrorSrc]]addon/dialog/dialog.min.js',
+  '[[+CodeMirrorSrc]]addon/hint/show-hint.min.js',
+  '[[+CodeMirrorSrc]]addon/hint/html-hint.min.js',
+  '[[+CodeMirrorSrc]]addon/hint/xml-hint.min.js',
+  '[[+CodeMirrorSrc]]addon/edit/closetag.min.js',
+  '[[+CodeMirrorSrc]]addon/edit/trailingspace.min.js',
+  '[[+CodeMirrorSrc]]addon/display/fullscreen.js',
+  '[[+CodeMirrorSrc]]addon/fold/foldcode.js',
+  '[[+CodeMirrorSrc]]addon/fold/foldgutter.js',
+  '[[+CodeMirrorSrc]]addon/fold/brace-fold.js',
+  '[[+CodeMirrorSrc]]addon/fold/xml-fold.js',
+  '[[+CodeMirrorSrc]]addon/fold/comment-fold.js',
+  '[[+CodeMirrorSrc]]addon/edit/matchbrackets.min.js',
+  '[[+CodeMirrorSrc]]addon/lint/lint.js',
+  '[[+CodeMirrorSrc]]addon/lint/css-lint.js',
+  '[[+CodeMirrorSrc]]addon/lint/json-lint.js',
+  '[[+CodeMirrorSrc]]addon/lint/javascript-lint.js',
+  '[[+CodeMirrorSrc]]addon/lint/css-lint.js',
+  '[[+CodeMirrorSrc]]addon/mode/loadmode.js',
+  '[[+CodeMirrorSrc]]mode/meta.js'
+ ],
+  function() {
+   Ext.onReady(function () {
+    codeMirrorTextareas();
+   // })
+   },this,{delay:50})
+  },
+  this,
+  'preserveOrder'
+);
+
+emmetForCodeMirrorIsLoaded = true; // this helps other CodeMirror implementations to piggy-back on this emmet

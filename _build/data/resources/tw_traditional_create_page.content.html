@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>[[++site_name]] - [[*pagetitle]]</title>
+ <base href="[[++site_url]]" />
+</head>
+<body>
+<a style="display:block; text-align:center;position: absolute;width: 100%;top: 28px;text-decoration: none;font-size: 20px;" href="javascript:;" onclick="popGal('np-TinyJSONGalleryTV', 'My Nature Gallery', '', '', 1)">CLICK TO OPEN GALLERY MANAGER</a>
+[[!TinyMagicPublisher?
+&npPureMagicNonTraditional=`0`
+&npTraditionalTinyChunk=`TinymceWrapperNPtraditional`
+&usetabs=`0`
+&tabs=`{
+    "Main" :    ["pagetitle","introtext","content"],
+    "Dates" :   ["pub_date", "unpub_date"],
+    "Publish" : ["publish"]
+}`
+&cssfile=``
+&tinymceCDN=`//cdn.tinymce.com/4/tinymce.min.js`
+&autoFileBrowser=`responsivefilemanagerBrowser`
+&elFinderBrowserRTEurl=`[[~[[TinymceWrapperGRF? &knownField=pagetitle &kF=pagetitle &kFv=tw_elfinder_browser &gNuFv=id]]? &scheme=full &rememberLastDir=1 &defaultView=icons &unlocked=1]]`
+&responsivefilemanagerBrowserRTEurl=`[[++assets_url]]components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=1`
+&responsivefilemanagerBrowserRTEtitle=`Responsive FileManager`
+&roxyFilemanBrowserRTEtitle=`Roxy Fileman`
+&roxyFilemanBrowserRTEurl=`[[++assets_url]]components/tinymcewrapper/fileman/roxy.php`
+&parentid=`[[!TinymceWrapperGRF? &knownField=pagetitle &kF=pagetitle &kFv=TinymceWrapper &gNuFv=id]]`
+&templateid=`tw_ImogenTheme`
+&show=`pagetitle,introtext,content,TinymceWrapperServiceTV1,TinymceWrapperServiceTV2,TinymceWrapperServiceTV3,TinymceWrapperServiceTV4,TinymceWrapperCategoryTV1,TinymceWrapperCategoryTV2,TinymceWrapperCategoryTV3,TinymceWrapperCategoryTV4,TinymceWrapperCategoryTV5,TinymceWrapperCategoryTV6,TinymceWrapperImageTV1,TinymceWrapperImageTV2,TinymceWrapperImageTV3,TinymceWrapperImageTV4,TinymceWrapperImageTV5,TinymceWrapperImageTV6,TinymceWrapperMiscTV1,TinymceWrapperMiscTV2,TinyJSONGalleryTV,longtitle,hidemenu,published,description,menutitle,pub_date,unpub_date,parent`
+&required=`pagetitle,content`
+&initdatepicker=`1`
+&filetpl=`twBROWSERnpFileTpl`
+&imagetpl=`twBROWSERnpImageTpl`
+&deletebutton=`1`
+&duplicatebutton=`1`
+&confirmdelete=`1`
+&modxGalleryAssetsUrl =`[[++assets_url]]`
+&TinyJSONGalleryJS = `[[++assets_url]]components/tinymcewrapper/gallery/js/TinyJSONGallery.js`
+&galleryBackUpRTEskin = `[[++assets_url]]/components/tinymcewrapper/tinymceskins/modxPericles`
+]]
+</body>
+</html>

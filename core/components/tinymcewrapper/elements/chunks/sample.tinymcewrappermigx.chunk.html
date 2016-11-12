@@ -1,0 +1,19 @@
+tinymce.init({
+  mode: "exact",
+  elements: "tv[[+tv_id]]",
+  [[$TinymceWrapperCommonCode]]
+  plugins: "autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,link,charmap,searchreplace,textpattern,emoticons,insertdatetime",
+  paste_word_valid_elements: "a,div,b,strong,i,em,h1,h2,h3,p,blockquote,ol,ul,pre",
+  valid_elements: "iframe[*],object[*],audio[*],-span[!title|!class<test test2],a[href|target|class|rel|title|data-ajax|data-iframe],strong,b,-p[class<text-align-left?text-align-center?text-align-right],br,-h1[class|data-ajax|data-iframe],-h2[class|data-ajax|data-iframe],-h3[class|data-ajax|data-iframe],-img[!src|!alt|!class=round_img|data-ajax|data-iframe],em,-blockquote,pre[class],-ol,-ul,-li,-code[class]",
+  valid_children: "-li[ul],-li[ol],-li[div],-strong[*],-em[*],-h1[*],-h2[*],-h3[*],-a[strong|em|h1|h2|h3|p|div],blockquote[p|ol|ul],pre,div",
+  resize: true,
+  autoresize_min_height: 100,
+  autoresize_max_height: 400,
+  toolbar: "newdocument | fullscreen preview | undo redo | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image | styleselect | charmap emoticons insertdatetime | searchreplace",
+  contextmenu: "removeformat | link | image | code",
+  setup: function(editor) {
+    editor.on('mouseleave', function(evt) {
+      tinyMCE.activeEditor.save();
+    });
+  }
+});

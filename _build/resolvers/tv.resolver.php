@@ -2,8 +2,8 @@
 /**
 * Resolver to connect TVs to templates for TinymceWrapper extra
 *
-* Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-24-2015
+* Copyright 2016 by donShakespeare donShakespeare@gmail.com
+* Created on 05-02-2016
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -50,58 +50,103 @@ if ($object->xpdo) {
 
             $intersects = array (
                 0 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'TinymceWrapperTV1',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperMiscTV1',
                   'rank' => 0,
                 ),
                 1 =>  array (
-                  'templateid' => 'default',
-                  'tmplvarid' => 'fileRichTv',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperMiscTV2',
                   'rank' => 0,
                 ),
                 2 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'fileRichTv',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperServiceTV1',
                   'rank' => 0,
                 ),
                 3 =>  array (
-                  'templateid' => 'default',
-                  'tmplvarid' => 'imageRichTv',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperServiceTV2',
                   'rank' => 0,
                 ),
                 4 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'imageRichTv',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperServiceTV3',
                   'rank' => 0,
                 ),
                 5 =>  array (
-                  'templateid' => 'default',
-                  'tmplvarid' => 'imageRichTv2',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperServiceTV4',
                   'rank' => 0,
                 ),
                 6 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'imageRichTv2',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV1',
                   'rank' => 0,
                 ),
                 7 =>  array (
-                  'templateid' => 'default',
-                  'tmplvarid' => 'fileRichTv2',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV2',
                   'rank' => 0,
                 ),
                 8 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'fileRichTv2',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV3',
                   'rank' => 0,
                 ),
                 9 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'TinymceWrapperTV3',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV4',
                   'rank' => 0,
                 ),
                 10 =>  array (
-                  'templateid' => 'TinymceWrapper',
-                  'tmplvarid' => 'TinymceWrapperTV2',
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV5',
+                  'rank' => 0,
+                ),
+                11 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperCategoryTV6',
+                  'rank' => 0,
+                ),
+                12 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV1',
+                  'rank' => 0,
+                ),
+                13 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV2',
+                  'rank' => 0,
+                ),
+                14 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV3',
+                  'rank' => 0,
+                ),
+                15 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV4',
+                  'rank' => 0,
+                ),
+                16 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV5',
+                  'rank' => 0,
+                ),
+                17 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperImageTV6',
+                  'rank' => 0,
+                ),
+                18 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinymceWrapperTags',
+                  'rank' => 0,
+                ),
+                19 =>  array (
+                  'templateid' => 'tw_ImogenTheme',
+                  'tmplvarid' => 'TinyJSONGalleryTV',
                   'rank' => 0,
                 ),
             );

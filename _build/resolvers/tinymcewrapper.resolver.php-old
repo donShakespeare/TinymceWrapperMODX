@@ -1,0 +1,164 @@
+<?php
+/**
+* Resource resolver  for TinymceWrapper extra.
+* Sets template, parent, and (optionally) TV values
+*
+* Copyright 2016 by donShakespeare donShakespeare@gmail.com
+* Created on 04-25-2016
+*
+ * TinymceWrapper is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * TinymceWrapper is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * TinymceWrapper; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+* @package tinymcewrapper
+* @subpackage build
+*/
+
+/* @var $object xPDOObject */
+/* @var $modx modX */
+/* @var $parentObj modResource */
+/* @var $templateObj modTemplate */
+
+/* @var array $options */
+
+if (!function_exists('checkFields')) {
+    function checkFields($required, $objectFields) {
+        global $modx;
+        $fields = explode(',', $required);
+        foreach ($fields as $field) {
+            if (! isset($objectFields[$field])) {
+                $modx->log(modX::LOG_LEVEL_ERROR, '[Resource Resolver] Missing field: ' . $field);
+                return false;
+            }
+        }
+        return true;
+    }
+}
+if($object->xpdo) {
+    $defVal = '[{"Location": "'.basename(MODX_ASSETS_URL).'/components/tinymcewrapper/gallery/stockImages/nature/&autoCreateThumb=1&justJSON=0&options=w=178,h=117,zc=t"},{"name":"SIOCMQf - Imgur.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/SIOCMQf - Imgur.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/SIOCMQf - Imgur.gif","hidden":"0","desc":"SIOCMQf - Imgur","index":"1","time":"1447783185","tag":"","lerror":"0"},{"name":"Seaofclouds - 2880x1800.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/Seaofclouds - 2880x1800.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/Seaofclouds - 2880x1800.gif","hidden":"0","desc":"Seaofclouds - 2880x1800","index":"2","time":"1447783184","tag":"","lerror":"0"},{"name":"Somniatis.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/Somniatis.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/Somniatis.gif","hidden":"0","desc":"Somniatis","index":"3","time":"1447783187","tag":"","lerror":"0"},{"name":"SpringWP1920.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/SpringWP1920.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/SpringWP1920.gif","hidden":"0","desc":"SpringWP1920","index":"4","time":"1447783189","tag":"","lerror":"0"},{"name":"Watercolor Sunset HD.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/Watercolor Sunset HD.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/Watercolor Sunset HD.gif","hidden":"0","desc":"Watercolor Sunset HD","index":"5","time":"1447783190","tag":"","lerror":"0"},{"name":"White Front HD.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/White Front HD.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/White Front HD.gif","hidden":"0","desc":"White Front HD","index":"6","time":"1447783190","tag":"","lerror":"0"},{"name":"sea nnfoam fhd 1920x1080.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/sea nnfoam fhd 1920x1080.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/sea nnfoam fhd 1920x1080.gif","hidden":"0","desc":"sea nnfoam fhd 1920x1080","index":"7","time":"1447783183","tag":"","lerror":"0"},{"name":"spring-1920x1080.gif","src":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/thumb/spring-1920x1080.gif","url":"'.MODX_ASSETS_URL.'components/tinymcewrapper/gallery/stockImages/nature/spring-1920x1080.gif","hidden":"0","desc":"spring-1920x1080","index":"8","time":"1447783188","tag":"","lerror":"0"}]';
+    $tv1 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/1.jpg';
+    $tv2 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/2.jpg';
+    $tv3 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/3.jpg';
+    $tv4 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/4.jpg';
+    $tv5 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/5.jpg';
+    $tv6 = basename(MODX_ASSETS_URL).'/components/tinymcewrapper/frontend/imogen_theme/img/portfolio/6.jpg';
+    $modx =& $object->xpdo;
+    switch ($options[xPDOTransport::PACKAGE_ACTION]) {
+        case xPDOTransport::ACTION_INSTALL:
+        case xPDOTransport::ACTION_UPGRADE:
+            $intersects = array (
+                0 =>  array (
+                  'pagetitle' => 'TinymceWrapper',
+                  'parent' => '0',
+                  'template' => 'tw_ImogenTheme',
+                  'tvValues' =>  array ('TinyJSONGalleryTV' => $defVal)
+                ),
+                1 =>  array (
+                  'pagetitle' => 'tw_elfinder_browser',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_Empty',
+                ),
+                2 =>  array (
+                  'pagetitle' => 'tw_magic_create_page',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_ImogenTheme'
+                ),
+                3 =>  array (
+                  'pagetitle' => 'tw_traditional_create_page',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_Empty'
+                  )
+            );
+            $chunk = $modx->getObject('modChunk', array('name' => 'NatureAlbum_myGallery'));
+            $chunk->setContent($defVal);
+            $chunk->save();
+
+            $tv = $modx->getObject('modTemplateVar', array('name' => 'TinyJSONGalleryTV'));
+            $tv->set('default_text', '[{"Location": "'.basename(MODX_ASSETS_URL).'/components/tinymcewrapper/gallery/stockImages/nature/&autoCreateThumb=1&justJSON=0&options=w=178,h=117,zc=t"}]');
+            $tv->save();
+
+            $tv11 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV1'));
+            $tv11->set('default_text', $tv1);
+            $tv11->save();
+
+            $tv22 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV2'));
+            $tv22->set('default_text', $tv2);
+            $tv22->save();
+
+
+            $tv33 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV3'));
+            $tv33->set('default_text', $tv3);
+            $tv33->save();
+
+
+            $tv44 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV4'));
+            $tv44->set('default_text', $tv4);
+            $tv44->save();
+
+
+            $tv55 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV5'));
+            $tv55->set('default_text', $tv5);
+            $tv55->save();
+
+
+            $tv66 = $modx->getObject('modTemplateVar', array('name' => 'TinymceWrapperImageTV6'));
+            $tv66->set('default_text', $tv6);
+            $tv66->save();
+
+            if (is_array($intersects)) {
+                foreach ($intersects as $k => $fields) {
+                    /* make sure we have all fields */
+                    if (! checkFields('pagetitle,parent,template', $fields)) {
+                        continue;
+                    }
+                    $resource = $modx->getObject('modResource', array('pagetitle' => $fields['pagetitle']));
+                    if (! $resource) {
+                        continue;
+                    }
+                    if ($fields['template'] == 'default') {
+                        $resource->set('template', $modx->getOption('default_template'));
+                    } else {
+                        $templateObj = $modx->getObject('modTemplate', array('templatename' => $fields['template']));
+                        if ($templateObj) {
+                            $resource->set('template', $templateObj->get('id'));
+                        } else {
+                            $modx->log(modX::LOG_LEVEL_ERROR, '[Resource Resolver] Could not find template: ' . $fields['template']);
+                        }
+                    }
+                    if (!empty($fields['parent'])) {
+                        if ($fields['parent'] != 'default') {
+                            $parentObj = $modx->getObject('modResource', array('pagetitle' => $fields['parent']));
+                            if ($parentObj) {
+                                $resource->set('parent', $parentObj->get('id'));
+                            } else {
+                                $modx->log(modX::LOG_LEVEL_ERROR, '[Resource Resolver] Could not find parent: ' . $fields['parent']);
+                            }
+                        }
+                    }
+
+                    if (isset($fields['tvValues'])) {
+                        foreach($fields['tvValues'] as $tvName => $value) {
+                            $resource->setTVValue($tvName, $value);
+                        }
+
+                    }
+                    $resource->save();
+                }
+
+            }
+            break;
+
+        case xPDOTransport::ACTION_UNINSTALL:
+            break;
+    }
+}
+
+return true;

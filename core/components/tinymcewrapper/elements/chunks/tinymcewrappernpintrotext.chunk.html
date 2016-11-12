@@ -1,0 +1,14 @@
+tinymce.init({
+  name: "Article Summary",
+  selector: "[data-tiny=np-introtext]",
+  [[+commonTinyMCECode]]
+  plugins: "paste autosave save contextmenu",
+  paste_word_valid_elements: "",
+  menubar: false,
+  toolbar: false,
+  //toolbar:"undo redo bubbleBarOptionsButton",
+  invalid_elements: "*",
+  valid_elements: "a strong b",
+  valid_children: "",
+  contextmenu: "reset undo redo"
+});

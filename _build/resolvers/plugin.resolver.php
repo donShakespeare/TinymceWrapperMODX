@@ -2,8 +2,8 @@
 /**
 * Resolver to connect plugins to system events for TinymceWrapper extra
 *
-* Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-24-2015
+* Copyright 2016 by donShakespeare donShakespeare@gmail.com
+* Created on 05-02-2016
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -71,19 +71,55 @@ if ($object->xpdo) {
             $intersects = array (
                 0 =>  array (
                   'pluginid' => 'TinymceWrapper',
-                  'event' => 'OnDocFormPrerender',
+                  'event' => 'OnChunkFormPrerender',
                   'priority' => '0',
                   'propertyset' => '0',
                 ),
                 1 =>  array (
                   'pluginid' => 'TinymceWrapper',
-                  'event' => 'OnManagerPageInit',
+                  'event' => 'OnDocFormPrerender',
                   'priority' => '0',
                   'propertyset' => '0',
                 ),
                 2 =>  array (
                   'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnFileEditFormPrerender',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                3 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnManagerPageInit',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                4 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnPluginFormPrerender',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                5 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnRichTextBrowserInit',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                6 =>  array (
+                  'pluginid' => 'TinymceWrapper',
                   'event' => 'OnRichTextEditorRegister',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                7 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnSnipFormPrerender',
+                  'priority' => '0',
+                  'propertyset' => '0',
+                ),
+                8 =>  array (
+                  'pluginid' => 'TinymceWrapper',
+                  'event' => 'OnTempFormPrerender',
                   'priority' => '0',
                   'propertyset' => '0',
                 ),
@@ -116,12 +152,13 @@ if ($object->xpdo) {
                     if ($pluginEvent) {
                         $pluginEvent->set('event', $fields['event']);
                         $pluginEvent->set('pluginid', (integer) $plugin->get('id'));
-                        $pluginEvent->set('priority', (integer) $fields['priority']);
-                        if ($propertySetObj) {
-                            $pluginEvent->set('propertyset', (integer) $propertySetObj->get('id'));
-                        } else {
-                            $pluginEvent->set('propertyset', 0);
-                        }
+                        // $pluginEvent->set('priority', (integer) $fields['priority']);
+                        $pluginEvent->set('priority', 10;
+                        // if ($propertySetObj) {
+                        //     $pluginEvent->set('propertyset', (integer) $propertySetObj->get('id'));
+                        // } else {
+                        //     $pluginEvent->set('propertyset', 0);
+                        // }
 
                     }
                     if (! $pluginEvent->save()) {

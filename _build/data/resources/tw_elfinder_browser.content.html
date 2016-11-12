@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>[[++site_name]] - elFinder 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2" />
+    <!-- jQuery and jQuery UI (REQUIRED) -->
+    <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- elFinder CSS (REQUIRED) -->
+    <link rel="stylesheet" type="text/css" href="[[++assets_url]]components/tinymcewrapper/elfinder/css/elfinder.min.css">
+    <link rel="stylesheet" type="text/css" href="[[++assets_url]]components/tinymcewrapper/elfinder/css/theme.css">
+    [[!TinymceWrapperGetUrlParam:is=`moono`:then=`<link rel="stylesheet" type="text/css" media="screen" href="[[++assets_url]]components/tinymcewrapper/elfinderthemes/moono/css/theme.css">`? &name=`theme` &max=`5`]]
+    [[!TinymceWrapperGetUrlParam:is=`windows10`:then=`<link rel="stylesheet" type="text/css" media="screen" href="[[++assets_url]]components/tinymcewrapper/elfinderthemes/windows-10/css/theme.css">`? &name=`theme` &max=`9`]]
+    
+    <!-- elFinder JS (REQUIRED) -->
+    <script src="[[++assets_url]]components/tinymcewrapper/elfinder/js/elfinder.min.js"></script>
+    <!-- elFinder translation (OPTIONAL)
+    <script src="js/i18n/elfinder.ru.js"></script>-->
+    <!-- elFinder initialization (REQUIRED) -->
+    <script type="text/javascript" charset="utf-8">
+    var FileBrowserDialogue = {
+        init: function() {
+        // Here goes your code for setting your custom things onLoad.
+        },
+        mySubmit: function (Url) {
+            // pass selected file path to TinyMCE
+            parent.tinymce.activeEditor.windowManager.getParams().oninsert(Url);
+            // close popup window
+            parent.tinymce.activeEditor.windowManager.close();
+        }
+    }
+    // the official getQueryVariable is no longer reliable ... use MODX/PHP instead
+    /*function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }*/
+
+    // Documentation for client options:
+    // https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
+    $(document).ready(function() {
+        $('#elfinder').elfinder({
+            onlyMimes: [[!TinymceWrapperGetUrlParam? &name=`onlyMimes` &default=`[]`]], // see docs ... careful! snippet not surrounded by apostrophe
+            validName: '/^[^un]$/',
+            defaultView: '[[!TinymceWrapperGetUrlParam? &name=`defaultView` &default=`icons`]]', // or list
+            sort: '[[!TinymceWrapperGetUrlParam? &name=`sort` &default=`nameDirsFirst`]]',
+            /* nameDirsFirst - sort by name, directory first
+            kindDirsFirst - sort by kind, name, directory first
+            sizeDirsFirst - sort by size, name, directory first
+            name - sort by name
+            kind - sort by kind, name
+            size - sort by size, name
+            */
+            sortDirect: '[[!TinymceWrapperGetUrlParam? &name=`sortDirect` &default=`asc`]]', // or desc
+            commands : [
+             'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
+            'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy',
+            'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
+            'resize', 'sort'
+            ],
+            getFileCallback: function(file) { // editor callback
+                // file.url - commandsOptions.getfile.onlyURL = false (default)
+                // file     - commandsOptions.getfile.onlyURL = true
+                FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+            },
+
+            ui:['toolbar','places', 'tree', 'path', 'stat'],
+
+            uiOptions : {
+                // toolbar configuration
+                toolbar : [
+                    ['back', 'forward'],
+                    //['reload'],
+                    // ['home', 'up'], //not supported in Windows-10 theme
+                    ['up'],
+                    ['mkdir', 'mkfile', 'upload'],
+                    ['open', 'download', 'getfile'],
+                    ['info'],
+                    ['quicklook'],
+                    ['copy', 'cut', 'paste'],
+                    ['rm'],
+                    ['duplicate', 'rename', 'edit', 'resize'],
+                    ['extract', 'archive'],
+                    ['search'],
+                    ['view'],
+                    ['help']
+                ],
+
+                // directories tree options
+                tree : {
+                    // expand current root on init
+                    openRootOnLoad : true,
+                    // auto load current dir parents
+                    syncTree : true
+                },
+
+                // navbar options
+                navbar : {
+                    minWidth : 250,
+                    maxWidth : 500
+                },
+
+                // current working directory options
+                cwd : {
+                    // display parent directory in listing as ".."
+                    oldSchool : true
+                }
+            },
+
+            placesFirst:true,
+
+            dateFormat: 'M d, Y h:i A',
+
+            disableShortcuts: false,
+
+            contextmenu : {
+                // navbarfolder menu
+                navbar : ['open', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'info'],
+
+                // current directory menu
+                cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'info'],
+
+                // current directory file menu
+                files  : [
+        'getfile', '|','open', 'quicklook', '|', 'download', '|', 'copy', 'cut', 'paste', 'duplicate', '|',
+        'rm', '|', 'edit', 'rename', 'resize', '|', 'archive', 'extract', '|', 'info'
+                ]
+            },
+            resizable: false,
+
+            rememberLastDir : [[!TinymceWrapperGetUrlParam? &name=`rememberLastDir` &default=`0` &int=`1` &max=`1`]],
+
+            useBrowserHistory : [[!TinymceWrapperGetUrlParam? &name=`useBrowserHistory` &default=`0` &int=`1` &max=`1`]],
+
+            customData : {
+                unlocked: [[!TinymceWrapperGetUrlParam? &name=`unlocked` &default=`0` &int=`1` &max=`1`]], //option is '1'
+                folder: "[[!TinymceWrapperGetUrlParam? &name=`folder` &default=`null` &max=`50`]]",
+                hide: "[[!TinymceWrapperGetUrlParam? &name=`hide` &default=`false` &max=`5`]]", // options 1/2/3/4/p (e.g .com?hide=1234p OR e.g .com?hide=14p)
+                pset: "[[!TinymceWrapperGetUrlParam? &name=`pset` &default=`Default` &max=`20`]]" //(e.g .com?pset=myCustomSet)
+            },
+
+            url : '[[++assets_url]]components/tinymcewrapper/browserConnectors/elfinder.php'  // connector URL (REQUIRED - DO NOT TOUCH)
+            // , lang: 'ru'                    // language (OPTIONAL)
+        });
+    });
+    $(window).resize(function(){
+        $("#elfinder").css("height", $(window).height()*0.97);
+    })
+    </script>
+  </head>
+  <body style="overflow:hidden; background-color:#fff;">
+    <div id="elfinder"></div>
+  </body>
+</html>

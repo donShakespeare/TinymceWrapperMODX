@@ -2,8 +2,8 @@
 /**
  * plugins transport file for TinymceWrapper extra
  *
- * Copyright 2015 by donShakespeare donShakespeare@gmail.com
- * Created on 07-24-2015
+ * Copyright 2016 by donShakespeare donShakespeare@gmail.com
+ * Created on 05-02-2016
  *
  * @package tinymcewrapper
  * @subpackage build
@@ -28,7 +28,7 @@ $plugins = array();
 $plugins[1] = $modx->newObject('modPlugin');
 $plugins[1]->fromArray(array (
   'id' => 1,
-  'property_preprocess' => false,
+  'property_preprocess' => true,
   'name' => 'TinymceWrapper',
   'description' => 'Survive upgrades! Duplicate the Chunks, retain their original names with an added SUFFIX. Create dedicated PropertySet properties. Default properties will be overridden.
 Include no script tags in any of the chunks.

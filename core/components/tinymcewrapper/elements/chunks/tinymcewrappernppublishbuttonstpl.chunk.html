@@ -1,0 +1,700 @@
+function popNPfields(target, title, width, height, okay) {
+  target = $(target);
+  var $inline = $('<div>').hide().insertBefore(target);
+  tinymce.get("tmpTempEditor").windowManager.open({
+    title: title ? title : "Modal Window",
+    width: 550,
+    height: height ? height : $(target).height(),
+    classes: "popNPfields",
+    style: "padding:10px;",
+    autoScroll: false,
+    items: [{
+      classes: "popNPfields",
+      type: 'container',
+      onPostRender: function() {
+        $(target).appendTo(".mce-popNPfields > .mce-container-body");
+        $(".mce-popNPfields .mce-close").on("click", function(e) {
+          $inline.replaceWith(target);
+          tinymce.get("tmpTempEditor").windowManager.close();
+          e.preventDefault;
+        });
+      }
+    }],
+    buttons: [{
+      text: okay ? okay : "Okay",
+      onclick: function() {
+        $inline.replaceWith(target);
+        tinymce.get("tmpTempEditor").windowManager.close();
+      }
+    }]
+  });
+}
+
+function stateToggle() {
+  var self = this;
+  tinymce.each(tinymce.editors, function(editor) {
+    var elm = $(editor.targetElm).data("tiny");
+    if(elm) {
+      editor.on('nodeChange', function() {
+        self.disabled(!editor.isDirty())
+      });
+    }
+  });
+}
+function saveDetails(){
+  //add as many fields as you like
+  twNPhideFromMenu = twNPpublished = twNPpublishedby = twNPpublishedon = twNPpubDate = twNPunpubDate = twNPmenuTitle = twNPmenuIndex = twNPalias = twNPtags =  twNPrichtext = twNPlongTitle = twNPparentList = twNPtemplateList = twNPdeleted = twNPtemplateListSelVal = twNPparentListSelVal = '';
+  if ($("#np-published").length) {
+    twNPpublished = {
+      label: 'Published',
+      type: 'checkbox',
+      autofocus: false,
+      onchange: function(){
+        var checkbox = document.getElementById("np-published");
+        if(this.value()){
+          checkbox.checked = true;
+          checkbox.value = 1;
+          $("input[name=published]").val(1);
+        }
+        else{
+          checkbox.checked = false;
+          checkbox.value = '';
+          $("input[name=published]").val('');
+        }
+      },
+      onPostRender: function(){
+        if(document.getElementById('np-published').checked) {
+          this.value(1);
+        }
+      }
+    }
+  }
+  if ($("#np-richtext").length) {
+    twNPrichtext = {
+      label: 'Richtext',
+      type: 'checkbox',
+      autofocus: false,
+      onchange: function(){
+        var checkbox = document.getElementById("np-richtext");
+        if(this.value()){
+          checkbox.checked = true;
+          checkbox.value = 1;
+        }
+        else{
+          checkbox.checked = false;
+          checkbox.value = '';
+        }
+      },
+      onPostRender: function(){
+        if(document.getElementById('np-richtext').checked) {
+          this.value(1);
+        }
+      }
+    }
+  }
+  if($("#np-hidemenu").length){
+    twNPhideFromMenu = {
+      label: 'Hide from Menu',
+      type: 'checkbox',
+      onchange: function(){
+        var checkbox = document.getElementById("np-hidemenu");
+        if(this.value()){
+          checkbox.checked = true;
+          checkbox.value = 1;
+        }
+        else{
+          checkbox.checked = false;
+          checkbox.value = '';
+        }
+      },
+      onPostRender: function(){
+        if(document.getElementById('np-hidemenu').checked) {
+          this.value(1);
+        }
+      }
+    }
+  }
+  if ($("#pub_date").length) {
+    twNPpubDate = {
+      type: 'textbox',
+      classes: 'pubDate',
+      tooltip: 'Publish Future Date: Y-M-D format',
+      label: 'Publish Date',
+      maxWidth: 100,
+      onchange: function(){
+        $("#pub_date").val(this.value())
+      },
+      onPostRender:function(){
+        this.value($("#pub_date").val());
+      }
+    }
+  }
+  if ($("#publishedon").length) {
+    twNPpublishedon = {
+      type: 'textbox',
+      classes: 'publishedon',
+      tooltip: 'Published Date: Y-M-D format',
+      label: 'Published On',
+      maxWidth: 100,
+      onchange: function(){
+        $("#publishedon").val(this.value())
+      },
+      onPostRender:function(){
+        this.value($("#publishedon").val());
+      }
+    }
+  }
+  if ($("#np-publishedby").length) {
+    twNPpublishedby = {
+      type: 'textbox',
+      classes: 'publishedby',
+      tooltip: 'Published By',
+      label: 'Published By',
+      maxWidth: 35,
+      onchange: function(){
+        $("#np-publishedby").val(this.value())
+      },
+      onPostRender:function(){
+        this.value($("#np-publishedby").val());
+      }
+    }
+  }
+  if ($("#unpub_date").length) {
+    twNPunpubDate = {
+      type: 'textbox',
+      classes: 'unpubDate',
+      tooltip: 'Unpublish Date: Y-M-D format',
+      label: 'Unpublish Date',
+      maxWidth: 100,
+      onchange: function(){
+        $("#unpub_date").val(this.value())
+      },
+      onPostRender:function(){
+        this.value($("#unpub_date").val());
+      }
+    }
+  }
+  if ($("#np-menutitle").length) {
+    twNPmenuTitle = {
+      type: 'textbox',
+      classes: 'menuTitle',
+      tooltip: 'Menu Title',
+      label: 'Menu Title',
+      onchange: function(){
+        $("#np-menutitle").val(this.value())
+      },
+      onPostRender: function() {
+        this.value($("#np-menutitle").val());
+      }
+    }
+  }
+  if($('#np-existingTags option').length){
+    var maxWidthTags = 191;
+    var tooltipsTags = 'All Tags are sanitized: no spaces, special xters etc. Use Drop Down to access Existing Tags from your site - duplicates will be removed upon selection';
+    var usedNames = {};
+    $("#np-existingTags option").each(function () {
+      if(usedNames[this.text]) {
+          $(this).attr({'title':'Duplicates are disabled','disabled':'disabled'});
+      } else {
+          usedNames[this.text] = this.value;
+      }
+    });
+    $("#np-existingTags optgroup").each(function () {
+      if(!$(this).children('option').length){
+        $(this).remove()
+      }
+    })
+  }
+  else{
+    var maxWidthTags = '';
+    var tooltipsTags = 'Resource Tags';
+  }
+  if ($("#np-"+twTAGtvID).length) {
+    twNPtags = {
+      type: 'textbox',
+      classes: 'articlestags',
+      tooltip: tooltipsTags,
+      label: 'Resource Tags',
+      maxWidth: maxWidthTags,
+      onchange: function(){
+        $("#np-"+twTAGtvID).val(this.value())
+      },
+      onPostRender: function() {
+        this.value($("#np-"+twTAGtvID).val());
+        if($('#np-existingTags option').length){
+          this.value($("#np-"+twTAGtvID).val()
+          // .replace(/[^-,_A-Za-z0-9]+/g, '')     // .replace(/ /g,'')
+          .replace(/[^,A-Za-z0-9]+/g, '')
+          .replace(/^[,\s]+|[,\s]+$/g, '')
+          .replace(/,[,\s]*,/g, ','));
+          $('.mce-articlestags').attr("placeholder", "Please enter valid Tags here...").css({'padding-right':'25px'}).parent().append( $('#np-existingTags').clone().addClass('mce-np-existingTags').css({'position': 'absolute','top':'0','bottom':'0','margin':'auto', 'right':'0','width':'18px'}) )
+
+          $('.mce-np-existingTags option')
+          .each(function(){
+              var optText = $(this).text()
+              .replace(/[^,A-Za-z0-9]+/g, '');
+              $(this).html(optText);
+              $(this).val(optText);
+            })
+          $('.mce-np-existingTags')
+          .prop('selectedIndex',-1)
+          .on('change',function(){
+              var thisVal = $( ".mce-np-existingTags .twTagOptions:selected" ).val();
+              var val = $(".mce-articlestags").val()
+              .replace(/[^,A-Za-z0-9]+/g, '')
+              .replace(/^[,\s]+|[,\s]+$/g, '')
+              .replace(/,[,\s]*,/g, ',');
+              var tags = val ? val.split(',') : [];
+              var index = tags.indexOf(thisVal);
+              if (index > -1) {
+                tags.splice(index, 1);
+              } else {
+                tags.push(thisVal);
+              }
+              $("#np-"+twTAGtvID+", .mce-articlestags").val(tags.join(','));
+              // $('.mce-np-existingTags').prop('selectedIndex',-1);
+              });
+        }
+      }
+    }
+  }
+  if ($("#np-menuindex").length) {
+    twNPmenuIndex = {
+      type: 'textbox',
+      classes: 'menuindex',
+      tooltip: 'Menu Index',
+      label: 'Menu Index',
+      maxWidth: 35,
+      onchange: function(){
+        $("#np-menuindex").val(this.value())
+      },
+      onPostRender: function() {
+        this.value($("#np-menuindex").val());
+      }
+    }
+  }
+  if ($("#np-alias").length) {
+    twNPalias = {
+      type: 'textbox',
+      classes: 'alias',
+      tooltip: 'Resource Alias',
+      label: 'Resource Alias',
+      onchange: function(){
+        $("#np-alias").val(this.value())
+      },
+      onPostRender: function() {
+        this.value($("#np-alias").val());
+      }
+    }
+  }
+  if ($("#np-longtitle").length) {
+    twNPlongTitle = {
+      type: 'textbox',
+      classes: 'longTitle',
+      tooltip: 'Long Title',
+      label: 'Long Title',
+      onchange: function(){
+        $("#np-longtitle").val(this.value())
+      },
+      onPostRender: function() {
+        this.value($("#np-longtitle").val());
+      }
+    }
+  }
+  if ($("#np-parent-container select option").length) {
+    twNPparentListValues = [];
+    $("#np-parent-container option").each(function(){
+      var text = $(this).text();
+      var val = $(this).val();
+      if($(this).is(':selected')){
+        twNPparentListSelVal = val;
+      }
+      twNPparentListValues.push(
+        {
+          text: text,
+          value:val,
+          onselect: function() {
+            $("#np-parent-container select").val(this.value());
+          }
+        }
+      )
+    });
+    if(twNPparentListSelVal){
+      twNPparentList = {
+        type: 'listbox',
+        classes: 'parentList',
+        values: twNPparentListValues,
+        tooltip: 'Parent Resources',
+        label: 'Parent',
+        onPostRender:function(){
+          this.value(twNPparentListSelVal);
+        }
+      }
+    }
+  }
+  if ($("#np-template-container select option").length) {
+    twNPtemplateListValues = [];
+    $("#np-template-container option").each(function(){
+      var text = $(this).text();
+      var val = $(this).val();
+      if($(this).is(':selected')){
+        twNPtemplateListSelVal = val;
+      }
+      twNPtemplateListValues.push(
+        {
+          text: text,
+          value:val,
+          onselect: function() {
+            $("#np-template-container select").val(this.value());
+          }
+        }
+      )
+    });
+    if(twNPtemplateListSelVal){
+      twNPtemplateList = {
+        type: 'listbox',
+        classes: 'templateList',
+        values: twNPtemplateListValues,
+        tooltip: 'Templates',
+        label: 'Template',
+        onPostRender:function(){
+          this.value(twNPtemplateListSelVal);
+        }
+      }
+    }
+  }
+  if ($("#np-deleted").length) {
+    twNPdeleted = {
+      type: 'checkbox',
+      classes: 'npDeleted',
+      // tooltip: 'Marks the resource for deletion',
+      label: 'Mark Resource For Deletion',
+      onchange: function(){
+        var checkbox = document.getElementById("np-deleted");
+        if(this.value()){
+          checkbox.checked = true;
+          checkbox.value = 1;
+          var tthis = this;
+          if(npCreate == 1){
+            tinymce.get("tmpTempEditor").windowManager.confirm("Delete this resource immediately?", function(s) {
+              if (s) {
+                $("#newspublisherForm").submit();
+              } else {
+                checkbox.checked = false;
+                checkbox.value = '';
+                tthis.value(0);
+              }
+            });
+          } else{
+              tinymce.get("tmpTempEditor").windowManager.alert("Not applicable here", function(){tthis.value(0)});
+          }
+        }
+        else{
+          checkbox.checked = false;
+          checkbox.value = '';
+        }
+      },
+      onPostRender:function(){
+        if(document.getElementById('np-deleted').checked) {
+          this.value(1);
+        }
+      }
+    }
+  }
+
+  tinymce.get("tmpTempEditor").windowManager.open({
+    title: 'MODX Resource Details',
+    classes: 'resourceDetails',
+    bodyType: 'tabpanel',
+    activateTab: 2,
+    // width: 300,
+    // minHeight: 255,
+    autoScroll:true,
+    onPostRender: function() {
+      // $(".mce-resourceDetails .mce-close").remove()
+      // $(".mce-resourceDetails .mce-foot .mce-widget *:not(.mce-saveMODX)").remove()
+      // var thisAppendTo = $(".mce-foot > .mce-container-body.mce-abs-layout").attr('id')
+      // tinymce.ui.Factory.create({
+      //   type: 'button',
+      // }).renderTo(document.getElementById(thisAppendTo));
+    },
+    body: [
+    {
+      title: "Published (by)",
+      type: "form",
+      items: [
+        twNPpublished,
+        twNPpublishedon,
+        twNPpubDate,
+        twNPunpubDate,
+        twNPpublishedby
+      ]
+    },
+    {
+      title: "Resource Details",
+      type: "form",
+      items: [
+        twNPtags,
+        twNPalias,
+        twNPlongTitle,
+        twNPparentList,
+        twNPtemplateList,
+        twNPrichtext
+      ]
+    },
+    {
+      title: "Navigation",
+      type: "form",
+      items: [
+        twNPhideFromMenu,
+        twNPmenuTitle,
+        twNPmenuIndex
+      ]
+    },
+    {
+      title: "Delete",
+      style: 'color:red!important;',
+      type: "form",
+      items: [
+        twNPdeleted
+      ]
+    }
+    ],
+    buttons:[
+    {
+      text: 'Save Changes to MODX',
+      tooltip: 'This will Save to MODX all your changes',
+      classes: 'saveMODX',
+      active: true,
+      autofocus: true,
+      style: 'position:absolute;top:10px;left:8px;',
+      onclick:saveArticle
+    }
+
+    ]
+  })
+}
+
+function saveArticle() {
+  dontDoThat = 0;
+  tinymce.each(tinymce.editors, function(editor) {
+    var elm = $(editor.targetElm).data("tiny");
+    if(elm) {
+      var tinyName = editor.getParam("name");
+      var more = "";
+      if($(".mce-resourceDetails").length){
+        var more = "Close the Resource Details modal window to see the field\n\r";
+      }
+      if ($(editor.getBody()).text().trim() == tinyName) {
+        dontDoThat++;
+        if(dontDoThat < 2){
+          editor.windowManager.alert(tinyName + " (the field in focus) is not a valid input, please change\n\r"+more);
+          }
+      }
+      else if (dontDoThat < 1 && $(editor.getBody()).text().trim() !== tinyName && !$(editor.getBody()).text().trim().length) {
+        dontDoThat++;
+        if(dontDoThat < 2){
+          editor.windowManager.alert(tinyName + " (the field in focus) is empty, please fill\n\r"+more);
+        }
+      }
+    }
+  })
+  if (dontDoThat < 1) {
+    tinymce.get("tmpTempEditor").windowManager.confirm("Save resource?", function(s) {
+      if (s) {
+        tinymce.triggerSave();
+        $("#newspublisherForm").submit();
+      } else {}
+    });
+  }
+}
+
+function saveButton(editor) {
+  if (!editor.isDirty()) {
+    $(".mce-npPublishButton").removeClass("mce-active");
+    $('.mce-npPublishButton i.mce-ico').addClass('mce-i-fullpage').removeClass('mce-i-save')
+    // $(".mce-npPublishButton, .mce-discardMODX").addClass("mce-disabled").attr("aria-disabled", true).children("button").attr("disabled", "disabled");
+  } else {
+    $(".mce-npPublishButton").addClass("mce-active");
+    $('.mce-npPublishButton i.mce-ico').addClass('mce-i-save').removeClass('mce-i-fullpage')
+    // $(".mce-npPublishButton, .mce-discardMODX").fadeIn("slow").removeClass("mce-disabled").removeAttr("aria-disabled").children().removeAttr("disabled");
+  }
+  var pID = $("#" + editor.id).attr("data-tiny");
+  if(editor.getParam("external_plugins",1).twExoticMarkdownEditor){
+    $("#" + pID).val(saveMyFootMarks(editor.getContent({source:"true"})));
+  }
+  else{
+    $("#" + pID).val(tinymce.activeEditor.getContent());
+  }
+}
+
+function createButtons() {
+  //common buttons + functions for each TinyMCE init, remove to override, 
+  // var count =0; //debug stuff
+  if(!$("#tmpTempEditor").length){
+    $("body").append("<input id=tmpTempEditor type=hidden value='' />");
+    tinymce.init({
+      selector: "#tmpTempEditor",
+      skin_url: tinymce.activeEditor.getParam("skin_url", "[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles"),
+      inline:true,
+      forced_root_block : "",
+      force_br_newlines : false,
+      force_p_newlines : false
+    })
+  }
+  tinymce.each(tinymce.editors, function(editor) {
+    var elm = $(editor.targetElm).data("tiny");
+    if(elm) {
+      // console.log("number of legal Editor instances  .."+count++); //debug stuff
+      // editor.on("keyup focus paste mouseup SetContent", function() {
+      editor.on("change", function() {
+        saveButton(editor);
+      });
+      editor.addMenuItem("reset", {
+        title: "Cancel all changes!",
+        text: "Discard changes",
+        onPostRender: stateToggle,
+        classes: 'discardMODX',
+        icon: "undo",
+        onclick: function() {
+          editor.windowManager.confirm("Really discard all changes?", function(s) {
+            if (s) {
+              $(editor.getBody()).html(editor.startContent)
+            } else {}
+          })
+        }
+      });
+    }
+  });
+  //end common buttons
+  tinymce.ui.Factory.create({
+    type: 'menubutton',
+    tooltip: "Resource details ... other tasks",
+    icon: "fullpage",
+    classes: "npPublishButton",
+    text: "PUBLISH ",
+    onclick: function(){
+      if(!$("form#newspublisherForm").length || !$(".fielderrormessage").length){
+        npErrors();
+        return false;
+      }
+    },
+    onPostRender: function(){
+      if (!$("#twHelp").length) {
+        $("<div id='twHelp' style='height:300px; white-space: normal !important;'><p>Hi there.<br>I know you are enjoying this stuff, well, so am I.<br>You will see that it is easy to extend this frontend magic idea to suit your case.<br>I will offer premium support for anything surpassing 5 minutes of my precious time.<br><br>This project was inspired by my zeal to surpass <strong>medium.com</strong> and <strong>createPHP.</strong> Be thou the judge!<br>I know the next thing you want is AJAX, well, ask Bob Ray if NewsPublisher can do that.<br><br>IDEAS for you.<br></p><ol><li>You can tell TinyMCE to manipulate any part of the DOM for you, that means you can fill out any hidden fields that comes with NewsPublisher. If you don't want modal windows, use accordion hide show.</li><li>You can create a menu button that shows the current user his/her published/drafted resources. Trust me, there is little you will not be able to accomplish.</li><li>If you like this stuff, donate to the cause.</li></ol></div>").appendTo("#twNpContainer");
+      }
+    },
+    menu: [
+      {
+        text: 'Save Resource ...',
+        classes: "nppubButton",
+        onclick: saveDetails
+      }, {
+        text: 'Exit Edit Mode',
+        classes: "npEditButton",
+        onclick: function() {
+          tinymce.get("tmpTempEditor").windowManager.confirm("You will lose any changes, exit?", function(s) {
+            if (s) {
+              // window.location.href = "[[~[[*id]]? &scheme=`full`]]";
+              window.location.href = "[[~[[+cancelid]]? &scheme=`full`]]";
+            } else {}
+          });
+        }
+      }, {
+        text: 'Toggle Fixed Toolbar',
+        classes: "npToggleButton",
+        onclick: function() {
+          if ($(".publishButtons #tinymceWrapperBubbleNP.fixedToolBar").length) {
+            $(".publishButtons #tinymceWrapperBubbleNP.fixedToolBar").removeClass("fixedToolBar").insertBefore(".publishButtons");
+            $(".publishButtons").css("width","")
+          } else {
+            $(".publishButtons").css("width","100%")
+            $("#tinymceWrapperBubbleNP").addClass("fixedToolBar").appendTo(".publishButtons");
+          }
+        }
+      }, {
+        text: "Make Links Clickable",
+        classes: "hyper",
+        onclick: function() {
+          if ($("[data-tiny]  a").length) {
+            if ($(".mce-hyper:contains('Make Links Clickable')").length > 0) {
+              $("[data-tiny] a").attr("contenteditable", "false");
+              $(".mce-hyper:contains('Make Links Clickable')").text('Unpreview Links')
+              tinymce.get("tmpTempEditor").windowManager.alert("Retoggle for new links");
+            } else if ($(".mce-hyper:contains('Unpreview Links')").length > 0) {
+              $("[data-tiny]  a").removeAttr("contenteditable");
+              $(".mce-hyper:contains('Unpreview Links')").text('Make Links Clickable')
+            }
+          } else {
+            tinymce.get("tmpTempEditor").windowManager.alert("Links do not exist");
+            return;
+          }
+        }
+      },
+      {
+        text: "Help",
+        classes: "npHelpButton",
+        onclick: function() {
+          popNPfields("#twHelp", "DonShakespeare's Free 911 Help Line", '', '', "Got it?");
+        }
+      }
+    ],
+    // onSubmit: twNPpublishedSUBMIT
+  }).renderTo(document.getElementsByClassName("publishButtons"));
+
+}
+
+function welcomeEachEditor(){
+  var count = 0;
+  if(typeof tinymce !=="undefined"){
+    var editors = tinymce.get(), i, elm;
+    for (i = 0; i < editors.length; i++) {
+        elm = $(editors[i].targetElm).data("tiny");
+      if(elm) {
+      count++
+      }
+    }
+  }
+  return count;
+}
+
+$(document).ready(function(){
+  (function(){
+    var numberOfReTries = 10;
+    var milSecondsToWaitToTry = 700;
+    var tinyNumber = $("[data-tiny]").length;
+    var gruntTries = 0;
+    var tinyCheck = setInterval(function() {
+      var error = function(raw){
+        var rawText="";
+        if(raw){
+          var rawText ="\n\rAlso, we noticed that TinyMCE core did not load at all"
+        }
+        var text = "ERROR! ...after "+numberOfReTries+" tries of checking, we found that: \n\rNumber of elements with data-tiny attribute = "+tinyNumber+"\n\rNumber of TinyMCE instances = "+welcomeEachEditor()+"\n\rThis mismatch has rendered TinyMagicPublisher unusable.\n\rConsider refreshing this page if nothing else works."+rawText;
+        return text;
+      }
+      gruntTries++;
+      console.log("number of supported Editors present ..("+welcomeEachEditor()+")"); //debug stuff
+      console.log("searching for Editors ..# of tries("+gruntTries+")"); //debug stuff
+      if (welcomeEachEditor() == tinyNumber) {
+        createButtons();
+        clearInterval(tinyCheck);
+        console.log("search is complete"); //debug stuff
+      }
+      else if(gruntTries > numberOfReTries){
+        clearInterval(tinyCheck);
+        if(typeof tinymce !=="undefined" && tinymce.editors.length > 0){
+          setTimeout(function(){
+            tinymce.get("tmpTempEditor").windowManager.alert(error())
+          },500)
+        }
+        else{
+          setTimeout(function(){
+            alert(error("raw"));
+          },500)
+        }
+        console.log("search is complete"); //debug stuff
+      }
+    }, milSecondsToWaitToTry);
+  })();
+})

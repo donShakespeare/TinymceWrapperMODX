@@ -1,4 +1,325 @@
-Changelog for TinymceWrapper BETA
+Changelog for TinymceWrapper
+
+++SURVIVE UPGRADES: duplicate edited chunks, retain names, add suffix, specify suffix in TinymceWrapper Plugin properties.
+++CREATE PropertySets where applicable to protect your Plugin and Snippet alterations. 
+++DEPENDENCIES (optional): pdoTools / getResources, tagLister, MODX Resizer, NewsPublisher, MIGX getImageList
+++ALWAYS START BY viewing the TinymceWrapper Demo Resource (it has everything enabled, frontend/backend)
+++INCOMPATIBILITIES
+  FixedPre (and any Extra running on OnParseDocument) kills TinymceWrapper dead. Bruno17 has found a possible MODX glitch.
+  When our TinyJSONGallery is on, Extras Image+ and Gallery do a weird thing of outputting tv path at top of page - will address jako's suggestion before next winter
+
+
+------------------------------
+++CONFIGURE your RTE: valid_elements + valid_children = unlimited possibilities!!!
+------------------------------
+
+
+TinymceWrapper 2.3.2-pl (aka MIRANDA the beautiful)
+---------------------------------
+INTRODUCED install option: for demo Resources - experimental!!!
+      + Any resources created on install (with unmodified pagetitle) WILL BE REMOVED when TinymceWrapper is uninstalled
+
+To satisfy June 30th update of official TinyMCE:
+    "FIXED so invalid targets for inline mode is blocked on initialization. We only support elements that can have children"
+UPDATED TinymceWrapper Plugin (cleaned up a few bugs)
+      + fileManagerTopNavModal... now works again throughout the Manager
+      + activateAceOrCodeMirror... now works on Collections (and other third-party newly-created MODX resources)
+UPDATED TinyJSONGallery.js... solved undying spinner 
+UPDATED all donShakespeare custom TinyMCE awesome plugins
+      //assets/components/tinymcewrapper/tinymceplugins/
+      see donShakespeare github repos for detailed latest sweeeetness
+      e.g. + twPreCodeManager.js now has:
+            true <code> support
+            protectMODXsquareBrackets: true,
+            protectMODXsquareBracketsXter: "*",
+      This applies the fix of critical JS getDoc issue :
+      https://forums.modx.com/thread/97694/support-comments-for-tinymcewrapper?page=26#dis-post-542429
+UPDATED TinymceWrapperMarkdown snippet to accomodate "protectMODXsquareBrackets"
+
+
+Thanks, TinyMCE (CDN), for keeping me on my toes
+------------------------------------------------------------------
+------------------------------------------------------------------
+
+
+
+TinymceWrapper 2.3.1-pl (aka MIRANDA the beautiful)
+---------------------------------
+UPDATED plugin System Events 
+      + OnDocFormPrerender, OnTempFormPrerender,OnSnipFormPrerender,OnChunkFormPrerender,OnPluginFormPrerender,OnFileEditFormPrerender
+      + fix your PropertySets!!!
+UPDATED TinymceWrapper Resource with TinyJSONGallery Demo frontend/backend - sweet stuff!!!
+UPDATED TinymceWrapperNPpublishButtonsTpl chunk - better error handling!!!
+UPDATED modxMagicHoverLink.js
+      + when you hover over resources in tree and search result, you can get SCHEME, relative, absolute, http, https
+      + full support for Markdown
+UPDATED elFinder to 2.1.11, protocol version: 2.1 -- jQuery/jQuery UI: 1.12.0/1.11.4
+UPDATED Responsive FileManager to 9.10.1
+UPDATED TinymceWrapperCodeMirror chunk (includes emmet) to function like its fraternal twin below.
+
+ADDED TinymceWrapperAce chunk (includes emmet)
+      0. Ace up any fabled textarea within MODX... including quick edit/ create... beautiful and awesome, easy to customize!
+      1. Flawlessly auto detect resource language by content_type (mime), or set to fixed.
+      2. Auto detect elements according to static source extension, or set to fixed.
+      3. Auto detect file language according to file extension - or even in quick edit modal.
+      4. Change language on the fly while editing anything.
+      5. Go full screen. 
+      6. Deactivate individual textareas at pleasure.
+      7. Use with RTE - well, you can, and why not?
+      8. Out of the box, Ace comes with lint for the major languages if not all, and a powerful set of keyboard control./
+      0-7 is applicable to TinymceWrapperCodeMirror
+
+ADDED to TinyMCE RTE awesome homemade PLUGINS
+      + twExoticMarkdownEditor.js - turn any TinyMCE instance into a full-blown beautiful Markdown Editor
+      + twPreCodeManager.js - manage all pre/code tag content - just paste in your source code, and bam! you are on the road! Works for pure Markdown Syntax fenced blocks as well.
+      + twAceEditor.js - just when you thought twCodeMirror.js was the best thing since sliced bacon, Ace comes in with its full horse power.
+      + twCodeMirror.js - reworked to foot the bill (added close button and fontSize)
+ADDED full Markdown support (COMPOSE AND PARSE in markdown, markdownExtra, parsedown, parsedownExtra)
+      SEE init chunk: sample.TinymceWrapperMarkdown
+        + Transform your RTE into the most Perfect Pure Raw Markdown Editor ever - with Markdown floating toolbar, shortcuts, templates etc
+        + USAGE (frontend/backend):
+          ----------------------------------------
+          tinymce.init({
+            ...
+            forced_root_block : "", //!important
+            force_br_newlines : true, //!important
+            force_p_newlines : false, //!important
+            valid_elements: "br", //!important
+            paste_as_text: true, //!important
+            external_plugins: {
+              twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js", //!important
+              bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+              twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js",
+              modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js"
+            },
+            plugins: "paste contextmenu save searchreplace fullscreen",
+            toolbar: "fullscreen twPreCodeManager boldMD italicMD linkMD imageMD blockquoteMD codeMD numlistMD bullistMD tableMD undo redo code searchreplace bubbleBarOptionsButton",
+            menubar: false,
+            contextmenu: "fullscreen twPreCodeManager boldMD italicMD linkMD imageMD blockquoteMD codeMD numlistMD bullistMD tableMD undo redo code searchreplace template"
+          })
+          ----------------------------------------
+
+      SEE snippet: TinymceWrapperMarkdown (use as Output Modifier)
+        + Not just write beautifully in Markdown but parse the silly thing - so that you never have to write in RT format or see HTML ever again - oh yeaaa! copy all your github stuff over...
+        + [[*content:TinymceWrapperMarkdown]] ... [[*myTV:TinymceWrapperMarkdown]] ... [[+placeholder:TinymceWrapperMarkdown]]
+        + Modifier takes these options: TinymceWrapperMarkdown=`markdown,markdownE,parsedown,parsedownE` (default is parsedownE)
+
+FIXED critical error in plugin that prevented creating of New Resources anywhere in the Manager (thanks to modxor)
+FIXED typo in elfinderConnector snippet that rendered custom chunks useless (thanks to Dave Smith)
+FIXED elfinder not supplying Image/File TV in TinyMagicPublisher
+FIXED TinyJSONGallery.js 
+        + to load jQuery UI via https 
+        + ctrl+s now saves JSON and saves to MODX
+FIXED imogen template file/image TV errors
+        + MODX Manager phpthumb must be fed relative inks
+        + MODX Manager phpthumb cannot parse MODX tags
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+TinymceWrapper 2.3.0-pl
+---------------------------------
+ADDED to TinyJSONGallery
+      + full frontend/backend support for the most powerful/versatile Image Gallery Manager in the universe
+      + transform any Resource to a full blown Image Gallery
+      + transform all the Resource TVs into albums
+      + transform any Chunk into a full blown Image Gallery
+      + transform multiple Chunks (Quick Create / Update mode) from the Elements Tree
+      + use in-house snippet, TinyJSONGalleryOutput, to output images (from Chunks/TVs) into whatever HTML pattern you like
+      + use MIGX' getImageList to go absolutely crazy with features in outputting images - your way
+
+      + ACCESS your MODX Manager backend Image Galleries in the frontend with a single line of code popGal('myAnyTextarea')
+        <a href="#" onClick="popGal('myAnyTextarea','', 885,500,1)">Open My Gallery</a>
+      + CREATE multiple Image Galleries in the frontend - just provide a textarea.
+      + USE with MODX or without MODX
+      + Skin, extend, be free! - welcome to awesome
+
+      + JSON Code area now has context menu to run quick commands
+      + multi select and drag images to sort and rearrange
+
+ADDED to TinyMagicPublisher
+      + filled in some NewsPublisher properties that were missing (thanks @eko)
+      + Both Magic and Traditional mode use TinyJSONGallery.js out of the box
+
+ADDED empty base template to solve the issue of other Extras resetting "empty" template of demo resources
+
+FIXED incompatibility between TinymceWrapper internal CodeMirror and TinymceWrapper twCodeMirror.js plugin
+
+ROADMAP
+      + ADD Cropper (http://fengyuanchen.github.io/cropper/)
+      + ADD Language files
+      + FIND ways to be more awesome
+
+
+Changelog for TinymceWrapper BETA 
+
+
+TinymceWrapper 2.2.2
+---------------------------------
+COMMENTED OUT/REMOVED from commonCodeChunks 
+      + 'valid_elements' and 'valid_children' and 'paste_word_valid_elements' - enable it if you want
+      + (backend) BubbleBar
+ADDED CodeMirror for resources, all elements / files, quick update/create and anything that has a textarea
+      + No need to use another MODX Extra to cater for your Coding needs
+      + With one small custom chunk take full control of CodeMirror - don't wait for me or another developer to update anything
+      + Pure CDN - nothing to download, always new and fast and fantastic
+      + Switch between CodeMirror and TinyMCE, or use both on the same resource - hehehe - pure craziness! Use CodeMirror for Resource Content, and TinyMCE for Rich TVs --- wowww!!!!
+      + Choose from a laughing list of 45 CodeMirror themes - this is ridiculous, I know
+      + Turn off CodeMirror at anytime, to use another Extra - I won't grudge you.
+ADDED sleek TinyMCE Skin, "modxPericles", to match MODX' green-buttoned Manager
+ADDED TinyMagicPublisherModifier (for TinyMagicPublisher)
+      +<h2 data-tiny="np-pagetitle">[[*pagetitle:TinyMagicPublisherModifier]]</h2>: use this in your templates that use the TinyMagicPublisher snippet. This will ensure that you do not lose data when you have error postbacks; it will ensure that MODX tags and HTML entities are preserved in edit mode
+ADDED to TinyMagicPublisher
+      + better error handler, no need to use &debug=1 just to see NewsPublisher errors. handler tells if NewsPublisher loaded or not
+      + twExistingTags: now all your tags site-wide or resource-specific can be preloaded so that a user can choose from existing tags; this works seamlessly - never suffer duplicates, never guess existing tags wrongly again.
+      + Now you can edit a resource in the manager by clicking link in the frontend
+ADDED to TinymceWrapperNPpublishButtonsTpl better error handler
+ADDED to ultra-sleek Windows-10 and Moono themes to elFinder - 
+      + (note: home.png and reload.png are not supported in windows-10 - the buttons have been removed from the toolbar)
+      + switch theme using url parameter - how cool is that? .com/elfinder.html?theme=windows10 - or moono
+ADDED to elFinderConnector properties twAutoCreatePersonalFolders = 'autoCreateFoldersTWelfinder' 
+ADDED to replaceDefaultFileImageTVbutton to TinymceWrapper Plugin
+      + When using a custom browser, you may suppress MODX' native browser file/image TV button
+FIXED elFinder bug that disabled recognition of ?pset=myCustomSet and ?unlocked=1 URL parameters - changed from JavaScript to PHP
+
+UPDATED elFinder 2.1.6(7)(see official site for changelog)
+UPDATED Responsive FileManager to 9.9.7 (see official site for changelog)
+
+
+TinymceWrapper 2.2.1
+---------------------------------
+FIXED bug of persistent manager top nav modal of custom file browser overwriting all RTEs
+FIXED bug that prevented creating resources with TinyMagicPublisher with FURL turned on
+FIXED bug that crashed TinyJSONGallery where MODX Resizer was not yet installed
+
+
+TinymceWrapper 2.2.0
+---------------------------------
+ADDED extra security and removed unused html files to prevent unwanted access to custom file browsers
+UPDATED elFinder to 2.1.5
+
+ADDED Imogen Theme to replace old template
+     This novel Theme uses the powerful TinyMagicPublisher, which force-feeds NewsPublisher with some out-of-the-planet legal-status-to-be-determined enhancers. NO AJAX!!!, just sheer Power!!!! get it, get it?
+     In the frontend (requires NewsPublisher), edit any thing on the page, even background images, tooltips, accordions, etc
+
+ADDED new TinyMCE skin:
+    fallenMacbeth.
+    Updated ONLY fairOphelia skin to reflect the latest font icons of TinyMCE 4.3.2+
+ADDED modxMagicHoverLink.js Plugin
+    handcrafted just for you! a wonderful way to do MODX internal linking. Just hover over any resource in the resource tree, or search results, or pdoMenu link_list
+ADDED tinymceBubbleBar.js Plugin
+    handcrafted just for you! the first of its kind to come into the TinyMCE world - a floating and gorgeous toolbar
+ADDED twCodeMirror.js Plugin
+    handcrafted just for you! use the most powerful code editor via CDN to view your RTE source code. A beautiful experience with Live edit/preview.
+    //added BUTTONS to individual init chunks
+    toolbar: "code bubbleBarOptionsButton",
+    contextmenu: "code",
+
+    //added to Common Code chunk
+    bubbleBarCSSstyle: 'background:white;',  // any CSS except positions top & left
+    twCodeMirrorPoppedOrInline: 0, // 1 for popped (default), 0 for inline
+    //hoverStripMODXurl:false, //default is true
+    //hoverAddCLASStoTree:false //default is true
+    external_plugins: {
+      modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+      bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+      twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js"
+    }
+    These awesome plugins are housed and regularly updated on github
+    e.g https://github.com/donShakespeare/modxMagicHoverLink
+
+ADDED TinyJSONGallery Snippet - (requires MODX Resizer)
+    What is Content Editing without them images?
+    Awesome and Beautiful GUI, built on components you know too well; that means you can redesign/skin the backend GUI for your clients. Are you still with me?
+    Your album is any MODX chunk, that means, you see all your albums in the element tree ... hmmm, nice!
+    No need to re-upload anything. Seriously? Yes! your chunk album talks directly to your folder (wherever it is on your server).
+    No extra database stuff, just pure JSON (always before your eyes) that anybody can generate, even a toddler.
+    Absolute and Complete and Total control for all frontend uses. Use the provided snippet (TinyJSONGalleryOutput) to output your images, or create your own snippet or use the most powerful MIGX, getImageList.
+    TinyJSONGallery is an idea I am offering for free, steal it, take it, run with it, extend it to fit all your needs. It is a different idea, love it or hate it!
+      //USE NATIVE
+      <ol id="gallery">
+      [[TinyJSONGalleryOutput? &galleryChunkOrJson=`[[$NatureAlbum_myGallery]]` &tpl=`NatureAlbum_rowTpl` &imgCls=`pic` &rowCls=`magic` &linkCls=`linked`]]
+      </ol>
+
+      //USE MIGX
+      <ol id="tw_gallery">
+      [[getImageList? 
+      &where=`{"tag:=":"michael","hidden:<":"1"}`
+      &sort=`[{"sortby":"index","sortdir":"DESC","sortmode":"numeric"},{"sortby":"name","sortdir":"ASC"}]` &value=`[[$NatureAlbum_myGallery]]` &tpl=`NatureAlbum_rowTpl` &imgCls=`pic` &rowCls=`magic` &linkCls=`linked`]]
+      </ol>
+  
+ADDED TinyMagicPublisher Snippet - (requires NewsPublisher)
+     TinyMagicPublisher accepts all the options of NewsPublisher and much more.
+     Plus frontend init tpls for you to meddle with.
+     Near-perfect frontend editing for MODx - edit like it's the future of which you are the boss.
+     Just as you are reading your article, click the edit button, the page will then allow you to click and edit ANY and ALL specified areas of the page, no forms whatsoever to deal with. This is not WYSIWYG, this is EBYOWTCW, Edit Beautifuly, Your Own Way, the Clean Way!
+     Access your favourite custom file browsers from the frontend (MODx Manager not supported for domestic and foreign reasons)
+     Create new resources on the fly from any resource.
+     Edit your own page or if you are an Admin or Chief Editor, the page of others
+     Easily extend to accomodate any and all MODx fields.
+
+     If all this magic is too much for you to handle, and you rather stick to the old ways - TinyMagicPublisher comes in two modes, hurray!!!
+
+ADDED customJS and customJSchunks option. Now can have TinyMCE init for any and all 3rd Party Extras that require RTE. In fact anywhere you see a textarea in your MODX Manager. Can also run custom non-TinyMCE related JavaScript to spice up your MODX Manager - no need to create a whole new plugin for that.
+
+ADDED more element categories to help sort and structure the element tree of chunks and whatnots
+
+ADDED addTinyMCEloadDelay to TinymceWrapper Plugin
+     Default: 0. When using with an Extra that produces textareas on the fly, you might need a delay. 2100 works with Lingua. The longer the delay, the badder the user experience.
+ADDED sample.TinymceWrapperMIGX to support MIGX 2.9.5+  - thanks to Bruno17
+
+ADDED to common code/quick update/TVs init chunks:
+     Use escape key to remove fullscreen in all MODx textareas
+     In Quick update/create resource textarea, escape button will first remove fullscreen, if pressed again, will close modal window
+    
+     file_browser_callback : autoFileBrowser: this will suffice for all the supported browsers, including Responsive Filemanager.
+
+     Responsive Filemanager: no need to use the hideous two-step activation.
+     Removed need to use to external_plugin command (you can put it back if you want)
+         
+     Stripped popup=1 from responsivefilemanagerBrowserRTEurl
+         (MODx.config.assets_url+"components/tinymcewrapper/responsivefilemanager/filemanager/dialog.php?type=0")
+
+ADDED options to responsivefilemanagerConnector to support use of custom autocreate snippet and chunk (autoCreateFoldersTWrfmSnippet responsivePersonalConfig)
+ADDED modxNativeBrowserTopNAVpresent to Plugin. Toggle the top nav media link ON/OFF
+ADDED option to hide native browser link when custom browser is in use.
+ADDED optional smart modal to custom browser link in TopNAV menu - will check if user has TinyMCE running or not. MODAL depends on TinyMCE API or else just normal browser pop up. Modal can be turned off completely.
+
+Fixed Roxy file browser not working for File/Image TVs in backend
+Fixed mousedown/mouseup issue with enable/disable TinyMCE in Manager textareas
+Fixed issue where enable/disable TinyMCE checkbox not functioning as expected when specific TVs were targeted. 
+     Also fixed TV reset which was not working on the editor when the checkboxes are disabled in the plugin.
+     Add some CSS to richtext textareas, so that when you switch back and forth from TinyMCE you e not met with the hideously sized one.
+     Changed tinyTVcheck to pure JS function
+     Now, all richtext TVs, or only particular ones, #tv1, #tv2
+       tinymce.init({
+         mode : "exact",
+         selector : "#tv1,#tv2,#tv3",
+         ...
+       })
+     To include non Rich TVs use 
+          ...selector: ".modx-richtext,textarea[id^=tv][class!=modx-richtext]",...
+
+
+TinymceWrapper 2.1.1
+---------------------------------
+1. Added full support for awesome elFinder file manager (BSD license)
+1. Added quasi-support for Roxy file manager (GPLv3 license)
+Added option plugin property option, newResource to allow user to specify whether to load TinyMCE for new resources
+2. Fixed bug that prevented quick update resource to work when user had faulty-named chunks for the other textareas. Now, if user has only one correctly-named chunk, TinyMCE will work for that one.
+3. Added to content/quick-update chunk example code for floating any button (fullscreen)
+4. Created new chunk, TinymceWrapperCommonCode; added placeholder [[+commonTinyMCECode]] to all chunks for common code. Instead of repeating code for all chunks, place repeating common code in chunk provided - TinymceWrapperCommonCode - Things like skin_url which constantly overrides the previous is quite useless to be defined differently for multiple instances of TinyMCE on the same page. Text_pattern and so on can all go into common code. 
+Of course you can override what is in the common code
+      Remember, if you want to survive upgrades, duplicate all chunks, retain names, add suffix, specify suffix in Plugin properties.
+      NOTE:TinyMCE will override exisitig Skins. Use only one skin per page.
+6. Moved fullscreen button to first in toolbar: if you will float it to the right, make sure it is the first, Chrome and others may break the line.
+____________________________________
+
+-------Responsive FileManager-------
+____________________________________
+
+1. Fixed auto detection of core path: had error for users with core folder at a non-common location
+2. Moved settings to Snippet to avoid confusion.
+3. Updated to 9.9.6
 
 
 TinymceWrapper 2.1.0

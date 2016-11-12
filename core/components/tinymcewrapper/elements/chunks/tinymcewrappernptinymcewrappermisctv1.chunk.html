@@ -1,0 +1,14 @@
+tinymce.init({
+  name: "Misc TVs",
+  selector: "[data-tiny^=np-TinymceWrapperMiscTV]",
+  [[+commonTinyMCECode]]
+  forced_root_block: '',
+  force_br_newlines: false,
+  force_p_newlines: false,
+  plugins: "contextmenu code autosave save paste image link searchreplace",
+  valid_elements: "*[*],i[*]",
+  extended_valid_elements : "hr[*],+i[*]",
+  toolbar: "code bold italic underline link unlink blockquote image bubbleBarOptionsButton",
+  menubar: false,
+  contextmenu: "reset undo redo bold italic link unlink | removeformat | image"
+});

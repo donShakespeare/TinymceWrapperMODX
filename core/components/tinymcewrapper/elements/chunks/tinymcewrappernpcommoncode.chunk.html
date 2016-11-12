@@ -1,0 +1,22 @@
+inline: true,
+fixed_toolbar_container: "#tinymceWrapperBubbleNP",
+hidden_input: false,
+skin_url: "[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles",
+save_enablewhendirty: false,
+save_onsavecallback: saveArticle,
+file_browser_callback: autoFileBrowser,
+browser_spellcheck: true,
+gecko_spellcheck: true,
+paste_data_images: false,
+external_plugins: {
+  // twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js",
+  // twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js",
+  twAceEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twAceEditor.js",
+  bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+  modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+  twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js"
+},
+link_list:[
+  [[$TinymceWrapperLinkList]]
+],
+//leave trailing comma

@@ -1,0 +1,129 @@
+.np_button_form {
+    display: none !important;
+}
+
+.mce-tinymce-inline {
+    border-width: 0 !important;
+}
+
+[data-tiny] {
+    visibility: hidden;
+    opacity: 0;
+    box-shadow: 0px 2px 20px 1px #2a2a2a;
+    outline: 0 !important;
+    border-radius: 10px;
+}
+[data-tiny].twNPactive {
+    visibility: visible;
+    opacity: 1;
+    display: block !important;
+    transition: opacity 2ms;
+}
+
+[data-tiny].mce-edit-focus {
+    box-shadow: 0px 2px 20px 1px #C31717;
+    outline: 0 !important;
+    border: 0 !important;
+}
+
+#twNpContainer {
+    display: none;
+}
+
+.errorMessagesNpTw {
+    position: fixed;
+    bottom: 0px;
+    margin: auto;
+    width: auto;
+    left: 0px;
+    right: 0px;
+    padding: 20px;
+    color: #FFF;
+    text-align: center;
+    z-index: 99;
+    font-weight: bold;
+    display: none;
+    background: #F00;
+}
+
+.publishButtons {
+    padding: 0;
+    display: block;
+    position: fixed;
+    top: 0px;
+    right: 0;
+    left: 0;
+    margin: auto;
+    font-weight: bold;
+    width: 140px;
+    text-align: center;
+    z-index: 9999;
+    font-size: 12px;
+}
+
+.publishButtons a {
+    float: right;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 15px 20px;
+    background: rgba(151, 151, 151, 0.99);
+    color: #fff;
+    margin: 3px;
+    box-shadow: 0px 0px 4px 1px #fff;
+}
+
+#tinymceWrapperBubbleNP {
+    border-radius: 6px !important;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.75);
+    /*filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#2ca6f8', endColorstr='#2b8ae2', GradientType=0);*/
+}
+
+
+#tinymceWrapperBubbleNP button {
+    padding: 4px 10px !important;
+}
+
+
+#tinymceWrapperBubbleNP.fixedToolBar {
+    position: static !important;
+    margin: 0 auto !important;
+    display: block !important;
+    visibility: visible !important;
+    /*width: 390px;*/
+    opacity: 1 !important;
+    box-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+}
+
+.fixedToolBar .mce-tinymce-inline {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.mce-popNPfields * {
+    white-space: normal !important;
+}
+/*.mce-npCount{
+    width:140px !important;
+}
+*/
+.mce-npPublishButton{
+    /*width:140px !important;*/
+    text-align: center !important;
+}
+.mce-npPublishButton.mce-active:before{
+    content: "modified" !important;
+    background: #E8E8E8 !important;
+    border-radius: 0 0 5px 5px !important;
+    padding: 2px !important;
+    text-align: center !important;
+    position: absolute !important;
+    bottom: -18px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 41% !important;
+    margin: auto !important;
+    font-size: 80% !important;
+    border-radius: 5px; 
+}

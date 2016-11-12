@@ -3,8 +3,8 @@
 * Resource resolver  for TinymceWrapper extra.
 * Sets template, parent, and (optionally) TV values
 *
-* Copyright 2015 by donShakespeare donShakespeare@gmail.com
-* Created on 07-24-2015
+* Copyright 2016 by donShakespeare donShakespeare@gmail.com
+* Created on 05-02-2016
 *
  * TinymceWrapper is free software; you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -52,7 +52,71 @@ if($object->xpdo) {
                 0 =>  array (
                   'pagetitle' => 'TinymceWrapper',
                   'parent' => '0',
-                  'template' => 'TinymceWrapper',
+                  'template' => 'tw_ImogenTheme',
+                  'tvValues' =>  array (
+                    'TinymceWrapperMiscTV1' => '<h2>Free Download at Start Bootstrap!</h2>
+<a href="#" class="btn btn-default btn-xl wow tada">Download Now!</a>',
+                    'TinymceWrapperMiscTV2' => '<h2 class="section-heading">Let\'s Get In Touch!</h2>
+<hr class="primary">
+<p>Ready to start your next project with us? That\'s great! Give us a call or send us an email and we will get back to you as soon as possible!</p>',
+                    'TinymceWrapperServiceTV1' => '<h3>Sturdy Templates</h3>
+<p class="text-muted">Our templates are updated regularly so they don\'t break.</p>',
+                    'TinymceWrapperServiceTV2' => '<h3>Ready to Ship</h3>
+<p class="text-muted">You can use this theme as is, or you can make changes!</p>',
+                    'TinymceWrapperServiceTV3' => '<h3>Up to Date</h3>
+<p class="text-muted">We update dependencies to keep things fresh.</p>',
+                    'TinymceWrapperServiceTV4' => '<h3>Made with Love</h3>
+<p class="text-muted">You have to make your websites with love these days!</p>',
+                  ),
+                ),
+                1 =>  array (
+                  'pagetitle' => 'tw_elfinder_browser',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_Empty',
+                ),
+                2 =>  array (
+                  'pagetitle' => 'tw_magic_create_page',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_ImogenTheme',
+                  'tvValues' =>  array (
+                    'TinymceWrapperMiscTV1' => '<h2>Free Download at Start Bootstrap!</h2>
+<p><a class="btn btn-default btn-xl wow tada" href="#">Download Now!</a></p>',
+                    'TinymceWrapperMiscTV2' => '<h2 class="section-heading">Let\'s Get In Touch!</h2>
+<p>Ready to start your next project with us? That\'s great! Give us a call or send us an email and we will get back to you as soon as possible!</p>',
+                    'TinymceWrapperServiceTV1' => '<h3>Sturdy Templates</h3>
+<p>Our templates are updated regularly so they don\'t break.</p>',
+                    'TinymceWrapperServiceTV2' => '<h3>Ready to Ship</h3>
+<p>You can use this theme as is, or you can make changes!</p>',
+                    'TinymceWrapperServiceTV3' => '<h3>Up to Date</h3>
+<p>We update dependencies to keep things fresh.</p>',
+                    'TinymceWrapperServiceTV4' => '<h3>Made with Love</h3>
+<p>You have to make your websites with love these days!</p>',
+                  ),
+                ),
+                3 =>  array (
+                  'pagetitle' => 'tw_traditional_create_page',
+                  'parent' => 'TinymceWrapper',
+                  'template' => 'tw_Empty',
+                  'tvValues' =>  array (
+                    'TinymceWrapperMiscTV1' => '<h2>Free Download at Start Bootstrap!</h2>
+<p><a href="#" class="btn btn-default btn-xl wow tada">Download Now!</a></p>',
+                    'TinymceWrapperMiscTV2' => '<h2 class="section-heading">Let\'s Get In Touch!</h2>
+<p>Ready to start your next project with us? That\'s great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+<p>123-456-6789</p>
+<p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>',
+                    'TinymceWrapperServiceTV1' => '<h3>Sturdy Templates</h3>
+<p>Our templates are updated regularly so they don\'t break.</p>',
+                    'TinymceWrapperServiceTV2' => '<h3>Sturdy Templates</h3>
+<p>Our templates are updated regularly so they don\'t break.</p>',
+                    'TinymceWrapperServiceTV3' => '<h3>Sturdy Templates</h3>
+<p>Our templates are updated regularly so they don\'t break.</p>',
+                    'TinymceWrapperServiceTV4' => '<h3>Sturdy Templates</h3>
+<p>Our templates are updated regularly so they don\'t break.</p>',
+                    'TinyJSONGalleryTV' => '<h2 class="section-heading">Let\'s Get In Touch!</h2>
+<p>Ready to start your next project with us? That\'s great! Give us a call or send us an email and we will get back to you as soon as possible!</p>
+<p>123-456-6789</p>
+<p><a href="mailto:your-email@your-domain.com">feedback@startbootstrap.com</a></p>',
+                  ),
                 ),
             );
 

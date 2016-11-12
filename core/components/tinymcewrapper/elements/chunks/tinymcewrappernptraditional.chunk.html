@@ -1,0 +1,87 @@
+tinymce.init({
+  selector: "#np-introtext",
+  skin_url: '[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles',
+  menubar: false,
+  statusbar: false,
+  external_plugins: {
+    twAceEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twAceEditor.js",
+    // twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js",
+    //bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+    // twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js",
+    modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+    twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js"
+  },
+  file_browser_callback: autoFileBrowser,
+  plugins: "contextmenu,charmap,paste,link,preview,code,insertdatetime",
+  toolbar: "twPreCodeManager | undo redo | newdocument | preview code | styleselect | blockquote | bold | italic | bullist numlist | link unlink | charmap | insertdatetime",
+  contextmenu: "twPreCodeManager link code styleselect",
+  resize: true
+});
+
+
+tinymce.init({
+  selector: "#np-description",
+  skin_url: '[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles',
+  menubar: false,
+  statusbar: false,
+  image_advtab: true,
+  external_plugins: {
+    twAceEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twAceEditor.js",
+    // twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js",
+    //bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+    // twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js",
+    modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+    twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js"
+  },
+  file_browser_callback: autoFileBrowser,
+  plugins: "contextmenu,charmap,paste,preview,code,insertdatetime",
+  toolbar: "twPreCodeManager | undo redo | newdocument | preview code | styleselect | blockquote | bold | italic | bullist numlist | link unlink | charmap | insertdatetime",
+  contextmenu: "twPreCodeManager link code styleselect",
+  resize: true
+});
+
+
+tinymce.init({
+  selector: "#np-content",
+  skin_url: '[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles',
+  menubar: false,
+  external_plugins: {
+    twAceEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twAceEditor.js",
+    // twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js",
+    //bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+    // twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js",
+    modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+    twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js"
+  },
+  file_browser_callback: autoFileBrowser,
+  statusbar: true,
+  plugins: "autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,charmap,searchreplace,textpattern,emoticons,insertdatetime",
+  resize: true,
+  autoresize_min_height: 100,
+  toolbar: "twPreCodeManager | preview fullscreen | code | undo redo | newdocument | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image | styleselect | charmap emoticons insertdatetime | searchreplace",
+  contextmenu: "twPreCodeManager code | fullscreen | removeformat | link | image"
+});
+
+
+tinymce.init({
+  mode: "exact", //DO NOT TOUCH
+  selector: "textarea:not(#np-content, #np-introtext, #np-description, #np-TinyJSONGalleryTV)", //all richtext TVs basically
+  skin_url: '[[++assets_url]]components/tinymcewrapper/tinymceskins/modxPericles',
+  menubar: false,
+  statusbar: false,
+  external_plugins: {
+    twAceEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twAceEditor.js",
+    // twCodeMirror: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twCodeMirror.js",
+    //bubbleBar: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/tinymceBubbleBar.js",
+    // twExoticMarkdownEditor: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twExoticMarkdownEditor.js",
+    modxMagicHoverLink: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/modxMagicHoverLink.js",
+    twPreCodeManager: "[[++assets_url]]components/tinymcewrapper/tinymceplugins/twPreCodeManager.js"
+  },
+  file_browser_callback: autoFileBrowser,
+  plugins: "autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,charmap,searchreplace,textpattern,emoticons,insertdatetime",
+  resize: true,
+  autoresize_min_height: 100,
+  autoresize_max_height: 400,
+  toolbar: "twPreCodeManager | preview fullscreen | code | newdocument | undo redo | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image | styleselect | charmap emoticons insertdatetime | searchreplace",
+  contextmenu: "twPreCodeManager code | removeformat | link | image"
+});

@@ -1,0 +1,14 @@
+tinymce.init({
+  name: "Service TVs",
+  selector: "[data-tiny^=np-TinymceWrapperService]",
+  [[+commonTinyMCECode]]
+  forced_root_block: '',
+  force_br_newlines: false,
+  force_p_newlines: false,
+  plugins: "contextmenu autosave save paste image link searchreplace",
+  paste_word_valid_elements: "i,h3,p",
+  valid_elements: "i[*],h3[*],p[*]",
+  toolbar: "code bold italic underline image bubbleBarOptionsButton",
+  menubar: false,
+  contextmenu: "code reset undo redo bold italic link unlink | removeformat | image"
+});

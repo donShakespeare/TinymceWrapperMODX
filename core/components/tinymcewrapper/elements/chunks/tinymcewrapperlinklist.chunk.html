@@ -1,13 +1,15 @@
 [[-remove the pdoMenu dash prefix if you have pdoMenu installed]]
 [[-pdoMenu?
-    &parents=`0`
-    &level=`100`
-    &limit=`0`
-    &showHidden =`1`
-    &tplOuter=`@INLINE [[+wrapper]]`
-    &tpl=`@INLINE {title: "[[+menutitle]] - [ [~[[+id]] ] ]", value: '[[+link]]'},`
-    &tplParentRow=`@INLINE {title: "[[+menutitle]] - [ [~[[+id]] ] ]", value: '[[+link]]', menu:[ [[+wrapper]]  ]},`
-    &sortby=`pagetitle`
-    &sortdir=`ASC`
-   &checkPermissions=`load,list,view`
+  &context=`web`
+  &parents=`39,5,9`
+  &level=`100`
+  &limit=`1000`
+  &showHidden =`1`
+  &showUnpublished =`1`
+  &tplOuter=`@INLINE [[+wrapper]]`
+  &tpl=`@INLINE {title: "[[+menutitle]]", value: "\[\[~[[+id]]\]\]"},`
+  &tplParentRow=`@INLINE {title: "[[+menutitle]]", value: "\[\[~[[+id]]\]\]", menu:[ [[+wrapper]] ]},`
+  &sortby=`menuindex`
+  &sortdir=`ASC`
+  &checkPermissions=`load,list,view`
 ]]

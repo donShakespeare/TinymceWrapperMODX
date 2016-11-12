@@ -1,0 +1,35 @@
+tinymce.init({
+  selector: quickyId, //DO NOT TOUCH
+  [[+commonTinyMCECode]]
+  plugins: "autoresize,preview,paste,contextmenu,image,wordcount,fullscreen,code,link,charmap,searchreplace,textpattern,emoticons,insertdatetime",
+  //paste_word_valid_elements: "a,div,b,strong,i,em,h1,h2,h3,p,blockquote,ol,ul,pre",
+  //valid_elements: "iframe[*],object[*],audio[*],-span[!title|!class<test test2],a[href|target|class|rel|title|data-ajax|data-iframe],strong,b,-p[class<text-align-left?text-align-center?text-align-right],br,-h1[class|data-ajax|data-iframe],-h2[class|data-ajax|data-iframe],-h3[class|data-ajax|data-iframe],-img[!src|!alt|!class=round_img|data-ajax|data-iframe],em,-blockquote,pre[class],-ol,-ul,-li,-code[class]",
+  //valid_children: "-li[ul],-li[ol],-li[div],-strong[*],-em[*],-h1[*],-h2[*],-h3[*],-a[strong|em|h1|h2|h3|p|div],blockquote[p|ol|ul],pre[code],div[pre]",
+  resize: true,
+  autoresize_min_height: 100,
+  toolbar: "preview fullscreen | code | undo redo | blockquote | bold | italic | aligncenter | bullist numlist | link unlink | image | styleselect",
+  contextmenu: "fullscreen removeformat | link | image | code charmap searchreplace",
+  setup: function(editor) {
+    editor.on('keydown', function(evt) { //ctrl + s = Save 
+      if (evt.keyCode == 83 && evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
+        evt.preventDefault();
+        $('#' + editor.id).parents('.modx-window').find('button:contains("Save")').first().trigger("click");
+      }
+      if (evt.keyCode == 27) { //escape key = close or remove fullscreen
+        evt.preventDefault();
+        if ($('.mce-fullscreen').length) {
+          tinymce.activeEditor.execCommand("mceFullscreen")
+        } else {
+          $('#' + editor.id).parents('.modx-window').find('button:contains("Close")').first().trigger("click");
+        }
+      }
+    });
+    editor.on('mouseleave', function(evt) { //sync textarea with TinyMCE 
+      tinyMCE.activeEditor.save();
+    });
+    editor.on("init", function() { //float fullscreen link
+      containerId = $(editor.getContainer()).attr("id");
+      $("#" + containerId + " .mce-i-fullscreen").parent().parent().parent().parent().css("float", "right");
+    });
+  }
+});

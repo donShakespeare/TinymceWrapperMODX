@@ -11,6 +11,7 @@
 @has-gradients:                  true;
 @has-radius:                     true;
 @has-boxshadow:                  true;
+@has-button-borders:             false;
 
 // Text colors
 @text:                           #333333;
@@ -26,7 +27,6 @@
 @btn-border-right:               rgba(0,0,0,0.1);
 @btn-border-bottom:              rgba(255,255,255,0.25);
 @btn-border-left:                rgba(255,255,255,0.25);
-@btn-split-border:               #c4b6b6;
 @btn-caret-border:               @btn-text;
 @btn-text-disabled:              @text-disabled;
 @btn-box-shadow:                 inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 2px rgba(0, 0, 0, .05);
@@ -36,6 +36,9 @@
 @btn-bg-hlight:                  #fcfcfc;
 @btn-bg-hover:                   darken(@btn-bg, 5%);
 @btn-bg-hlight-hover:            darken(@btn-bg-hlight, 5%);
+@btn-border-hover:               darken(@btn-bg, 20%);
+@btn-border-active:              darken(@btn-bg, 20%);
+@btn-padding:                    4px 8px;
 
 @btn-primary-bg:                 #ffffff;
 @btn-primary-bg-hlight:          #abb0ba;
@@ -47,10 +50,16 @@
 @btn-primary-border-right:       mix(@btn-border-right, @btn-primary-bg, 50%);
 @btn-primary-border-bottom:      mix(@btn-border-bottom, @btn-primary-bg, 50%);
 @btn-primary-border-left:        mix(@btn-border-left, @btn-primary-bg, 50%);
+@btn-primary-border:             transparent;
+@btn-primary-border-hover:       transparent;
+
+// Button group
+@btn-group-border-width:         1px;
 
 // Menu
 @menuitem-text:                  #333333;
 @menu-bg:                        #ffffff;
+@menu-margin:                    -1px 0 0;
 @menu-border:                    rgba(0,0,0,0.2);
 @menubar-border:                 mix(@panel-border, @panel-bg, 60%);
 @menuitem-text-inverse:          #ffffff;
@@ -66,6 +75,7 @@
 @menuitem-bg-active:             #b9bcbf;
 @menuitem-text-active:           #333333;
 @menuitem-preview-border-active: #dedede;
+@menubar-menubtn-text:           #dddddd;
 
 // Panel
 @panel-border:                   #ffffff;
@@ -77,11 +87,30 @@
 @tab-bg:                         #f5f5f5;
 @tab-bg-hover:                   #ffffff;
 @tab-bg-active:                  #ffffff;
+@tabs-bg:						 #ffffff;
 
 // Tooltip
 @tooltip-bg:                     #000;
 @tooltip-text:                   white;
 @tooltip-font-size:              11px;
+
+// Notification
+@notification-font-size:         14px;
+@notification-bg:                #F0F0F0;
+@notification-border:            #CCCCCC;
+@notification-text:              #333333;
+@notification-success-bg:        #dff0d8;
+@notification-success-border:    #d6e9c6;
+@notification-success-text:      #3c763d;
+@notification-info-bg:           #d9edf7;
+@notification-info-border:       #779ECB;
+@notification-info-text:         #31708f;
+@notification-warning-bg:        #fcf8e3;
+@notification-warning-border:    #faebcc;
+@notification-warning-text:      #8a6d3b;
+@notification-error-bg:          #f2dede;
+@notification-error-border:      #ebccd1;
+@notification-error-text:        #a94442;
 
 // Window
 @window-border:                  #c4c4c4;
@@ -126,6 +155,10 @@
 @textbox-border:                 #e8e8e8;
 @textbox-border-focus:           #dfe4e8;
 
+// Selectbox
+@selectbox-bg:                   @textbox-bg;
+@selectbox-border:               @textbox-border;
+
 // Throbber
 @throbber-bg:                    #fff url('img/loader.gif') no-repeat center center;
 
@@ -145,3 +178,19 @@
 // Misc
 @colorbtn-backcolor-bg:          #f5efef;
 @iframe-border:                  @panel-border;
+
+// Slider
+@slider-border:                  #aaaaaa;
+@slider-bg:                      #eeeeee;
+@slider-handle-border:           #bbbbbb;
+@slider-handle-bg:               #dddddd;
+
+// Progress
+@progress-border:                #ccc;
+@progress-bar-bg:                #dfdfdf;
+@progress-bar-bg-hlight:         #cccccc;
+@progress-text:                  @text;
+@progress-text-shadow:           @btn-text-shadow;
+
+// Flow layout
+@flow-layout-spacing:            2px;
