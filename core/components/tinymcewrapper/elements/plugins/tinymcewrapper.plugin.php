@@ -27,7 +27,7 @@ http://www.leofec.com/modx-revolution/
 To God, almighty, be all the glory.
 */
 
-$modx->getService('error','error.modError', '', '');
+// $modx->getService('error','error.modError', '', '');
 $modxEventName = $modx->event->name;
 //let us tell System Settings that we have a new RTEditor
 if ($modxEventName == 'OnRichTextEditorRegister') {
