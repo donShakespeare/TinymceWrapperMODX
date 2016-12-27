@@ -1,5 +1,5 @@
 <?php
-/*TinymceWrapper transforms all MODX native and non-native textareas (introtext, description, content, RichTVs, File/Image TVs, Quick Update/Create, MIGX TVs etc etc)
+/*TinymceWrapper can transform all MODX native and non-native textareas (introtext, description, content, RichTVs, File/Image TVs, Quick Update/Create, MIGX TVs etc etc etc etc etc)
 
 plugin fires at
 OnRichTextEditorRegister
@@ -37,7 +37,14 @@ if ($modxEventName == 'OnRichTextEditorRegister') {
 
 //let us get MODx browser callback ready to fire
 if ($modxEventName == 'OnRichTextBrowserInit' && $autoFileBrowser == 'modxNativeBrowser') {
- $modx->controller->addJavascript(MODX_ASSETS_URL.'components/tinymcewrapper/browserConnectors/browser.js');
+  $modx->regClientStartupHTMLBlock('
+  <script type="text/javascript">
+   function twBrowserCallback(data) {
+     parent.tinymce.activeEditor.windowManager.getParams().oninsert(data.fullRelativeUrl);
+     parent.tinymce.activeEditor.windowManager.close();
+   }
+  </script>
+  ');
   $modx->event->output('twBrowserCallback');
   return;
 }
@@ -127,7 +134,7 @@ $galleryJSfile = $modx->getOption('galleryJSfile', $sp);
 $customJS = $modx->getOption('customJS', $sp);
 $customJSchunks = $modx->getOption('customJSchunks', $sp);
 
-//this eliminates clutter and confusion: reusuable config is the way of the past and the future - code here will be put in placeholder [[+commonTinyMCECode]]
+//this eliminates clutter and confusion: reusable config is the way of the past and the future - code here will be put in placeholder [[+commonTinyMCECode]]
 //apply comma here, not in the chunk calling it --na na, make user leave trailing comma in commonCode Chunk
 
 if ($enableImageGallery == 1) {
@@ -483,7 +490,7 @@ if ($modxEventName == 'OnDocFormPrerender') {
     $tvsChunk = $modx->getChunk('TinymceWrapperTVs' . $suffix, array('commonTinyMCECode'=>$commonCode));
     if ($tvsChunk) {
       //let's remove the checkboxes that enables/disables TinyMCE for the TVs
-      //let's allow the TV reset button to work through TinyMCE, either enabled or disabled - textareas are updated .on change + the delay is neccesary since we are pseudo binding to existing click event
+      //let's allow the TV reset button to work through TinyMCE, either enabled or disabled - textareas are updated .on change + the delay is necessary since we are pseudo binding to existing click event
       if ($disable == 1) {
         $richTv = '
           if($(".modx-richtext").length){
