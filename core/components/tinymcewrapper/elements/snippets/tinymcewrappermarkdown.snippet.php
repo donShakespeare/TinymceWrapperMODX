@@ -13,25 +13,25 @@ if($input){
     $options = explode(',',$options);
     if($options[0] == "markdown"){
         if (!class_exists('\Michelf\Markdown')) {
-            require MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/Michelf/Markdown.inc.php';
+            require_once MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/Michelf/Markdown.inc.php';
         }
         $content = \Michelf\Markdown::defaultTransform($content);
     }
     elseif($options[0] == "markdownE"){
         if (!class_exists('\Michelf\MarkdownExtra')) {
-            require MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/Michelf/MarkdownExtra.inc.php';
+            require_once MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/Michelf/MarkdownExtra.inc.php';
         }
         $content = \Michelf\MarkdownExtra::defaultTransform($content);
     }
     elseif($options[0] == "parsedown"){
-        require MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/Parsedown.php';
+        require_once MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/Parsedown.php';
         $Parsedown = new Parsedown();
         $content = $Parsedown->text($content);
     }
     else{ //default state
         $options[0] = "parsedownExtra";
-        require MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/Parsedown.php';
-        require MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/ParsedownExtra.php';
+        require_once MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/Parsedown.php';
+        require_once MODX_ASSETS_PATH . 'components/tinymcewrapper/markdown/parsedown/ParsedownExtra.php';
         $ParsedownExtra = new ParsedownExtra();
         $content = $ParsedownExtra->text($content);
     }
