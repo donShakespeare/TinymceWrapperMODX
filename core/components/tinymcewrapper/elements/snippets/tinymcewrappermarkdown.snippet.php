@@ -39,5 +39,5 @@ if($input){
         $squareBracketSeparator = substr($options[1], 0, 1);
         $content = str_replace('['.$squareBracketSeparator.'[', '&#91;&#91;', $content); // do some more find/replace
     }
-    return $content);
+    return $content;
 }
